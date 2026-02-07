@@ -1,288 +1,509 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lavados Pro - Inicio</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <style>
-        </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTP LIMPIEZA - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <style>
+    </style>
 </head>
+
 <body>
 
-<header class="bg-white border-bottom site-header">
-    <div class="container py-2">
-        <div class="header-inner d-flex align-items-center justify-content-between">
-            <div class="header-left d-flex align-items-center">
-                <button id="menuToggle" type="button" class="btn btn-light p-2 rounded me-2" aria-label="Abrir menú">
-                    ☰
-                </button>
-            </div>
+    <header class="bg-white border-bottom site-header">
+        <div class="container py-2">
+            <div class="header-inner d-flex align-items-center justify-content-between">
+                <div class="header-left d-flex align-items-center">
+                    <button id="menuToggle" type="button" class="btn btn-light p-2 rounded me-2"
+                        aria-label="Abrir menú">
+                        ☰
+                    </button>
+                </div>
 
-            <div class="header-center text-center flex-grow-1">
-                <h1 class="m-0 site-title">DTP LAVADOS</h1>
-            </div>
+                <div class="header-center text-center">
+                    <h1 class="m-0 site-title">DTP LAVADOS</h1>
+                </div>
 
-            <div class="header-right d-flex align-items-center">
-                <a href="#" class="d-flex align-items-center logo-link">
-                    <img src="assets/img/logo__tdp.jpg" alt="DTP logo" id="siteLogo" class="ms-2">
-                </a>
+                <div class="header-right d-flex align-items-center">
+                    <a href="#" class="d-flex align-items-center logo-link">
+                        <img src="assets/img/logo__tdp.jpg" alt="DTP logo" id="siteLogo" class="ms-2">
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<!-- Sidebar for desktop -->
-<aside id="sidebar" class="sidebar d-none">
-    <div class="px-2">
-        <div class="mb-3">
-            <a class="btn btn-success w-100 text-start text-white" href="#"> <i class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
-        </div>
-        <ul class="nav flex-column mb-3">
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
-        </ul>
-        <hr>
-        <div class="small text-uppercase text-muted mb-2">Contacto</div>
-        <ul class="list-unstyled contact-list">
-            <li class="mb-2"><i class="bi bi-telephone-fill text-muted me-2"></i>+56 9 1234 5678</li>
-            <li class="mb-2"><i class="bi bi-envelope-fill text-muted me-2"></i>contacto@johan.cl</li>
-            <li class="mb-2"><i class="bi bi-whatsapp text-success me-2"></i>WhatsApp</li>
-            <li class="mb-2"><i class="bi bi-instagram text-muted me-2"></i>Instagram</li>
-        </ul>
-    </div>
-</aside>
-
-<!-- Offcanvas for mobile (hidden on md+ to avoid duplicate sidebar) -->
-<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
-    <div class="offcanvas-header">
-        <h5 id="sidebarOffcanvasLabel">DTP LAVADOS</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
+    <!-- Sidebar for desktop -->
+    <aside id="sidebar" class="sidebar d-none">
+        <div class="px-2">
             <div class="mb-3">
-                <a class="btn btn-success w-100 text-start text-white" href="#"> <i class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
+                <a class="btn btn-success w-100 text-start text-white" href="#"> <i
+                        class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
             </div>
             <ul class="nav flex-column mb-3">
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
-            <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
-        </ul>
-        <hr>
-        <div class="small text-uppercase text-muted mb-2">Contacto</div>
-        <ul class="list-unstyled contact-list">
-            <li class="mb-2"><i class="bi bi-telephone-fill text-muted me-2"></i>+56 9 1234567</li>
-            <li class="mb-2"><i class="bi bi-envelope-fill text-muted me-2"></i>contacto@johan.cl</li>
-            <li class="mb-2"><i class="bi bi-whatsapp text-success me-2"></i>WhatsApp</li>
-            <li class="mb-2"><i class="bi bi-instagram text-muted me-2"></i>Instagram</li>
-        </ul>
-    </div>
-</div>
-
-<main class="container my-4">
-    <!-- Carousel -->
-    <div id="heroCarousel" class="carousel slide rounded shadow-sm" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://picsum.photos/id/1011/1200/350" class="d-block w-100" alt="Servicio 1">
-            </div>
-            <div class="carousel-item">
-                <img src="https://picsum.photos/id/1018/1200/350" class="d-block w-100" alt="Servicio 2">
-            </div>
-            <div class="carousel-item">
-                <img src="https://picsum.photos/id/1025/1200/350" class="d-block w-100" alt="Servicio 3">
-            </div>
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i
+                            class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i
+                            class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i
+                            class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
+            </ul>
+            <hr>
+            <div class="small text-uppercase text-muted mb-2">Contacto</div>
+            <ul class="list-unstyled contact-list">
+                <li class="mb-2"><i class="bi bi-telephone-fill text-muted me-2"></i>+56 9 1234 5678</li>
+                <li class="mb-2"><i class="bi bi-envelope-fill text-muted me-2"></i>contacto@johan.cl</li>
+                <li class="mb-2"><i class="bi bi-whatsapp text-success me-2"></i>WhatsApp</li>
+                <li class="mb-2"><a href="https://www.instagram.com/dtp.limpieza/" target="_blank"
+                        rel="noopener noreferrer" style="text-decoration: none; color: inherit;"><i
+                            class="bi bi-instagram text-muted me-2"></i>Instagram</a></li>
+            </ul>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-            <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-            <span class="visually-hidden">Siguiente</span>
-        </button>
-    </div>
+    </aside>
 
-    <section class="text-center my-4">
-        <h3>Servicio de Limpieza a Domicilio</h3>
-        <p class="text-muted">¡Agenda Gratis con nosotros y paga luego del servicio!</p>
-        <hr>
-        <h2 class="mt-4">¡Cotiza y agenda! 👇</h2>
-        <p class="text-muted">Autos, alfombras, colchones y sillones</p>
-    </section>
-
-    <section class="cotiza my-5" id="reserva">
-        <div class="card p-3 shadow-sm mb-4">
-            <img src="https://picsum.photos/seed/form/800/400" alt="Cotiza" class="img-fluid rounded mb-3">
-            <form id="cotizaForm">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Selecciona el tipo de servicio:</label>
-                        <select id="servicio" class="form-select">
-                            <option selected disabled>Seleccionar</option>
-                            <option>Sillones</option>
-                            <option>Alfombras</option>
-                            <option>Colchones</option>
-                            <option>Autos</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label" id="labelTipo">Selecciona el tipo de sillón</label>
-                        <select id="tipoSeleccionado" class="form-select">
-                            <option selected disabled>Seleccionar</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button type="button" id="btnAgregar" class="btn btn-primary btn-lg">Agregar Servicio</button>
-                </div>
-            </form>
+    <!-- Offcanvas for mobile (hidden on md+ to avoid duplicate sidebar) -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas"
+        aria-labelledby="sidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 id="sidebarOffcanvasLabel">DTP LAVADOS</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <!-- Servicios Agregados -->
-        <div id="serviciosAgregados" class="card p-3 shadow-sm" style="display:none;">
-            <h5>Servicios agregados</h5>
-            <div id="listaServicios"></div>
-            <button type="button" id="btnCotizar" class="btn btn-success w-100 mt-3">Cotizar ahora</button>
-        </div>
-    </section>
-
-    <!-- Sección de Fotos de Trabajos Realizados -->
-    <section class="trabajos my-5" id="trabajos">
-        <div class="text-center mb-5">
-            <h2>Trabajos Realizados</h2>
-            <p class="text-muted">Mira algunos de nuestros trabajos recientes</p>
-        </div>
-        <div class="row g-3">
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/a/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 1"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/b/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 2"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/c/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 3"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/d/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 4"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/e/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 5"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/f/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 6"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/g/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 7"></div>
-            <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/h/400/250" class="img-fluid rounded shadow-sm" alt="Trabajo 8"></div>
-        </div>
-    </section>
-
-    <!-- Sección de Cobertura -->
-    <section class="cobertura my-5" id="cobertura">
-        <div class="text-center mb-5">
-            <h2>Área de Cobertura</h2>
-            <p class="text-muted">Disponible en toda la región metropolitana</p>
-        </div>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card p-4 border-0 shadow-sm">
-                    <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Norte</h5>
-                    <p class="text-muted">Providencia, Ñuñoa, Vitacura, Las Condes</p>
-                </div>
+        <div class="offcanvas-body">
+            <div class="mb-3">
+                <a class="btn btn-success w-100 text-start text-white" href="#"> <i
+                        class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
             </div>
-            <div class="col-md-6">
-                <div class="card p-4 border-0 shadow-sm">
-                    <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Centro</h5>
-                    <p class="text-muted">Santiago Centro, Estación Central, Independencia</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-4 border-0 shadow-sm">
-                    <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Sur</h5>
-                    <p class="text-muted">Puente Alto, San Bernardo, La Florida</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-4 border-0 shadow-sm">
-                    <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Oriente</h5>
-                    <p class="text-muted">Macul, Peñalolén, La Reina</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal de formulario de datos personales -->
-    <div id="modalDatos" class="modal fade" tabindex="-1" style="display:none; z-index: 1050;">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title">Confirmar Reserva</h5>
-                    <button type="button" class="btn-close" id="btnCerrarModal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Resumen del servicio -->
-                    <div class="alert alert-light border mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong id="resumenServicio">Sillones</strong> <span class="text-muted small ms-2" id="resumenTipo">Individual</span>
-                                <div class="text-muted small mt-1"><span id="resumenTiempo">30m</span> • <span class="text-primary fw-bold" id="resumenPrecio">$12.500</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form id="formDatos">
-                        <!-- Dirección -->
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Dirección *</label>
-                            <input type="text" id="direccionInput" class="form-control" placeholder="Ej: Quitalmahue 743" required>
-                            <div id="placesResults" class="list-group position-absolute w-100 mt-1" style="max-height: 200px; overflow-y: auto; display: none; z-index: 1000;"></div>
-                        </div>
-
-                        <!-- Casa/Depto -->
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Casa / Depto</label>
-                            <input type="text" id="casaDeptoInput" class="form-control" placeholder="Ej: Dpto 42">
-                        </div>
-
-                        <!-- Fecha y Hora -->
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label text-muted small">Fecha *</label>
-                                <input type="date" id="fechaInput" class="form-control" placeholder="Selecciona una fecha" required>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label text-muted small">Hora *</label>
-                                <input type="time" id="horaInput" class="form-control" placeholder="Selecciona una hora" required>
-                            </div>
-                        </div>
-
-                        <!-- Nombre -->
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Nombre completo *</label>
-                            <input type="text" id="nombreInput" class="form-control" placeholder="Tu nombre y apellidos" required>
-                        </div>
-
-                        <!-- Teléfono -->
-                        <div class="mb-4">
-                            <label class="form-label text-muted small">Teléfono *</label>
-                            <div class="input-group">
-                                <span class="input-group-text">🇨🇱 +56</span>
-                                <input type="tel" id="telefonoInput" class="form-control" placeholder="912345678" required>
-                            </div>
-                        </div>
-
-                        <!-- Aviso de pago -->
-                        <div class="alert alert-info small mb-4">
-                            <i class="bi bi-info-circle me-2"></i>El pago se realizará al finalizar el servicio, ya sea mediante transferencia o tarjetas bancarias.
-                        </div>
-
-                        <!-- Botones -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Confirmar Reserva</button>
-                            <button type="button" class="btn btn-link text-danger text-decoration-none" id="btnCancelarModal">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <ul class="nav flex-column mb-3">
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i
+                            class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i
+                            class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
+                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i
+                            class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
+            </ul>
+            <hr>
+            <div class="small text-uppercase text-muted mb-2">Contacto</div>
+            <ul class="list-unstyled contact-list">
+                <li class="mb-2"><i class="bi bi-telephone-fill text-muted me-2"></i>+56 9 1234567</li>
+                <li class="mb-2"><i class="bi bi-envelope-fill text-muted me-2"></i>contacto@johan.cl</li>
+                <li class="mb-2"><i class="bi bi-whatsapp text-success me-2"></i>WhatsApp</li>
+                <li class="mb-2"><a href="https://www.instagram.com/dtp.limpieza/" target="_blank"
+                        rel="noopener noreferrer" style="text-decoration: none; color: inherit;"><i
+                            class="bi bi-instagram text-muted me-2"></i>Instagram</a></li>
+            </ul>
         </div>
     </div>
 
-    <!-- Overlay para el modal -->
-    <div id="modalOverlay" class="modal-backdrop fade" style="display:none; z-index: 1049;"></div>
+    <main class="container my-4">
+        <!-- Carousel -->
+        <div id="heroCarousel" class="carousel slide rounded shadow-sm" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://picsum.photos/id/1011/1200/350" class="d-block w-100" alt="Servicio 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/id/1018/1200/350" class="d-block w-100" alt="Servicio 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/id/1025/1200/350" class="d-block w-100" alt="Servicio 3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
 
-</main>
+        <section class="text-center my-4">
+            <h3>Servicio de Limpieza a Domicilio</h3>
+            <p class="text-muted">¡Agenda Gratis con nosotros y paga luego del servicio!</p>
+            <hr>
+            <h2 class="mt-4">¡Cotiza y agenda! 👇</h2>
+            <p class="text-muted">Alfombras, colchones y sillones</p>
+        </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/reservas.js"></script>
+        <section class="cotiza my-5" id="reserva">
+
+            <div class="card shadow-sm p-3">
+
+                <!-- IMAGEN -->
+                <img src="https://picsum.photos/seed/form/800/400" alt="Cotiza" class="img-fluid rounded mb-4">
+
+                <!-- FORMULARIO -->
+                <form id="cotizaForm" class="service-box collapsed">
+                    <div id="reservaFixed" class="reserva-fixed d-none">
+                        <button type="button" class="btn btn-success w-100" id="btnCotizarFixed">
+                            Reservar ahora
+                        </button>
+                    </div>
+                    <!-- NIVEL 1: CATEGORÍA -->
+                    <div class="mb-4">
+                        <label class="service-dropdown-label">Selecciona el tipo de servicio:</label>
+                        <div class="service-dropdown-wrapper" id="categoriaWrapper">
+                            <div class="service-dropdown-trigger placeholder" id="categoriaTrigger">
+                                <div class="service-dropdown-text">
+                                    <div class="service-dropdown-main">Selecciona una categoría</div>
+                                </div>
+                                <svg class="service-dropdown-arrow" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                            </div>
+                            <ul class="service-dropdown-menu" id="categoriaMenu">
+                                <li>
+                                    <a href="#" class="service-dropdown-item" data-service="Auto">
+                                        <div class="service-dropdown-item-icon">🚗</div>
+                                        <div class="service-dropdown-item-text">
+                                            <div class="service-dropdown-item-main">Auto</div>
+                                            <div class="service-dropdown-item-desc">Interior, Exterior, Tapiz y Asientos
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="service-dropdown-item" data-service="Sillones">
+                                        <div class="service-dropdown-item-icon">🛋️</div>
+                                        <div class="service-dropdown-item-text">
+                                            <div class="service-dropdown-item-main">Sillones</div>
+                                            <div class="service-dropdown-item-desc">Sillas, Sillones, Poltronas, Puff y
+                                                más</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="service-dropdown-item" data-service="Colchones">
+                                        <div class="service-dropdown-item-icon">🛏️</div>
+                                        <div class="service-dropdown-item-text">
+                                            <div class="service-dropdown-item-main">Colchón</div>
+                                            <div class="service-dropdown-item-desc">Colchones, cunas, respaldos</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="service-dropdown-item" data-service="Alfombras">
+                                        <div class="service-dropdown-item-icon">🪡</div>
+                                        <div class="service-dropdown-item-text">
+                                            <div class="service-dropdown-item-main">Alfombras</div>
+                                            <div class="service-dropdown-item-desc">Muro a Muro, Decorativas, Pasillos
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="service-dropdown-backdrop" id="categoriaBackdrop"></div>
+                    </div>
+
+                    <!-- NIVEL 2: TAMAÑO/TIPO -->
+                    <div class="mb-4" id="tamanioWrapper">
+                        <label class="service-dropdown-label" id="labelTamanio">Selecciona el tamaño</label>
+                        <div class="service-dropdown-wrapper">
+                            <div class="service-dropdown-trigger placeholder" id="tamanioTrigger">
+                                <div class="service-dropdown-text">
+                                    <div class="service-dropdown-main">Selecciona un tipo</div>
+                                </div>
+                                <svg class="service-dropdown-arrow" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                            </div>
+                            <ul class="service-dropdown-menu" id="tamanioMenu"></ul>
+                        </div>
+                        <div class="service-dropdown-backdrop" id="tamanioBackdrop"></div>
+                    </div>
+
+                    <!-- NIVEL 3: SERVICIOS (TARJETAS) -->
+                    <div class="mb-4" id="serviciosWrapper">
+                        <label class="service-dropdown-label" id="labelServicios">Selecciona el servicio</label>
+                        <div class="services-cards-grid" id="serviciosCardsContainer"></div>
+                    </div>
+
+                    <!-- PRECIO Y CANTIDAD -->
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6">
+                            <div id="precioWrapper">
+                                <label class="form-label small text-muted">Precio Total</label>
+                                <div id="precioDisplay" class="h4 fw-bold">$0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div id="cantidadWrapper" class="d-inline-block">
+                                <label class="form-label small text-muted d-block">Cantidad</label>
+                                <div class="input-group" style="width:120px;">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="cantidadMinus">−</button>
+                                    <input type="text" id="cantidadInput" class="form-control text-center" value="1"
+                                        aria-label="Cantidad" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" id="cantidadPlus">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOTÓN AGREGAR -->
+                    <div class="text-center mb-4">
+                        <button type="button" class="btn btn-primary btn-lg" id="btnAgregar"
+                            style="width: auto; padding: 12px 32px;">
+                            <i class="bi bi-plus-lg"></i> Agregar
+                        </button>
+                    </div>
+
+                    <!-- SERVICIOS AGREGADOS -->
+                    <div id="serviciosAgregados" style="display:none" class="mt-4 p-3 bg-light rounded">
+
+                        <h5 class="mb-3">Servicios Agregados:</h5>
+                        <div id="listaServicios"></div>
+
+                        <div class="reserva-sticky">
+                            <button type="button" class="btn btn-success w-100" id="btnCotizar">
+                                Reservar ahora
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- Sección de Fotos de Trabajos Realizados -->
+        <section class="trabajos my-5" id="trabajos">
+            <div class="text-center mb-5">
+                <h2>Trabajos Realizados</h2>
+                <p class="text-muted">Mira algunos de nuestros trabajos recientes</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/a/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 1"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/b/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 2"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/c/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 3"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/d/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 4"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/e/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 5"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/f/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 6"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/g/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 7"></div>
+                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/h/400/250"
+                        class="img-fluid rounded shadow-sm" alt="Trabajo 8"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Cobertura -->
+        <section class="cobertura my-5" id="cobertura">
+            <div class="text-center mb-5">
+                <h2>Área de Cobertura</h2>
+                <p class="text-muted">Disponible en toda la región metropolitana</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card p-4 border-0 shadow-sm">
+                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Norte</h5>
+                        <p class="text-muted">Providencia, Ñuñoa, Vitacura, Las Condes</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 border-0 shadow-sm">
+                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Centro</h5>
+                        <p class="text-muted">Santiago Centro, Estación Central, Independencia</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 border-0 shadow-sm">
+                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Sur</h5>
+                        <p class="text-muted">Puente Alto, San Bernardo, La Florida</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 border-0 shadow-sm">
+                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Oriente</h5>
+                        <p class="text-muted">Macul, Peñalolén, La Reina</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal de formulario de datos personales -->
+        <div id="modalDatos" class="modal fade" tabindex="-1" style="display:none; z-index: 1050;">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">Confirmar Reserva</h5>
+                        <button type="button" class="btn-close" id="btnCerrarModal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Resumen del servicio -->
+                        <div class="alert alert-light border mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong id="resumenServicio">Sillones</strong> <span class="text-muted small ms-2"
+                                        id="resumenTipo">Individual</span>
+                                    <div class="text-muted small mt-1"><span id="resumenTiempo">30m</span> • <span
+                                            class="text-primary fw-bold" id="resumenPrecio">$12.500</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="formDatos">
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <label class="form-label text-muted small">Dirección *</label>
+                                <input type="text" id="direccionInput" class="form-control"
+                                    placeholder="Ej: Quitalmahue 743" required>
+                                <div id="placesResults" class="list-group position-absolute w-100 mt-1"
+                                    style="max-height: 200px; overflow-y: auto; display: none; z-index: 1000;"></div>
+                            </div>
+
+                            <!-- Casa/Depto -->
+                            <div class="mb-3">
+                                <label class="form-label text-muted small">Casa / Depto</label>
+                                <input type="text" id="casaDeptoInput" class="form-control" placeholder="Ej: Dpto 42">
+                            </div>
+
+                            <!-- Fecha y Hora -->
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label text-muted small">Fecha *</label>
+                                    <input type="date" id="fechaInput" class="form-control"
+                                        placeholder="Selecciona una fecha" required>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label text-muted small">Hora *</label>
+                                    <input type="time" id="horaInput" class="form-control"
+                                        placeholder="Selecciona una hora" required>
+                                </div>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label class="form-label text-muted small">Nombre completo *</label>
+                                <input type="text" id="nombreInput" class="form-control"
+                                    placeholder="Tu nombre y apellidos" required>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="mb-4">
+                                <label class="form-label text-muted small">Teléfono *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">🇨🇱 +56</span>
+                                    <input type="tel" id="telefonoInput" class="form-control" placeholder="912345678"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Aviso de pago -->
+                            <div class="alert alert-info small mb-4">
+                                <i class="bi bi-info-circle me-2"></i>El pago se realizará al finalizar el servicio, ya
+                                sea mediante transferencia o tarjetas bancarias.
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">Confirmar Reserva</button>
+                                <button type="button" class="btn btn-link text-danger text-decoration-none"
+                                    id="btnCancelarModal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay para el modal -->
+        <div id="modalOverlay" class="modal-backdrop fade" style="display:none; z-index: 1049;"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top mt-5">
+        <div class="container py-5">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold mb-3">DTP LIMPIEZA</h5>
+                    <p class="text-muted small">Expertos en servicios de limpieza profesional. Calidad y confianza desde
+                        2020.</p>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.instagram.com/dtp.limpieza/" target="_blank" rel="noopener noreferrer"
+                            class="text-muted"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-muted"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-muted"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold mb-3">Servicios</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Limpieza de Alfombras</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Limpieza Residencial</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Limpieza Comercial</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Limpieza de Tapicería</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold mb-3">Empresa</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Sobre Nosotros</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Trabaja con Nosotros</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Términos y Condiciones</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Política de Privacidad</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold mb-3">Contacto</h5>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Santiago, Chile</li>
+                        <li class="mb-2"><i class="bi bi-telephone-fill me-2"></i>+56 9 4406 8233</li>
+                        <li class="mb-2"><i class="bi bi-envelope-fill me-2"></i>contacto@DTPLIMPIEZA.cl</li>
+                        <li class="mb-2"><i class="bi bi-clock-fill me-2"></i>Lun - Sáb: 9:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="m-0 small text-muted">© 2026 DTP LIMPIEZA. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <svg class="me-3" style="height: 30px; width: auto;" viewBox="0 0 80 40"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <rect width="80" height="40" fill="#ffffff" stroke="#ccc" stroke-width="1" /><text x="40" y="24"
+                            text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold"
+                            fill="#666">Webpay</text>
+                    </svg>
+                    <svg style="height: 30px; width: auto;" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="40" fill="#ffffff" stroke="#ccc" stroke-width="1" /><text x="60"
+                            y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11"
+                            font-weight="bold" fill="#1f78d1">Mercado Pago</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/reservas.js"></script>
 </body>
+
 </html>

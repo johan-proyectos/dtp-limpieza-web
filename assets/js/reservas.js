@@ -1,454 +1,787 @@
-// Rellena el formulario con datos aleatorios para maquetación
+// reservas.js - Selector dinámico de servicios con 3 niveles
 document.addEventListener('DOMContentLoaded', function () {
 
-	// Datos dinámicos por tipo de servicio
-	const serviciosData = {
-		'Sillones': {
-			label: 'Selecciona el tipo de sillón:',
-			tipos: ['Tipo L', 'Individual', 'Sillas', 'Recto']
-		},
-		'Colchones': {
-			label: 'Selecciona el tipo de colchón:',
-			tipos: ['2 Plazas', 'King', '1 Plaza', 'Plaza y Media', 'Queen', 'Respaldo 1 Plaza', 'Respaldo 2 Plazas', 'Respaldo King', 'Cuna']
-		},
-		'Alfombras': {
-			label: 'Selecciona el tipo de alfombra:',
-			tipos: ['Muro a Muro', 'Decorativo']
-		},
-		'Autos': {
-			label: 'Selecciona el tipo de auto:',
-			tipos: ['Sedán', 'SUV', 'Pickup', 'Van', 'Minivan']
-		}
-	};
+    // ====== ESTRUCTURA DE DATOS: CATEGORÍA -> TIPO/TAMAÑO -> SERVICIOS ======
+    const serviciosData = {
+        'Auto': {
+            labelTamanio: 'Selecciona el tamaño del auto',
+            tamanios: {
+                'Pequeño (Hatchback, Sedán)': {
+                    precioBase: 35000,
+                    labelServicios: '¿Qué quieres limpiar?',
+                    servicios: [
+                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
+                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
+                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
+                    ]
+                },
+                'Mediano (SUV, Van)': {
+                    precioBase: 45000,
+                    labelServicios: '¿Qué quieres limpiar?',
+                    servicios: [
+                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
+                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
+                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
+                    ]
+                },
+                'Grande (Camioneta, Pickup)': {
+                    precioBase: 50000,
+                    labelServicios: '¿Qué quieres limpiar?',
+                    servicios: [
+                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
+                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
+                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
+                    ]
+                }
+            }
+        },
+        'Sillones': {
+            labelTamanio: 'Selecciona el tipo de sillón',
+            tamanios: {
+                '1 cuerpo': {
+                    precioBase: 12500,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                },
+                '2 cuerpos': {
+                    precioBase: 15000,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                },
+                '3 cuerpos': {
+                    precioBase: 18000,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                },
+                'Seccional / Modular': {
+                    precioBase: 22000,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                },
+                'Bergara / Reclinable': {
+                    precioBase: 18000,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                },
+                'Otros': {
+                    precioBase: 12500,
+                    labelServicios: 'Selecciona el servicio',
+                    servicios: [
+                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
+                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
+                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
+                    ]
+                }
+            }
+        },
+        'Colchones': {
+            labelTamanio: 'Selecciona el tamaño del colchón',
+            tamanios: {
+                '1 plaza': {
+                    precioBase: 22000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                '1.5 plaza': {
+                    precioBase: 25000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                '2 plazas': {
+                    precioBase: 32000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Queen': {
+                    precioBase: 34000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'King': {
+                    precioBase: 36000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Super King': {
+                    precioBase: 40000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Colchón + base / respaldo': {
+                    precioBase: 45000,
+                    labelServicios: null,
+                    servicios: []
+                }
+            }
+        },
+        'Alfombras': {
+            labelTamanio: 'Selecciona el tipo de alfombra',
+            tamanios: {
+                'Muro a Muro': {
+                    precioBase: 40000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Decorativa': {
+                    precioBase: 25000,
+                    labelServicios: null,
+                    servicios: []
+                }
+            }
+        }
+    };
 
-	// Array para almacenar servicios agregados
-	let serviciosAgregados = [];
+    // ====== ESTADO GLOBAL ======
+    let serviciosAgregados = [];
+    let categoriaSeleccionada = '';
+    let tamanioSeleccionado = '';
+    let servicioSeleccionado = null;
+    let cantidadActual = 1;
 
-	// Selecciones del primer formulario
-	const servicio = document.getElementById('servicio');
-	const tipoSeleccionado = document.getElementById('tipoSeleccionado');
-	const labelTipo = document.getElementById('labelTipo');
-	const btnAgregar = document.getElementById('btnAgregar');
+    // ====== ELEMENTOS DEL DOM - CATEGORÍA ======
+    const categoriaWrapper = document.getElementById('categoriaWrapper');
+    const categoriaTrigger = document.getElementById('categoriaTrigger');
+    const categoriaMenu = document.getElementById('categoriaMenu');
+    const categoriaBackdrop = document.getElementById('categoriaBackdrop');
 
-	// Asegurar que el select de tipos y su label estén ocultos hasta seleccionar un servicio
-	if (tipoSeleccionado && labelTipo) {
-		tipoSeleccionado.style.display = 'none';
-		labelTipo.style.display = 'none';
-		tipoSeleccionado.disabled = true;
-	}
+    // ====== ELEMENTOS DEL DOM - TAMAÑO ======
+    const tamanioWrapper = document.getElementById('tamanioWrapper');
+    const tamanioTrigger = document.getElementById('tamanioTrigger');
+    const tamanioMenu = document.getElementById('tamanioMenu');
+    const tamanioBackdrop = document.getElementById('tamanioBackdrop');
+    const labelTamanio = document.getElementById('labelTamanio');
 
-	// Elementos del modal y datos
-	const direccionInput = document.getElementById('direccionInput');
-	const modalDatos = document.getElementById('modalDatos');
-	const modalOverlay = document.getElementById('modalOverlay');
-	const btnCerrarModal = document.getElementById('btnCerrarModal');
-	const formDatos = document.getElementById('formDatos');
-	const nombreInput = document.getElementById('nombreInput');
-	const telefonoInput = document.getElementById('telefonoInput');
-	/* =====================================================
-   AUTOCOMPLETADO DE DIRECCIÓN (NOMINATIM - REAL)
-===================================================== */
+    // ====== ELEMENTOS DEL DOM - SERVICIOS (TARJETAS) ======
+    const serviciosWrapper = document.getElementById('serviciosWrapper');
+    const labelServicios = document.getElementById('labelServicios');
+    const serviciosCardsContainer = document.getElementById('serviciosCardsContainer');
 
-	const placesResults = document.getElementById('placesResults');
-	let controller;
+    // ====== ELEMENTOS DEL DOM - PRECIO Y CANTIDAD ======
+    const precioWrapper = document.getElementById('precioWrapper');
+    const precioDisplay = document.getElementById('precioDisplay');
+    const cantidadWrapper = document.getElementById('cantidadWrapper');
+    const cantidadInput = document.getElementById('cantidadInput');
+    const cantidadMinus = document.getElementById('cantidadMinus');
+    const cantidadPlus = document.getElementById('cantidadPlus');
 
-	if (direccionInput && placesResults) {
+    // ====== ELEMENTOS DEL DOM - LISTA Y BOTONES ======
+    const btnAgregar = document.getElementById('btnAgregar');
+    const serviciosAgregadosDiv = document.getElementById('serviciosAgregados');
+    const listaServicios = document.getElementById('listaServicios');
+    const btnCotizar = document.getElementById('btnCotizar');
 
-		direccionInput.setAttribute('autocomplete', 'off');
+    // ====== ELEMENTOS DEL DOM - MODAL ======
+    const modalDatos = document.getElementById('modalDatos');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const btnCerrarModal = document.getElementById('btnCerrarModal');
+    const formDatos = document.getElementById('formDatos');
+    const nombreInput = document.getElementById('nombreInput');
+    const telefonoInput = document.getElementById('telefonoInput');
+    const direccionInput = document.getElementById('direccionInput');
+    const placesResults = document.getElementById('placesResults');
 
-		direccionInput.addEventListener('input', async function () {
-			const query = direccionInput.value.trim();
+    let controller;
 
-			if (query.length < 4) {
-				placesResults.style.display = 'none';
-				return;
-			}
+    function formatPrecio(valor) {
+        return '$' + (valor).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 
-			if (controller) controller.abort();
-			controller = new AbortController();
+    // ====== FUNCIONES DROPDOWN GENÉRICAS ======
+    function abrirDropdown(menu, trigger, backdrop) {
+        // Posicionar el dropdown fijo en relación al trigger
+        const rect = trigger.getBoundingClientRect();
+        menu.style.top = (rect.bottom + 8) + 'px';
+        menu.style.left = Math.max(8, rect.left) + 'px';
+        menu.style.right = 'auto';
+        
+        // Ajustar si se sale del viewport
+        const menuWidth = Math.min(window.innerWidth * 0.9, 500);
+        if (rect.left + menuWidth > window.innerWidth - 8) {
+            menu.style.left = 'auto';
+            menu.style.right = Math.max(8, window.innerWidth - rect.right) + 'px';
+        }
+        
+        menu.classList.add('show');
+        trigger.classList.add('active');
+        backdrop.classList.add('show');
+    }
 
-			try {
-				const res = await fetch(
-					`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=cl&limit=6&q=${encodeURIComponent(query)}`,
-					{
-						signal: controller.signal,
-						headers: { 'Accept-Language': 'es' }
-					}
-				);
+    function cerrarDropdown(menu, trigger, backdrop) {
+        menu.classList.remove('show');
+        trigger.classList.remove('active');
+        backdrop.classList.remove('show');
+        menu.style.top = '';
+        menu.style.left = '';
+        menu.style.right = '';
+    }
 
-				const data = await res.json();
-				placesResults.innerHTML = '';
+    // ====== PROGRESSIVE DISCLOSURE - Actualizar estado del contenedor ======
+    function updateServiceBoxState() {
+        const serviceBox = document.getElementById('cotizaForm');
+        if (!serviceBox) return;
 
-				if (!data.length) {
-					placesResults.style.display = 'none';
-					return;
-				}
+        if (!categoriaSeleccionada) {
+            // Sin selección: mostrar solo categoría
+            serviceBox.classList.add('collapsed');
+            serviceBox.classList.remove('expanded');
+            return;
+        }
 
-				data.forEach(place => {
-					const item = document.createElement('button');
-					item.type = 'button';
-					item.className = 'list-group-item list-group-item-action text-start';
-					item.innerHTML = `
-                    <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
-                    ${place.display_name}
-                `;
+        // Categoría seleccionada: mostrar tamaño
+        serviceBox.classList.remove('collapsed');
+        
+        if (categoriaSeleccionada && tamanioSeleccionado) {
+            // Categoría + Tamaño: mostrar todo
+            serviceBox.classList.add('expanded');
+        } else {
+            // Solo categoría: mostrar solo categoría + tamaño
+            serviceBox.classList.remove('expanded');
+        }
+    }
 
-					item.addEventListener('click', function () {
-						direccionInput.value = place.display_name;
-						placesResults.style.display = 'none';
+    // ====== CATEGORÍA DROPDOWN ======
+    if (categoriaTrigger) {
+        categoriaTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            categoriaMenu.classList.contains('show')
+                ? cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop)
+                : abrirDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+        });
+    }
 
-						// Opcional: guardar coordenadas
-						direccionInput.dataset.lat = place.lat;
-						direccionInput.dataset.lon = place.lon;
-					});
+    if (categoriaBackdrop) {
+        categoriaBackdrop.addEventListener('click', () => cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop));
+    }
 
-					placesResults.appendChild(item);
-				});
+    document.addEventListener('click', (e) => {
+        if (categoriaTrigger && !categoriaTrigger.contains(e.target) && !categoriaMenu.contains(e.target)) {
+            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+        }
+    });
 
-				placesResults.style.display = 'block';
+    // Seleccionar categoría
+    document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const cat = item.getAttribute('data-service');
+            categoriaSeleccionada = cat;
+            tamanioSeleccionado = '';
+            servicioSeleccionado = null;
 
-			} catch (err) {
-				if (err.name !== 'AbortError') {
-					console.error('Error buscando dirección', err);
-				}
-			}
-		});
+            // Actualizar trigger
+            const mainDiv = categoriaTrigger.querySelector('.service-dropdown-main');
+            mainDiv.textContent = cat;
+            categoriaTrigger.classList.remove('placeholder');
 
-		document.addEventListener('click', function (e) {
-			if (!direccionInput.contains(e.target) && !placesResults.contains(e.target)) {
-				placesResults.style.display = 'none';
-			}
-		});
-	}
+            // Marcar seleccionado
+            document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+            item.classList.add('selected');
 
-	// Elementos de servicios agregados
-	const serviciosAgregadosDiv = document.getElementById('serviciosAgregados');
-	const listaServicios = document.getElementById('listaServicios');
-	const btnCotizar = document.getElementById('btnCotizar');
+            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+            updateServiceBoxState();
+            actualizarTamanios();
+        });
+    });
 
-	// Función para actualizar dinámicamente el label y opciones del tipo
-	function actualizarTipos() {
-		const servicioSeleccionado = servicio.value;
-		const datos = serviciosData[servicioSeleccionado];
-		// Si no hay servicio válido, ocultar label y select
-		if (!datos) {
-			labelTipo.style.display = 'none';
-			tipoSeleccionado.style.display = 'none';
-			tipoSeleccionado.innerHTML = '<option selected disabled>Seleccionar</option>';
-			tipoSeleccionado.disabled = true;
-			return;
-		}
+    // ====== TAMAÑO DROPDOWN ======
+    if (tamanioTrigger) {
+        tamanioTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tamanioMenu.classList.contains('show')
+                ? cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop)
+                : abrirDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        });
+    }
 
-		// Habilitar y mostrar select y label
-		labelTipo.style.display = 'block';
-		labelTipo.textContent = datos.label;
-		tipoSeleccionado.style.display = 'block';
-		tipoSeleccionado.disabled = false;
+    if (tamanioBackdrop) {
+        tamanioBackdrop.addEventListener('click', () => cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop));
+    }
 
-		// Limpiar y agregar nuevas opciones
-		tipoSeleccionado.innerHTML = '<option selected disabled>Seleccionar</option>';
-		datos.tipos.forEach(function (tipo) {
-			const option = document.createElement('option');
-			option.value = tipo;
-			option.textContent = tipo;
-			tipoSeleccionado.appendChild(option);
-		});
-	}
+    document.addEventListener('click', (e) => {
+        if (tamanioTrigger && !tamanioTrigger.contains(e.target) && !tamanioMenu.contains(e.target)) {
+            cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        }
+    });
 
-	// Mostrar modal de datos
-	function mostrarModal() {
-		modalDatos.classList.add('show');
-		modalDatos.style.display = 'block';
-		modalOverlay.classList.add('show');
-		modalOverlay.style.display = 'block';
-		document.body.classList.add('modal-open');
-	}
+    // ====== ACTUALIZAR TAMAÑOS SEGÚN CATEGORÍA ======
+    function actualizarTamanios() {
+        if (!categoriaSeleccionada) {
+            return;
+        }
 
-	// Ocultar modal de datos
-	function ocultarModal() {
-		modalDatos.classList.remove('show');
-		modalDatos.style.display = 'none';
-		modalOverlay.classList.remove('show');
-		modalOverlay.style.display = 'none';
-		document.body.classList.remove('modal-open');
-	}
+        const datos = serviciosData[categoriaSeleccionada];
+        if (!datos) return;
 
-	// Actualizar lista de servicios agregados
-	function actualizarListaServicios() {
-		listaServicios.innerHTML = '';
-		serviciosAgregados.forEach(function (serv, idx) {
-			const div = document.createElement('div');
-			div.className = 'mb-2 p-2 border rounded';
-			div.innerHTML = '<small><strong>' + serv.tipo + '</strong> - ' + serv.servicio + '</small> <button type="button" class="btn btn-sm btn-danger float-end" onclick="eliminarServicio(' + idx + ')">✕</button>';
-			listaServicios.appendChild(div);
-		});
-	}
+        if (labelTamanio) labelTamanio.textContent = datos.labelTamanio;
 
-	// Agregar servicio
-	btnAgregar.addEventListener('click', function () {
-		if (servicio.value === 'Seleccionar' || tipoSeleccionado.value === 'Seleccionar') {
-			alert('Por favor selecciona un servicio y un tipo');
-			return;
-		}
-		// Actualizar resumen del modal
-		document.getElementById('resumenServicio').textContent = servicio.value;
-		document.getElementById('resumenTipo').textContent = tipoSeleccionado.value;
-		document.getElementById('resumenTiempo').textContent = '30m';
-		document.getElementById('resumenPrecio').textContent = '$12.500';
+        // Limpiar y generar items de tamaño
+        tamanioMenu.innerHTML = '';
+        Object.keys(datos.tamanios).forEach(tamanio => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#';
+            a.className = 'service-dropdown-item';
+            a.setAttribute('data-tamanio', tamanio);
+            a.innerHTML = '<div class="service-dropdown-item-text"><div class="service-dropdown-item-main">' + tamanio + '</div></div>';
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                tamanioSeleccionado = tamanio;
+                servicioSeleccionado = null;
 
-		// Limpiar campos del formulario
-		document.getElementById('nombreInput').value = '';
-		document.getElementById('telefonoInput').value = '';
-		document.getElementById('direccionInput').value = '';
-		document.getElementById('casaDeptoInput').value = '';
-		document.getElementById('fechaInput').value = '';
-		document.getElementById('horaInput').value = '';
+                // Actualizar trigger
+                const triggerMain = tamanioTrigger.querySelector('.service-dropdown-main');
+                triggerMain.textContent = tamanio;
+                tamanioTrigger.classList.remove('placeholder');
 
-		// Mostrar modal para datos personales
-		mostrarModal();
-	});
+                // Marcar seleccionado
+                document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+                a.classList.add('selected');
 
-	// Cerrar modal
-	btnCerrarModal.addEventListener('click', ocultarModal);
-	modalOverlay.addEventListener('click', ocultarModal);
+                cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+                updateServiceBoxState();
+                actualizarServicios();
+                actualizarPrecio();
+            });
+            li.appendChild(a);
+            tamanioMenu.appendChild(li);
+        });
 
-	// Botón cancelar del modal
-	const btnCancelarModal = document.getElementById('btnCancelarModal');
-	if (btnCancelarModal) {
-		btnCancelarModal.addEventListener('click', ocultarModal);
-	}
+        // Reset
+        const triggerMain = tamanioTrigger.querySelector('.service-dropdown-main');
+        triggerMain.textContent = 'Selecciona un tipo';
+        tamanioTrigger.classList.add('placeholder');
+        document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+    }
 
-	// Confirmar datos y agregar servicio
-	formDatos.addEventListener('submit', function (e) {
-		e.preventDefault();
-		serviciosAgregados.push({
-			servicio: servicio.value,
-			tipo: tipoSeleccionado.value
-		});
-		actualizarListaServicios();
-		serviciosAgregadosDiv.style.display = 'block';
-		ocultarModal();
-		formDatos.reset();
-		// Resetear selección del servicio
-		servicio.selectedIndex = 0;
-		actualizarTipos();
-	});
+    // ====== ACTUALIZAR SERVICIOS/TARJETAS ======
+    function actualizarServicios() {
+        if (!categoriaSeleccionada || !tamanioSeleccionado) {
+            return;
+        }
 
-	// Función global para eliminar servicio
-	window.eliminarServicio = function (idx) {
-		serviciosAgregados.splice(idx, 1);
-		actualizarListaServicios();
-		if (serviciosAgregados.length === 0) {
-			serviciosAgregadosDiv.style.display = 'none';
-		}
-	};
+        const datos = serviciosData[categoriaSeleccionada];
+        const datosTabla = datos.tamanios[tamanioSeleccionado];
 
-	// Botón Cotizar - muestra finalización o envía datos
-	btnCotizar.addEventListener('click', function () {
-		if (serviciosAgregados.length === 0) {
-			alert('Por favor agrega al menos un servicio');
-			return;
-		}
-		const datosFinales = {
-			nombre: nombreInput.value,
-			telefono: telefonoInput.value,
-			direccion: direccionInput.value,
-			servicios: serviciosAgregados
-		};
-		console.log('Cotización final:', datosFinales);
-		alert('¡Cotización registrada!\n' + JSON.stringify(datosFinales, null, 2));
-	});
+        if (!datosTabla || !datosTabla.servicios || datosTabla.servicios.length === 0) {
+            // No hay servicios, solo mostrar precio
+            return;
+        }
 
-	// Escuchar cambios en el servicio
-	servicio.addEventListener('change', actualizarTipos);
+        if (labelServicios) labelServicios.textContent = datosTabla.labelServicios;
 
-	const sidebar = document.getElementById('sidebar');
-	const main = document.querySelector('main');
-	const headerEl = document.querySelector('header.site-header') || document.querySelector('header');
-	// Asegurarse de obtener el botón del menú (puede ser null en casos raros)
-	const menuToggle = document.getElementById('menuToggle');
+        // Generar tarjetas
+        serviciosCardsContainer.innerHTML = '';
+        datosTabla.servicios.forEach(srv => {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            card.setAttribute('data-id', srv.id);
+            card.innerHTML = `
+                <input type="radio" name="servicioSeleccion" id="srv-${srv.id}" value="${srv.id}" class="service-radio">
+                <label for="srv-${srv.id}" class="service-card-label">
+                    <div class="service-card-icon">${srv.icon}</div>
+                    <div class="service-card-content">
+                        <div class="service-card-title">${srv.nombre}</div>
+                        <div class="service-card-desc">${srv.desc}</div>
+                    </div>
+                </label>
+            `;
+            const radio = card.querySelector('.service-radio');
+            radio.addEventListener('change', () => {
+                servicioSeleccionado = srv;
+                document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                updateServiceBoxState();
+                actualizarPrecio();
+            });
 
-	function updateLayoutFromSidebar() {
-		// No aplicar margin-left para que el sidebar no mueva el contenido
-		// El sidebar ya está con position: fixed, así que puede estar por encima
-		if (!main || !sidebar) return;
-	}
+            serviciosCardsContainer.appendChild(card);
+        });
+    }
 
-	// Ajusta el `top` del sidebar para que no quede oculto bajo el header
-	function adjustSidebarTop() {
-		if (!sidebar) return;
-		const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 56;
-		sidebar.style.top = headerHeight + 'px';
-	}
+    // ====== ACTUALIZAR PRECIO ======
+    function actualizarPrecio() {
+        if (!categoriaSeleccionada || !tamanioSeleccionado) {
+            if (precioDisplay) precioDisplay.textContent = '$0';
+            return;
+        }
 
-	if (menuToggle && sidebar) {
-		// initialize: keep sidebar hidden by default on desktop
-		// ensure bootstrap offcanvas isn't triggered by this button on desktop
-		function syncMenuToggleAttributes() {
-			// Always remove bootstrap data attributes to avoid bootstrap auto-handling
-			menuToggle.removeAttribute('data-bs-toggle');
-			menuToggle.removeAttribute('data-bs-target');
-			if (window.innerWidth >= 768) {
-				// On desktop, keep the fixed sidebar hidden by default; show when user opens it
-				// ensure sidebar inline top is correct
-				adjustSidebarTop();
-			}
-		}
+        const datos = serviciosData[categoriaSeleccionada];
+        const datosTabla = datos.tamanios[tamanioSeleccionado];
+        let precio = datosTabla.precioBase;
 
-		syncMenuToggleAttributes();
+        if (servicioSeleccionado && servicioSeleccionado.precioDelta !== undefined) {
+            precio += servicioSeleccionado.precioDelta;
+        }
 
-		// Utilities to manage a desktop backdrop so the page darkens when sidebar is open
-		function createBackdrop() {
-			if (document.getElementById('desktopSidebarBackdrop')) return;
+        const amount = parseInt(cantidadInput.value, 10) || 1;
+        if (precioDisplay) precioDisplay.textContent = formatPrecio(precio * amount);
+        precioDisplay.dataset.unitPrice = precio;
+    }
 
-			const b = document.createElement('div');
-			b.id = 'desktopSidebarBackdrop';
-			b.className = 'desktop-sidebar-backdrop';
+    // ====== EVENTOS DE CANTIDAD ======
+    if (cantidadPlus) {
+        cantidadPlus.addEventListener('click', () => {
+            cantidadActual = (parseInt(cantidadInput.value, 10) || 1) + 1;
+            cantidadInput.value = cantidadActual;
+            actualizarPrecio();
+        });
+    }
 
-			b.addEventListener('click', closeSidebar);
+    if (cantidadMinus) {
+        cantidadMinus.addEventListener('click', () => {
+            cantidadActual = Math.max(1, (parseInt(cantidadInput.value, 10) || 1) - 1);
+            cantidadInput.value = cantidadActual;
+            actualizarPrecio();
+        });
+    }
 
-			document.body.appendChild(b);
+    // ====== AGREGAR SERVICIO ======
+    if (btnAgregar) {
+        btnAgregar.addEventListener('click', () => {
+            if (!categoriaSeleccionada || !tamanioSeleccionado) {
+                alert('Por favor selecciona una categoría y tamaño');
+                return;
+            }
 
-			// forzar reflow para animación
-			void b.offsetWidth;
-			b.classList.add('show');
-		}
+            const datos = serviciosData[categoriaSeleccionada];
+            const datosTabla = datos.tamanios[tamanioSeleccionado];
+            let precio = datosTabla.precioBase;
+            let nombreServicio = servicioSeleccionado ? servicioSeleccionado.nombre : 'Servicio estándar';
+
+            if (servicioSeleccionado && servicioSeleccionado.precioDelta !== undefined) {
+                precio += servicioSeleccionado.precioDelta;
+            }
+
+            const cantidad = parseInt(cantidadInput.value, 10) || 1;
+            const subtotal = precio * cantidad;
+
+            serviciosAgregados.push({
+                categoría: categoriaSeleccionada,
+                tamanio: tamanioSeleccionado,
+                servicio: nombreServicio,
+                cantidad: cantidad,
+                precioUnit: precio,
+                subtotal: subtotal,
+                displayName: `${categoriaSeleccionada} - ${tamanioSeleccionado} (${nombreServicio})`
+            });
+
+            actualizarListaServicios();
+            serviciosAgregadosDiv.style.display = 'block';
+
+            // Reset COMPLETO del formulario
+            categoriaSeleccionada = '';
+            tamanioSeleccionado = '';
+            servicioSeleccionado = null;
+            cantidadActual = 1;
+            cantidadInput.value = '1';
+
+            // Limpiar triggers
+            categoriaTrigger.querySelector('.service-dropdown-main').textContent = 'Selecciona una categoría';
+            categoriaTrigger.classList.add('placeholder');
+            tamanioTrigger.querySelector('.service-dropdown-main').textContent = 'Selecciona un tipo';
+            tamanioTrigger.classList.add('placeholder');
+
+            // Limpiar selecciones visuales
+            document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+            document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+
+            // Limpiar menús
+            tamanioMenu.innerHTML = '';
+            serviciosCardsContainer.innerHTML = '';
+            
+            actualizarPrecio();
+            updateServiceBoxState();
+        });
+    }
 
 
-		function removeBackdrop() {
-			const b = document.getElementById('desktopSidebarBackdrop');
-			if (!b) return;
 
-			b.classList.remove('show');
-			b.addEventListener(
-				'transitionend',
-				function h() {
-					b.remove();
-					b.removeEventListener('transitionend', h);
-				}
-			);
-		}
+    // ====== ACTUALIZAR LISTA ======
+    function actualizarListaServicios() {
+        listaServicios.innerHTML = '';
+        serviciosAgregados.forEach((s, idx) => {
+            const item = document.createElement('div');
+            item.className = 'mb-2 p-2 border rounded d-flex justify-content-between align-items-center';
+            const left = document.createElement('div');
+            left.innerHTML = '<div><strong>' + s.displayName + ' x ' + s.cantidad + '</strong></div><div class="small text-muted">' + formatPrecio(s.precioUnit) + ' c/u • ' + formatPrecio(s.subtotal) + '</div>';
+            const right = document.createElement('div');
+            const btnDel = document.createElement('button');
+            btnDel.className = 'btn btn-sm btn-danger';
+            btnDel.type = 'button';
+            btnDel.textContent = '✕';
+            btnDel.addEventListener('click', () => {
+                serviciosAgregados.splice(idx, 1);
+                actualizarListaServicios();
+                if (serviciosAgregados.length === 0) serviciosAgregadosDiv.style.display = 'none';
+            });
+            right.appendChild(btnDel);
+            item.appendChild(left);
+            item.appendChild(right);
+            listaServicios.appendChild(item);
+        });
+        const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
+        if (btnCotizar) btnCotizar.textContent = 'Reservar ahora ' + (total ? formatPrecio(total) : '');
+        if (typeof reservaFixed !== 'undefined' && reservaFixed) {
+            if (serviciosAgregados.length > 0) {
+                reservaFixed.classList.remove('d-none');
+            } else {
+                reservaFixed.classList.add('d-none');
+            }
+        }
+    }
 
+    // ====== MODAL Y RESERVA ======
+    function mostrarModal() {
+        modalDatos.classList.add('show');
+        modalDatos.style.display = 'block';
+        modalOverlay.classList.add('show');
+        modalOverlay.style.display = 'block';
+        document.body.classList.add('modal-open');
+    }
 
-		function closeSidebar() {
-			if (!sidebar) return;
-			// animate closing
-			sidebar.classList.remove('show-desktop');
-			sidebar.classList.add('hide-desktop');
-			// remove backdrop with fade
-			removeBackdrop();
-			// reenable page scroll
-			document.body.classList.remove('sidebar-open');
-			// after transition end, hide completely
-			const onEnd = function (e) {
-				if (e.propertyName === 'transform') {
-					sidebar.classList.add('d-none');
-					sidebar.classList.remove('hide-desktop');
-					sidebar.removeEventListener('transitionend', onEnd);
-					updateLayoutFromSidebar();
-				}
-			};
-			sidebar.addEventListener('transitionend', onEnd);
-		}
+    function ocultarModal() {
+        modalDatos.classList.remove('show');
+        modalDatos.style.display = 'none';
+        modalOverlay.classList.remove('show');
+        modalOverlay.style.display = 'none';
+        document.body.classList.remove('modal-open');
+    }
 
-		function openSidebar() {
-			if (!sidebar) return;
-			sidebar.classList.remove('d-none', 'hide-desktop');
-			// force reflow then add show class to animate in
-			void sidebar.offsetWidth;
-			sidebar.classList.add('show-desktop');
-			updateLayoutFromSidebar();
-			createBackdrop();
-			// prevent page scroll while sidebar is open
-			document.body.classList.add('sidebar-open');
-		}
+    if (btnCerrarModal) btnCerrarModal.addEventListener('click', ocultarModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', ocultarModal);
 
-		// Prevent rapid double-open race on mobile offcanvas
-		let offcanvasAnimating = false;
+    if (btnCotizar) {
+        btnCotizar.addEventListener('click', () => {
+            if (serviciosAgregados.length === 0) {
+                alert('Agrega al menos un servicio');
+                return;
+            }
+            mostrarModal();
+        });
+    }
 
-		menuToggle.addEventListener('click', function (e) {
-			// Desktop: toggle fixed sidebar
-			if (window.innerWidth >= 768) {
-				e.preventDefault();
-				const isHidden = sidebar.classList.contains('d-none') || sidebar.classList.contains('hide-desktop');
-				if (isHidden) {
-					openSidebar();
-				} else {
-					closeSidebar();
-				}
-				return;
-			}
+    // Autocomplete Nominatim
+    if (direccionInput && placesResults) {
+        direccionInput.setAttribute('autocomplete', 'off');
+        direccionInput.addEventListener('input', async function () {
+            const q = direccionInput.value.trim();
+            if (q.length < 4) {
+                placesResults.style.display = 'none';
+                return;
+            }
+            if (controller) controller.abort();
+            controller = new AbortController();
+            try {
+                const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=cl&limit=6&q=' + encodeURIComponent(q), {
+                    signal: controller.signal,
+                    headers: { 'Accept-Language': 'es' }
+                });
+                const data = await res.json();
+                placesResults.innerHTML = '';
+                if (!data || !data.length) {
+                    placesResults.style.display = 'none';
+                    return;
+                }
+                data.forEach(place => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'list-group-item list-group-item-action text-start';
+                    button.innerHTML = '<i class="bi bi-geo-alt-fill me-2 text-primary"></i>' + place.display_name;
+                    button.addEventListener('click', function () {
+                        direccionInput.value = place.display_name;
+                        direccionInput.dataset.lat = place.lat;
+                        direccionInput.dataset.lon = place.lon;
+                        placesResults.style.display = 'none';
+                    });
+                    placesResults.appendChild(button);
+                });
+                placesResults.style.display = 'block';
+            } catch (err) {
+                if (err.name !== 'AbortError') console.error('Nominatim error', err);
+            }
+        });
+        document.addEventListener('click', function (e) {
+            if (!direccionInput.contains(e.target) && !placesResults.contains(e.target)) {
+                placesResults.style.display = 'none';
+            }
+        });
+    }
 
-			// Mobile: handle offcanvas via JS with an animation guard
-			if (offcanvasAnimating) return;
-			offcanvasAnimating = true;
-			try {
-				if (typeof bootstrap !== 'undefined') {
-					const offcanvasEl = document.getElementById('sidebarOffcanvas');
-					if (offcanvasEl) {
-						const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
-						offcanvas.toggle();
-						// reset flag after shown/hidden
-						offcanvasEl.addEventListener('shown.bs.offcanvas', function onceShown() { offcanvasAnimating = false; offcanvasEl.removeEventListener('shown.bs.offcanvas', onceShown); }, { once: true });
-						offcanvasEl.addEventListener('hidden.bs.offcanvas', function onceHidden() { offcanvasAnimating = false; offcanvasEl.removeEventListener('hidden.bs.offcanvas', onceHidden); }, { once: true });
-					} else {
-						offcanvasAnimating = false;
-					}
-				} else {
-					offcanvasAnimating = false;
-				}
-			} catch (err) {
-				offcanvasAnimating = false;
-			}
-		});
+    // Submit formulario reserva
+    if (formDatos) {
+        formDatos.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const datosFinales = {
+                nombre: nombreInput.value,
+                telefono: telefonoInput.value,
+                direccion: direccionInput.value,
+                servicios: serviciosAgregados,
+                total: serviciosAgregados.reduce((a, b) => a + b.subtotal, 0)
+            };
+            console.log('Reserva enviada:', datosFinales);
+            alert('¡Reserva confirmada!\n' + JSON.stringify(datosFinales, null, 2));
+            serviciosAgregados = [];
+            actualizarListaServicios();
+            serviciosAgregadosDiv.style.display = 'none';
+            ocultarModal();
+            formDatos.reset();
+        });
+    }
 
-		// Keep layout and attributes in sync on resize
-		window.addEventListener('resize', function () {
-			syncMenuToggleAttributes();
-			updateLayoutFromSidebar();
-			adjustSidebarTop();
-		});
+    // ====== SIDEBAR ======
+    const sidebar = document.getElementById('sidebar');
+    const headerEl = document.querySelector('header.site-header') || document.querySelector('header');
+    const menuToggle = document.getElementById('menuToggle');
 
-		// ensure correct initial layout
-		updateLayoutFromSidebar();
-		adjustSidebarTop();
+    function adjustSidebarTop() {
+        if (!sidebar) return;
+        const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 56;
+        sidebar.style.top = headerHeight + 'px';
+    }
 
-		// Close sidebar when clicking outside (desktop)
-		document.addEventListener('click', function (ev) {
-			if (window.innerWidth >= 768 && sidebar && !sidebar.classList.contains('d-none')) {
-				const target = ev.target;
-				if (!sidebar.contains(target) && !menuToggle.contains(target)) {
-					closeSidebar();
-				}
-			}
-		});
+    function createBackdrop() {
+        if (document.getElementById('desktopSidebarBackdrop')) return;
+        const b = document.createElement('div');
+        b.id = 'desktopSidebarBackdrop';
+        b.className = 'desktop-sidebar-backdrop';
+        b.addEventListener('click', closeSidebar);
+        document.body.appendChild(b);
+        void b.offsetWidth;
+        b.classList.add('show');
+    }
 
-		// Close on Escape key (desktop)
-		window.addEventListener('keydown', function (ev) {
-			if (ev.key === 'Escape' && window.innerWidth >= 768 && sidebar && !sidebar.classList.contains('d-none')) {
-				closeSidebar();
-			}
-		});
+    function removeBackdrop() {
+        const b = document.getElementById('desktopSidebarBackdrop');
+        if (!b) return;
+        b.classList.remove('show');
+        b.addEventListener('transitionend', function h() { b.remove(); b.removeEventListener('transitionend', h); });
+    }
 
-		// Manejo manual de cierre para enlaces que usan la clase .nav-scroll
-		// Solo en mobile — dejar que Bootstrap maneje la limpieza de backdrops
-		document.querySelectorAll('.nav-scroll').forEach(link => {
-			link.addEventListener('click', function () {
-				// Desktop: cerrar sidebar
-				if (window.innerWidth >= 768) {
-					closeSidebar();
-					return;
-				}
+    function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('d-none', 'hide-desktop');
+        void sidebar.offsetWidth;
+        sidebar.classList.add('show-desktop');
+        createBackdrop();
+        document.body.classList.add('sidebar-open');
+    }
 
-				// Mobile: cerrar offcanvas
-				if (typeof bootstrap !== 'undefined') {
-					const offcanvasEl = document.getElementById('sidebarOffcanvas');
-					if (offcanvasEl) {
-						const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
-						offcanvas.hide();
-					}
-				}
-			});
-		});
-	}
+    function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('show-desktop');
+        sidebar.classList.add('hide-desktop');
+        removeBackdrop();
+        document.body.classList.remove('sidebar-open');
+        const onEnd = function (e) {
+            sidebar.classList.add('d-none');
+            sidebar.removeEventListener('transitionend', onEnd);
+        };
+        sidebar.addEventListener('transitionend', onEnd);
+    }
+
+    if (menuToggle && sidebar) {
+        menuToggle.removeAttribute('data-bs-toggle');
+        menuToggle.removeAttribute('data-bs-target');
+
+        menuToggle.addEventListener('click', function (e) {
+            if (window.innerWidth >= 768) {
+                e.preventDefault();
+                const isHidden = sidebar.classList.contains('d-none') || sidebar.classList.contains('hide-desktop');
+                if (isHidden) openSidebar(); else closeSidebar();
+                return;
+            }
+            if (typeof bootstrap !== 'undefined') {
+                const offcanvasEl = document.getElementById('sidebarOffcanvas');
+                if (offcanvasEl) {
+                    const off = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+                    off.toggle();
+                }
+            }
+        });
+
+        window.addEventListener('resize', function () { adjustSidebarTop(); });
+        adjustSidebarTop();
+    }
+
+    // Reposicionar dropdowns cuando hay resize
+    window.addEventListener('resize', () => {
+        if (categoriaMenu && categoriaMenu.classList.contains('show')) {
+            const rect = categoriaTrigger.getBoundingClientRect();
+            categoriaMenu.style.top = (rect.bottom + 8) + 'px';
+            categoriaMenu.style.left = Math.max(8, rect.left) + 'px';
+        }
+        if (tamanioMenu && tamanioMenu.classList.contains('show')) {
+            const rect = tamanioTrigger.getBoundingClientRect();
+            tamanioMenu.style.top = (rect.bottom + 8) + 'px';
+            tamanioMenu.style.left = Math.max(8, rect.left) + 'px';
+        }
+    });
+
+    // ====== BOTÓN RESERVA FIXED (CONTROL DEFINITIVO) ======
+    const reservaFixed = document.getElementById('reservaFixed');
+    const cotizaForm = document.getElementById('cotizaForm');
+    const trabajos = document.getElementById('trabajos');
+
+    if (reservaFixed && cotizaForm) {
+
+        const formObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && serviciosAgregados.length > 0) {
+                    reservaFixed.classList.remove('d-none');
+                } else {
+                    reservaFixed.classList.add('d-none');
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        formObserver.observe(cotizaForm);
+    }
+
+    if (reservaFixed && trabajos) {
+        const trabajosObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    reservaFixed.classList.add('d-none');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        trabajosObserver.observe(trabajos);
+    }
+
+    // Click del botón fixed → usa el botón real
+    const btnCotizarFixed = document.getElementById('btnCotizarFixed');
+    if (btnCotizarFixed && btnCotizar) {
+        btnCotizarFixed.addEventListener('click', () => {
+            btnCotizar.click();
+        });
+    }
+
 });
