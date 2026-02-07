@@ -1,5 +1,5 @@
 // Rellena el formulario con datos aleatorios para maquetación
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function () {
 
 	// Datos dinámicos por tipo de servicio
 	const serviciosData = {
@@ -30,8 +30,15 @@ document.addEventListener('DOMContentLoaded', function(){
 	const labelTipo = document.getElementById('labelTipo');
 	const btnAgregar = document.getElementById('btnAgregar');
 
+	// Asegurar que el select de tipos y su label estén ocultos hasta seleccionar un servicio
+	if (tipoSeleccionado && labelTipo) {
+		tipoSeleccionado.style.display = 'none';
+		labelTipo.style.display = 'none';
+		tipoSeleccionado.disabled = true;
+	}
+
 	// Elementos del modal y datos
-    const direccionInput = document.getElementById('direccionInput');
+	const direccionInput = document.getElementById('direccionInput');
 	const modalDatos = document.getElementById('modalDatos');
 	const modalOverlay = document.getElementById('modalOverlay');
 	const btnCerrarModal = document.getElementById('btnCerrarModal');
@@ -42,77 +49,77 @@ document.addEventListener('DOMContentLoaded', function(){
    AUTOCOMPLETADO DE DIRECCIÓN (NOMINATIM - REAL)
 ===================================================== */
 
-const placesResults = document.getElementById('placesResults');
-let controller;
+	const placesResults = document.getElementById('placesResults');
+	let controller;
 
-if (direccionInput && placesResults) {
+	if (direccionInput && placesResults) {
 
-    direccionInput.setAttribute('autocomplete', 'off');
+		direccionInput.setAttribute('autocomplete', 'off');
 
-    direccionInput.addEventListener('input', async function () {
-        const query = direccionInput.value.trim();
+		direccionInput.addEventListener('input', async function () {
+			const query = direccionInput.value.trim();
 
-        if (query.length < 4) {
-            placesResults.style.display = 'none';
-            return;
-        }
+			if (query.length < 4) {
+				placesResults.style.display = 'none';
+				return;
+			}
 
-        if (controller) controller.abort();
-        controller = new AbortController();
+			if (controller) controller.abort();
+			controller = new AbortController();
 
-        try {
-            const res = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=cl&limit=6&q=${encodeURIComponent(query)}`,
-                {
-                    signal: controller.signal,
-                    headers: { 'Accept-Language': 'es' }
-                }
-            );
+			try {
+				const res = await fetch(
+					`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=cl&limit=6&q=${encodeURIComponent(query)}`,
+					{
+						signal: controller.signal,
+						headers: { 'Accept-Language': 'es' }
+					}
+				);
 
-            const data = await res.json();
-            placesResults.innerHTML = '';
+				const data = await res.json();
+				placesResults.innerHTML = '';
 
-            if (!data.length) {
-                placesResults.style.display = 'none';
-                return;
-            }
+				if (!data.length) {
+					placesResults.style.display = 'none';
+					return;
+				}
 
-            data.forEach(place => {
-                const item = document.createElement('button');
-                item.type = 'button';
-                item.className = 'list-group-item list-group-item-action text-start';
-                item.innerHTML = `
+				data.forEach(place => {
+					const item = document.createElement('button');
+					item.type = 'button';
+					item.className = 'list-group-item list-group-item-action text-start';
+					item.innerHTML = `
                     <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
                     ${place.display_name}
                 `;
 
-                item.addEventListener('click', function () {
-                    direccionInput.value = place.display_name;
-                    placesResults.style.display = 'none';
+					item.addEventListener('click', function () {
+						direccionInput.value = place.display_name;
+						placesResults.style.display = 'none';
 
-                    // Opcional: guardar coordenadas
-                    direccionInput.dataset.lat = place.lat;
-                    direccionInput.dataset.lon = place.lon;
-                });
+						// Opcional: guardar coordenadas
+						direccionInput.dataset.lat = place.lat;
+						direccionInput.dataset.lon = place.lon;
+					});
 
-                placesResults.appendChild(item);
-            });
+					placesResults.appendChild(item);
+				});
 
-            placesResults.style.display = 'block';
+				placesResults.style.display = 'block';
 
-        } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error('Error buscando dirección', err);
-            }
-        }
-    });
+			} catch (err) {
+				if (err.name !== 'AbortError') {
+					console.error('Error buscando dirección', err);
+				}
+			}
+		});
 
-    document.addEventListener('click', function (e) {
-        if (!direccionInput.contains(e.target) && !placesResults.contains(e.target)) {
-            placesResults.style.display = 'none';
-        }
-    });
-}
+		document.addEventListener('click', function (e) {
+			if (!direccionInput.contains(e.target) && !placesResults.contains(e.target)) {
+				placesResults.style.display = 'none';
+			}
+		});
+	}
 
 	// Elementos de servicios agregados
 	const serviciosAgregadosDiv = document.getElementById('serviciosAgregados');
@@ -123,14 +130,24 @@ if (direccionInput && placesResults) {
 	function actualizarTipos() {
 		const servicioSeleccionado = servicio.value;
 		const datos = serviciosData[servicioSeleccionado];
-		if (!datos) return;
+		// Si no hay servicio válido, ocultar label y select
+		if (!datos) {
+			labelTipo.style.display = 'none';
+			tipoSeleccionado.style.display = 'none';
+			tipoSeleccionado.innerHTML = '<option selected disabled>Seleccionar</option>';
+			tipoSeleccionado.disabled = true;
+			return;
+		}
 
-		// Actualizar label
+		// Habilitar y mostrar select y label
+		labelTipo.style.display = 'block';
 		labelTipo.textContent = datos.label;
+		tipoSeleccionado.style.display = 'block';
+		tipoSeleccionado.disabled = false;
 
 		// Limpiar y agregar nuevas opciones
 		tipoSeleccionado.innerHTML = '<option selected disabled>Seleccionar</option>';
-		datos.tipos.forEach(function(tipo){
+		datos.tipos.forEach(function (tipo) {
 			const option = document.createElement('option');
 			option.value = tipo;
 			option.textContent = tipo;
@@ -159,7 +176,7 @@ if (direccionInput && placesResults) {
 	// Actualizar lista de servicios agregados
 	function actualizarListaServicios() {
 		listaServicios.innerHTML = '';
-		serviciosAgregados.forEach(function(serv, idx){
+		serviciosAgregados.forEach(function (serv, idx) {
 			const div = document.createElement('div');
 			div.className = 'mb-2 p-2 border rounded';
 			div.innerHTML = '<small><strong>' + serv.tipo + '</strong> - ' + serv.servicio + '</small> <button type="button" class="btn btn-sm btn-danger float-end" onclick="eliminarServicio(' + idx + ')">✕</button>';
@@ -168,8 +185,8 @@ if (direccionInput && placesResults) {
 	}
 
 	// Agregar servicio
-	btnAgregar.addEventListener('click', function(){
-		if (servicio.value === 'Seleccionar' || tipoSeleccionado.value === 'Selecciona') {
+	btnAgregar.addEventListener('click', function () {
+		if (servicio.value === 'Seleccionar' || tipoSeleccionado.value === 'Seleccionar') {
 			alert('Por favor selecciona un servicio y un tipo');
 			return;
 		}
@@ -202,7 +219,7 @@ if (direccionInput && placesResults) {
 	}
 
 	// Confirmar datos y agregar servicio
-	formDatos.addEventListener('submit', function(e){
+	formDatos.addEventListener('submit', function (e) {
 		e.preventDefault();
 		serviciosAgregados.push({
 			servicio: servicio.value,
@@ -218,7 +235,7 @@ if (direccionInput && placesResults) {
 	});
 
 	// Función global para eliminar servicio
-	window.eliminarServicio = function(idx){
+	window.eliminarServicio = function (idx) {
 		serviciosAgregados.splice(idx, 1);
 		actualizarListaServicios();
 		if (serviciosAgregados.length === 0) {
@@ -227,7 +244,7 @@ if (direccionInput && placesResults) {
 	};
 
 	// Botón Cotizar - muestra finalización o envía datos
-	btnCotizar.addEventListener('click', function(){
+	btnCotizar.addEventListener('click', function () {
 		if (serviciosAgregados.length === 0) {
 			alert('Por favor agrega al menos un servicio');
 			return;
@@ -247,28 +264,34 @@ if (direccionInput && placesResults) {
 
 	const sidebar = document.getElementById('sidebar');
 	const main = document.querySelector('main');
+	const headerEl = document.querySelector('header.site-header') || document.querySelector('header');
+	// Asegurarse de obtener el botón del menú (puede ser null en casos raros)
+	const menuToggle = document.getElementById('menuToggle');
 
 	function updateLayoutFromSidebar() {
+		// No aplicar margin-left para que el sidebar no mueva el contenido
+		// El sidebar ya está con position: fixed, así que puede estar por encima
 		if (!main || !sidebar) return;
-		if (!sidebar.classList.contains('d-none')) {
-			main.classList.add('main-with-sidebar');
-		} else {
-			main.classList.remove('main-with-sidebar');
-		}
+	}
+
+	// Ajusta el `top` del sidebar para que no quede oculto bajo el header
+	function adjustSidebarTop() {
+		if (!sidebar) return;
+		const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 56;
+		sidebar.style.top = headerHeight + 'px';
 	}
 
 	if (menuToggle && sidebar) {
 		// initialize: keep sidebar hidden by default on desktop
 		// ensure bootstrap offcanvas isn't triggered by this button on desktop
 		function syncMenuToggleAttributes() {
+			// Always remove bootstrap data attributes to avoid bootstrap auto-handling
+			menuToggle.removeAttribute('data-bs-toggle');
+			menuToggle.removeAttribute('data-bs-target');
 			if (window.innerWidth >= 768) {
-				menuToggle.removeAttribute('data-bs-toggle');
-				menuToggle.removeAttribute('data-bs-target');
-				sidebar.classList.add('d-none');
-				main.classList.remove('main-with-sidebar');
-			} else {
-				menuToggle.setAttribute('data-bs-toggle', 'offcanvas');
-				menuToggle.setAttribute('data-bs-target', '#sidebarOffcanvas');
+				// On desktop, keep the fixed sidebar hidden by default; show when user opens it
+				// ensure sidebar inline top is correct
+				adjustSidebarTop();
 			}
 		}
 
@@ -277,25 +300,35 @@ if (direccionInput && placesResults) {
 		// Utilities to manage a desktop backdrop so the page darkens when sidebar is open
 		function createBackdrop() {
 			if (document.getElementById('desktopSidebarBackdrop')) return;
+
 			const b = document.createElement('div');
 			b.id = 'desktopSidebarBackdrop';
-			b.className = 'offcanvas-backdrop desktop';
-			b.addEventListener('click', function(){ closeSidebar(); });
+			b.className = 'desktop-sidebar-backdrop';
+
+			b.addEventListener('click', closeSidebar);
+
 			document.body.appendChild(b);
-			// force reflow then show
+
+			// forzar reflow para animación
 			void b.offsetWidth;
 			b.classList.add('show');
-			document.body.classList.add('offcanvas-open');
 		}
+
 
 		function removeBackdrop() {
 			const b = document.getElementById('desktopSidebarBackdrop');
 			if (!b) return;
+
 			b.classList.remove('show');
-			// wait for opacity transition then remove
-			b.addEventListener('transitionend', function h(){ b.remove(); b.removeEventListener('transitionend', h); });
-			document.body.classList.remove('offcanvas-open');
+			b.addEventListener(
+				'transitionend',
+				function h() {
+					b.remove();
+					b.removeEventListener('transitionend', h);
+				}
+			);
 		}
+
 
 		function closeSidebar() {
 			if (!sidebar) return;
@@ -304,8 +337,10 @@ if (direccionInput && placesResults) {
 			sidebar.classList.add('hide-desktop');
 			// remove backdrop with fade
 			removeBackdrop();
+			// reenable page scroll
+			document.body.classList.remove('sidebar-open');
 			// after transition end, hide completely
-			const onEnd = function(e){
+			const onEnd = function (e) {
 				if (e.propertyName === 'transform') {
 					sidebar.classList.add('d-none');
 					sidebar.classList.remove('hide-desktop');
@@ -324,10 +359,15 @@ if (direccionInput && placesResults) {
 			sidebar.classList.add('show-desktop');
 			updateLayoutFromSidebar();
 			createBackdrop();
+			// prevent page scroll while sidebar is open
+			document.body.classList.add('sidebar-open');
 		}
 
-		menuToggle.addEventListener('click', function(e){
-			// Let Bootstrap handle small screens (offcanvas). For desktop, toggle fixed sidebar.
+		// Prevent rapid double-open race on mobile offcanvas
+		let offcanvasAnimating = false;
+
+		menuToggle.addEventListener('click', function (e) {
+			// Desktop: toggle fixed sidebar
 			if (window.innerWidth >= 768) {
 				e.preventDefault();
 				const isHidden = sidebar.classList.contains('d-none') || sidebar.classList.contains('hide-desktop');
@@ -336,20 +376,45 @@ if (direccionInput && placesResults) {
 				} else {
 					closeSidebar();
 				}
+				return;
+			}
+
+			// Mobile: handle offcanvas via JS with an animation guard
+			if (offcanvasAnimating) return;
+			offcanvasAnimating = true;
+			try {
+				if (typeof bootstrap !== 'undefined') {
+					const offcanvasEl = document.getElementById('sidebarOffcanvas');
+					if (offcanvasEl) {
+						const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+						offcanvas.toggle();
+						// reset flag after shown/hidden
+						offcanvasEl.addEventListener('shown.bs.offcanvas', function onceShown() { offcanvasAnimating = false; offcanvasEl.removeEventListener('shown.bs.offcanvas', onceShown); }, { once: true });
+						offcanvasEl.addEventListener('hidden.bs.offcanvas', function onceHidden() { offcanvasAnimating = false; offcanvasEl.removeEventListener('hidden.bs.offcanvas', onceHidden); }, { once: true });
+					} else {
+						offcanvasAnimating = false;
+					}
+				} else {
+					offcanvasAnimating = false;
+				}
+			} catch (err) {
+				offcanvasAnimating = false;
 			}
 		});
 
 		// Keep layout and attributes in sync on resize
-		window.addEventListener('resize', function(){
+		window.addEventListener('resize', function () {
 			syncMenuToggleAttributes();
 			updateLayoutFromSidebar();
+			adjustSidebarTop();
 		});
 
 		// ensure correct initial layout
 		updateLayoutFromSidebar();
+		adjustSidebarTop();
 
 		// Close sidebar when clicking outside (desktop)
-		document.addEventListener('click', function(ev){
+		document.addEventListener('click', function (ev) {
 			if (window.innerWidth >= 768 && sidebar && !sidebar.classList.contains('d-none')) {
 				const target = ev.target;
 				if (!sidebar.contains(target) && !menuToggle.contains(target)) {
@@ -359,25 +424,30 @@ if (direccionInput && placesResults) {
 		});
 
 		// Close on Escape key (desktop)
-		window.addEventListener('keydown', function(ev){
+		window.addEventListener('keydown', function (ev) {
 			if (ev.key === 'Escape' && window.innerWidth >= 768 && sidebar && !sidebar.classList.contains('d-none')) {
 				closeSidebar();
 			}
 		});
 
-		// Cerrar sidebar/offcanvas al hacer clic en un link de navegación
-		document.querySelectorAll('#sidebar .nav-link').forEach(link => {
-			link.addEventListener('click', function(e) {
+		// Manejo manual de cierre para enlaces que usan la clase .nav-scroll
+		// Solo en mobile — dejar que Bootstrap maneje la limpieza de backdrops
+		document.querySelectorAll('.nav-scroll').forEach(link => {
+			link.addEventListener('click', function () {
 				// Desktop: cerrar sidebar
-				if (window.innerWidth >= 768 && sidebar && !sidebar.classList.contains('d-none')) {
+				if (window.innerWidth >= 768) {
 					closeSidebar();
+					return;
 				}
-				// Mobile: asegurar que se limpie el backdrop y la clase offcanvas-open
-				const backdrop = document.querySelector('.offcanvas-backdrop.show');
-				if (backdrop) {
-					backdrop.remove();
+
+				// Mobile: cerrar offcanvas
+				if (typeof bootstrap !== 'undefined') {
+					const offcanvasEl = document.getElementById('sidebarOffcanvas');
+					if (offcanvasEl) {
+						const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
+						offcanvas.hide();
+					}
 				}
-				document.body.classList.remove('offcanvas-open');
 			});
 		});
 	}
