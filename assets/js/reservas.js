@@ -213,14 +213,14 @@ document.addEventListener('DOMContentLoaded', function () {
         menu.style.top = (rect.bottom + 8) + 'px';
         menu.style.left = Math.max(8, rect.left) + 'px';
         menu.style.right = 'auto';
-        
+
         // Ajustar si se sale del viewport
         const menuWidth = Math.min(window.innerWidth * 0.9, 500);
         if (rect.left + menuWidth > window.innerWidth - 8) {
             menu.style.left = 'auto';
             menu.style.right = Math.max(8, window.innerWidth - rect.right) + 'px';
         }
-        
+
         menu.classList.add('show');
         trigger.classList.add('active');
         backdrop.classList.add('show');
@@ -235,10 +235,24 @@ document.addEventListener('DOMContentLoaded', function () {
         menu.style.right = '';
     }
 
+    // ====== CERRAR DROPDOWNS AL HACER SCROLL (CRÍTICO) ======
+    window.addEventListener('scroll', () => {
+        cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+        cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+    }, { passive: true });
+
+
     // ====== PROGRESSIVE DISCLOSURE - Actualizar estado del contenedor ======
     function updateServiceBoxState() {
         const serviceBox = document.getElementById('cotizaForm');
         if (!serviceBox) return;
+
+        // Si hay servicios agregados, mantener expandido
+        if (serviciosAgregados.length > 0) {
+            serviceBox.classList.remove('collapsed');
+            serviceBox.classList.add('expanded');
+            return;
+        }
 
         if (!categoriaSeleccionada) {
             // Sin selección: mostrar solo categoría
@@ -249,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Categoría seleccionada: mostrar tamaño
         serviceBox.classList.remove('collapsed');
-        
+
         if (categoriaSeleccionada && tamanioSeleccionado) {
             // Categoría + Tamaño: mostrar todo
             serviceBox.classList.add('expanded');
@@ -279,30 +293,50 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Seleccionar categoría
-    document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const cat = item.getAttribute('data-service');
-            categoriaSeleccionada = cat;
-            tamanioSeleccionado = '';
-            servicioSeleccionado = null;
 
-            // Actualizar trigger
-            const mainDiv = categoriaTrigger.querySelector('.service-dropdown-main');
-            mainDiv.textContent = cat;
-            categoriaTrigger.classList.remove('placeholder');
+    categoriaMenu.addEventListener('click', (e) => {
+        const item = e.target.closest('.service-dropdown-item');
+        if (!item) return;
 
-            // Marcar seleccionado
-            document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
-            item.classList.add('selected');
+        e.preventDefault();
+        e.stopPropagation();
 
-            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
-            updateServiceBoxState();
-            actualizarTamanios();
-        });
+        const valor = item.dataset.service; // Auto, Sillones, etc
+        const texto = item.querySelector('.service-dropdown-item-main').textContent.trim();
+
+
+        // 🔥 ESTADO GLOBAL (ESTO FALTABA)
+        categoriaSeleccionada = valor;
+        tamanioSeleccionado = '';
+        servicioSeleccionado = null;
+
+        // UI trigger
+        const triggerMain = categoriaTrigger.querySelector('.service-dropdown-main');
+        triggerMain.textContent = texto;
+        categoriaTrigger.classList.remove('placeholder');
+
+        // Marcar seleccionado visual
+        document.querySelectorAll('#categoriaMenu .service-dropdown-item')
+            .forEach(it => it.classList.remove('selected'));
+
+        item.classList.add('selected');
+
+        // Reset dependientes
+        tamanioMenu.innerHTML = '';
+        serviciosCardsContainer.innerHTML = '';
+        if (labelServicios) labelServicios.textContent = '';
+
+        // 🔥 GENERAR TAMAÑOS
+        actualizarTamanios();
+
+        // Estado visual del formulario
+        updateServiceBoxState();
+        actualizarPrecio();
+
+        cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
     });
+
+
 
     // ====== TAMAÑO DROPDOWN ======
     if (tamanioTrigger) {
@@ -324,7 +358,33 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ====== ACTUALIZAR TAMAÑOS SEGÚN CATEGORÍA ======
+    // ====== DELEGACIÓN DE EVENTOS PARA TAMAÑOS ======
+    tamanioMenu.addEventListener('click', (e) => {
+        const item = e.target.closest('.service-dropdown-item');
+        if (!item) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const tamanio = item.dataset.tamanio;
+        tamanioSeleccionado = tamanio;
+        servicioSeleccionado = null;
+
+        // Actualizar trigger
+        const triggerMain = tamanioTrigger.querySelector('.service-dropdown-main');
+        triggerMain.textContent = tamanio;
+        tamanioTrigger.classList.remove('placeholder');
+
+        // Marcar seleccionado
+        document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
+        item.classList.add('selected');
+
+        cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        updateServiceBoxState();
+        actualizarServicios();
+        actualizarPrecio();
+    });
+
     function actualizarTamanios() {
         if (!categoriaSeleccionada) {
             return;
@@ -339,32 +399,12 @@ document.addEventListener('DOMContentLoaded', function () {
         tamanioMenu.innerHTML = '';
         Object.keys(datos.tamanios).forEach(tamanio => {
             const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = '#';
-            a.className = 'service-dropdown-item';
-            a.setAttribute('data-tamanio', tamanio);
-            a.innerHTML = '<div class="service-dropdown-item-text"><div class="service-dropdown-item-main">' + tamanio + '</div></div>';
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                tamanioSeleccionado = tamanio;
-                servicioSeleccionado = null;
-
-                // Actualizar trigger
-                const triggerMain = tamanioTrigger.querySelector('.service-dropdown-main');
-                triggerMain.textContent = tamanio;
-                tamanioTrigger.classList.remove('placeholder');
-
-                // Marcar seleccionado
-                document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
-                a.classList.add('selected');
-
-                cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
-                updateServiceBoxState();
-                actualizarServicios();
-                actualizarPrecio();
-            });
-            li.appendChild(a);
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'service-dropdown-item';
+            btn.setAttribute('data-tamanio', tamanio);
+            btn.innerHTML = '<div class="service-dropdown-item-text"><div class="service-dropdown-item-main">' + tamanio + '</div></div>';
+            li.appendChild(btn);
             tamanioMenu.appendChild(li);
         });
 
@@ -488,32 +528,45 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             actualizarListaServicios();
-            serviciosAgregadosDiv.style.display = 'block';
+            serviciosAgregadosDiv.classList.add('show');
 
-            // Reset COMPLETO del formulario
+            // ===== RESET COMPLETO DEL FORMULARIO =====
+            // 1. Limpiar estado global
             categoriaSeleccionada = '';
             tamanioSeleccionado = '';
             servicioSeleccionado = null;
             cantidadActual = 1;
             cantidadInput.value = '1';
 
-            // Limpiar triggers
+            // 2. Limpiar triggers
             categoriaTrigger.querySelector('.service-dropdown-main').textContent = 'Selecciona una categoría';
             categoriaTrigger.classList.add('placeholder');
             tamanioTrigger.querySelector('.service-dropdown-main').textContent = 'Selecciona un tipo';
             tamanioTrigger.classList.add('placeholder');
 
-            // Limpiar selecciones visuales
+            // 3. Limpiar labels
+            if (labelTamanio) labelTamanio.textContent = 'Selecciona el tamaño';
+            if (labelServicios) labelServicios.textContent = '';
+
+            // 4. Limpiar selecciones visuales
             document.querySelectorAll('#categoriaMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
             document.querySelectorAll('#tamanioMenu .service-dropdown-item').forEach(it => it.classList.remove('selected'));
             document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
 
-            // Limpiar menús
+            // 5. Limpiar/cerrar menús
             tamanioMenu.innerHTML = '';
             serviciosCardsContainer.innerHTML = '';
-            
+            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+            cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+
+            // 6. Actualizar precio y estado
             actualizarPrecio();
             updateServiceBoxState();
+
+            // 7. Scroll suave hacia el formulario para nueva reserva
+            if (categoriaWrapper) {
+                categoriaWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     }
 
@@ -535,7 +588,8 @@ document.addEventListener('DOMContentLoaded', function () {
             btnDel.addEventListener('click', () => {
                 serviciosAgregados.splice(idx, 1);
                 actualizarListaServicios();
-                if (serviciosAgregados.length === 0) serviciosAgregadosDiv.style.display = 'none';
+                if (serviciosAgregados.length === 0) serviciosAgregadosDiv.classList.remove('show');
+                updateServiceBoxState();
             });
             right.appendChild(btnDel);
             item.appendChild(left);
@@ -544,13 +598,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
         if (btnCotizar) btnCotizar.textContent = 'Reservar ahora ' + (total ? formatPrecio(total) : '');
-        if (typeof reservaFixed !== 'undefined' && reservaFixed) {
-            if (serviciosAgregados.length > 0) {
-                reservaFixed.classList.remove('d-none');
-            } else {
-                reservaFixed.classList.add('d-none');
-            }
+
+        // Sync botón fijo: ocultarlo si no hay servicios
+        if (serviciosAgregados.length === 0) {
+            if (reservaFixed) reservaFixed.classList.add('d-none');
         }
+        // Si hay servicios, dejar que IntersectionObserver controle visibilidad según scroll
     }
 
     // ====== MODAL Y RESERVA ======
@@ -749,7 +802,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && serviciosAgregados.length > 0) {
+                // Mostrar botón fijo SOLO si el form está OUT OF VIEW y hay servicios
+                if (!entry.isIntersecting && serviciosAgregados.length > 0) {
                     reservaFixed.classList.remove('d-none');
                 } else {
                     reservaFixed.classList.add('d-none');

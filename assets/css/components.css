@@ -10,6 +10,13 @@
     --text-dark: #212529;
     --gray-light: #f8f9fa;
     --gray-border: #e9ecef;
+
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* ===================================
@@ -34,7 +41,7 @@
 
 /* Estado expandido - crece cuando hay contenido */
 .service-box.expanded {
-    max-height: 2000px;
+    max-height: 1200px;
     opacity: 1;
 }
 
@@ -49,7 +56,7 @@
     }
     
     .service-box.expanded {
-        max-height: 1600px;
+        max-height: 1000px;
     }
     
     .service-box > div[class*="mb-"] {
@@ -133,20 +140,12 @@
 }
 
 
-    --text-muted: #6c757d;
-    --border-color: #dee2e6;
-    --border-radius: 12px;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
-    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
 /* Contenedor del selector */
 .service-dropdown-wrapper {
     position: relative;
     width: 100%;
     overflow: visible;
-    z-index: 1000;
+    z-index: 1050;
 }
 
 .service-dropdown-label {
@@ -246,7 +245,7 @@
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
-    z-index: 2000;
+    z-index: 2050;
     max-height: 0;
     opacity: 0;
     overflow-y: auto;
@@ -255,6 +254,11 @@
     transform-origin: top;
     width: 90vw;
     max-width: 500px;
+    pointer-events: none;
+}
+
+.service-dropdown-menu.show {
+    pointer-events: auto;
 }
 
 .service-dropdown-menu.show {
@@ -290,6 +294,10 @@
     transition: var(--transition);
     color: inherit;
     text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
 }
 
 .service-dropdown-item:hover {
@@ -360,12 +368,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 999;
+    z-index: 1999;
     display: none;
+    pointer-events: none !important;
 }
 
 .service-dropdown-backdrop.show {
     display: block;
+    pointer-events: none !important;
 }
 
 /* Responsive */
@@ -535,78 +545,97 @@
     }
 }
 /* ===================================
-   SERVICIOS AGREGADOS - Compacto y no intrusivo
-   - En desktop se comporta como sticky dentro del flujo
-   - En móvil se muestra como panel fijo en el fondo
+   SERVICIOS AGREGADOS - Dentro del flujo normal del card
    =================================== */
 
 #serviciosAgregados {
-    max-height: 350px;
-    overflow-y: auto;
-    padding: 1rem !important;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-    border-radius: 8px;
-    /* Sticky para que no empuje contenido al expandirse */
-    position: -webkit-sticky;
-    position: sticky;
-    top: calc(56px + 24px);
-    z-index: 1100;
+    display: none;
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding: 0.5rem 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0.75rem 0 0 0;
+    z-index: auto;
+}
+
+#serviciosAgregados.show {
+    display: block;
 }
 
 #serviciosAgregados h5 {
     font-size: 1rem;
-    margin-bottom: 0.5rem !important;
+    font-weight: 600;
+    margin-bottom: 0.75rem !important;
     margin-top: 0;
+    color: #212529;
 }
 
 #listaServicios {
-    max-height: 250px;
-    overflow-y: auto;
-    margin-bottom: 0.5rem;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: 0.75rem;
 }
 
 #listaServicios > div {
-    margin-bottom: 0.4rem !important;
-    padding: 0.5rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem !important;
     font-size: 0.92rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #0d6efd;
 }
 
 #listaServicios > div .small {
     font-size: 0.82rem;
+    color: #6c757d;
+    display: block;
+    margin-top: 0.25rem;
 }
 
 #btnCotizar {
     margin-top: 0.5rem !important;
-    padding: 0.7rem !important;
+    padding: 0.85rem 1rem !important;
     font-size: 0.95rem;
+    width: 100%;
 }
 
 @media (max-width: 576px) {
-    /* En móvil mostramos el carrito como panel fijo en el fondo */
     #serviciosAgregados {
-        position: fixed !important;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        max-height: 48vh;
-        padding: 0.6rem !important;
-        z-index: 1400;
-    }
-
-    #listaServicios {
-        max-height: 28vh;
+        margin: 1rem 0 0 0 !important;
+        padding: 1rem 0 !important;
     }
 
     #serviciosAgregados h5 {
         font-size: 0.95rem;
-        margin-bottom: 0.35rem !important;
+        margin-bottom: 0.75rem !important;
     }
 
-    /* Hacer que el botón ocupe menos alto para no tapar todo */
-    #btnCotizar {
+    #listaServicios > div {
+        flex-direction: column;
+        align-items: flex-start;
         padding: 0.6rem !important;
-        font-size: 0.95rem;
     }
+
+    #btnCotizar {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+.dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.dropdown-backdrop:not(.show) {
+  pointer-events: none;
 }

@@ -140,11 +140,6 @@
 
                 <!-- FORMULARIO -->
                 <form id="cotizaForm" class="service-box collapsed">
-                    <div id="reservaFixed" class="reserva-fixed d-none">
-                        <button type="button" class="btn btn-success w-100" id="btnCotizarFixed">
-                            Reservar ahora
-                        </button>
-                    </div>
                     <!-- NIVEL 1: CATEGORÍA -->
                     <div class="mb-4">
                         <label class="service-dropdown-label">Selecciona el tipo de servicio:</label>
@@ -161,43 +156,43 @@
                             </div>
                             <ul class="service-dropdown-menu" id="categoriaMenu">
                                 <li>
-                                    <a href="#" class="service-dropdown-item" data-service="Auto">
+                                    <button type="button" class="service-dropdown-item" data-service="Auto">
                                         <div class="service-dropdown-item-icon">🚗</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Auto</div>
                                             <div class="service-dropdown-item-desc">Interior, Exterior, Tapiz y Asientos
                                             </div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </li>
                                 <li>
-                                    <a href="#" class="service-dropdown-item" data-service="Sillones">
+                                    <button type="button" class="service-dropdown-item" data-service="Sillones">
                                         <div class="service-dropdown-item-icon">🛋️</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Sillones</div>
                                             <div class="service-dropdown-item-desc">Sillas, Sillones, Poltronas, Puff y
                                                 más</div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </li>
                                 <li>
-                                    <a href="#" class="service-dropdown-item" data-service="Colchones">
+                                    <button type="button" class="service-dropdown-item" data-service="Colchones">
                                         <div class="service-dropdown-item-icon">🛏️</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Colchón</div>
                                             <div class="service-dropdown-item-desc">Colchones, cunas, respaldos</div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </li>
                                 <li>
-                                    <a href="#" class="service-dropdown-item" data-service="Alfombras">
+                                    <button type="button" class="service-dropdown-item" data-service="Alfombras">
                                         <div class="service-dropdown-item-icon">🪡</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Alfombras</div>
                                             <div class="service-dropdown-item-desc">Muro a Muro, Decorativas, Pasillos
                                             </div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -260,24 +255,31 @@
                     </div>
 
                     <!-- SERVICIOS AGREGADOS -->
-                    <div id="serviciosAgregados" style="display:none" class="mt-4 p-3 bg-light rounded">
+                    <div id="serviciosAgregados">
 
-                        <h5 class="mb-3">Servicios Agregados:</h5>
+                        <h5>Servicios Agregados:</h5>
                         <div id="listaServicios"></div>
 
-                        <div class="reserva-sticky">
-                            <button type="button" class="btn btn-success w-100" id="btnCotizar">
-                                Reservar ahora
-                            </button>
-                        </div>
+                        <button type="button" class="btn btn-success w-100" id="btnCotizar">
+                            Reservar ahora
+                        </button>
 
                     </div>
 
+                    <!-- BOTÓN FLOTANTE -->
+                    <div id="reservaWrapper">
+                        <div id="reservaFixed" class="reserva-fixed d-none">
+                            <button type="button" class="btn btn-success w-100" id="btnCotizarFixed">
+                                Reservar ahora
+                            </button>
+                        </div>
+                    </div>
                 </form>
 
             </div>
 
         </section>
+
 
         <!-- Sección de Fotos de Trabajos Realizados -->
         <section class="trabajos my-5" id="trabajos">
