@@ -156,43 +156,43 @@
                             </div>
                             <ul class="service-dropdown-menu" id="categoriaMenu">
                                 <li>
-                                    <button type="button" class="service-dropdown-item" data-service="Auto">
+                                    <a href="#" class="service-dropdown-item" data-service="Auto">
                                         <div class="service-dropdown-item-icon">🚗</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Auto</div>
                                             <div class="service-dropdown-item-desc">Interior, Exterior, Tapiz y Asientos
                                             </div>
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                                 <li>
-                                    <button type="button" class="service-dropdown-item" data-service="Sillones">
+                                    <a href="#" class="service-dropdown-item" data-service="Sillones">
                                         <div class="service-dropdown-item-icon">🛋️</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Sillones</div>
                                             <div class="service-dropdown-item-desc">Sillas, Sillones, Poltronas, Puff y
                                                 más</div>
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                                 <li>
-                                    <button type="button" class="service-dropdown-item" data-service="Colchones">
+                                    <a href="#" class="service-dropdown-item" data-service="Colchones">
                                         <div class="service-dropdown-item-icon">🛏️</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Colchón</div>
                                             <div class="service-dropdown-item-desc">Colchones, cunas, respaldos</div>
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                                 <li>
-                                    <button type="button" class="service-dropdown-item" data-service="Alfombras">
+                                    <a href="#" class="service-dropdown-item" data-service="Alfombras">
                                         <div class="service-dropdown-item-icon">🪡</div>
                                         <div class="service-dropdown-item-text">
                                             <div class="service-dropdown-item-main">Alfombras</div>
                                             <div class="service-dropdown-item-desc">Muro a Muro, Decorativas, Pasillos
                                             </div>
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -255,14 +255,27 @@
                     </div>
 
                     <!-- SERVICIOS AGREGADOS -->
-                    <div id="serviciosAgregados">
+                    <div id="serviciosAgregados" style="display:none" class="mt-4 p-4 bg-light rounded">
 
-                        <h5>Servicios Agregados:</h5>
-                        <div id="listaServicios"></div>
+                        <h5 class="mb-3 fw-bold">Servicios agregados</h5>
+                        
+                        <div id="listaServicios" class="mb-3"></div>
 
-                        <button type="button" class="btn btn-success w-100" id="btnCotizar">
-                            Reservar ahora
-                        </button>
+                        <div class="alert alert-info alert-sm mb-3 py-2">
+                            <i class="bi bi-info-circle me-2"></i>¡Más servicios = mejor precio!
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="bi bi-clock-fill text-info me-2"></i>
+                            <span class="text-muted small">Tiempo estimado:</span>
+                            <span class="fw-bold ms-2" id="tiempoEstimado">1 hora</span>
+                        </div>
+
+                        <div class="reserva-sticky">
+                            <button type="button" class="btn btn-success w-100 btn-lg" id="btnCotizar">
+                                <i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end" id="precioBoton">$0</span>
+                            </button>
+                        </div>
 
                     </div>
 
@@ -342,7 +355,7 @@
         </section>
 
         <!-- Modal de formulario de datos personales -->
-        <div id="modalDatos" class="modal fade" tabindex="-1" style="display:none; z-index: 1050;">
+        <div id="modalDatos" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header border-0">

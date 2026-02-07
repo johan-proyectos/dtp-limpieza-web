@@ -145,7 +145,7 @@
     position: relative;
     width: 100%;
     overflow: visible;
-    z-index: 1050;
+    z-index: 9000;
 }
 
 .service-dropdown-label {
@@ -245,7 +245,7 @@
     border: 2px solid var(--border-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
-    z-index: 2050;
+    z-index: 9999;
     max-height: 0;
     opacity: 0;
     overflow-y: auto;
@@ -258,12 +258,9 @@
 }
 
 .service-dropdown-menu.show {
-    pointer-events: auto;
-}
-
-.service-dropdown-menu.show {
     max-height: 60vh;
-    opacity: 1;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     animation: dropdownSlideDown 0.3s ease forwards;
 }
 
@@ -284,6 +281,10 @@
     padding: 8px 0;
 }
 
+.service-dropdown-menu.show .service-dropdown-list {
+    opacity: 1 !important;
+}
+
 /* Items del dropdown */
 .service-dropdown-item {
     display: flex;
@@ -298,6 +299,11 @@
     border: none;
     width: 100%;
     text-align: left;
+    opacity: 1 !important;
+}
+
+.service-dropdown-menu.show .service-dropdown-item {
+    opacity: 1 !important;
 }
 
 .service-dropdown-item:hover {
@@ -326,6 +332,11 @@
     color: var(--primary-blue);
     font-size: 20px;
     flex-shrink: 0;
+    opacity: 1 !important;
+}
+
+.service-dropdown-menu.show .service-dropdown-item-icon {
+    opacity: 1 !important;
 }
 
 .service-dropdown-item.selected .service-dropdown-item-icon {
@@ -339,6 +350,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    opacity: 1 !important;
+}
+
+.service-dropdown-menu.show .service-dropdown-item-text {
+    opacity: 1 !important;
 }
 
 .service-dropdown-item-main {
@@ -368,7 +384,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1999;
+    z-index: 9998;
     display: none;
     pointer-events: none !important;
 }
@@ -554,22 +570,34 @@
     width: 100%;
     max-height: none;
     overflow: visible;
-    padding: 0.5rem 0;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    margin: 0.75rem 0 0 0;
+    padding: 1.5rem !important;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin: 1.5rem 0 0 0;
     z-index: auto;
 }
 
 #serviciosAgregados.show {
-    display: block;
+    display: block !important;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #serviciosAgregados h5 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem !important;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem !important;
     margin-top: 0;
     color: #212529;
 }
@@ -577,33 +605,87 @@
 #listaServicios {
     max-height: none;
     overflow: visible;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 #listaServicios > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+    margin-bottom: 0.75rem !important;
     padding: 0.75rem !important;
-    font-size: 0.92rem;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border-left: 3px solid #0d6efd;
+    font-size: 0.95rem;
+    background: #ffffff !important;
+    border-radius: 8px;
+    border-left: 4px solid #0d6efd;
+    transition: all 0.2s ease;
+}
+
+#listaServicios > div:hover {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
+}
+
+#listaServicios > div .flex-grow-1 {
+    flex-grow: 1;
+}
+
+#listaServicios > div strong {
+    display: block;
+    color: #0d6efd;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
 
 #listaServicios > div .small {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: #6c757d;
     display: block;
-    margin-top: 0.25rem;
+}
+
+#listaServicios .btn-link {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    padding: 0.25rem 0.5rem !important;
+    min-width: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#listaServicios .btn-link:hover {
+    opacity: 1;
+}
+
+#listaServicios .btn-link.text-primary:hover {
+    color: #0d6efd !important;
+}
+
+#listaServicios .btn-link.text-danger:hover {
+    color: #dc3545 !important;
 }
 
 #btnCotizar {
     margin-top: 0.5rem !important;
-    padding: 0.85rem 1rem !important;
-    font-size: 0.95rem;
+    padding: 0.95rem 1.5rem !important;
+    font-size: 1rem;
     width: 100%;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #0066cc;
+}
+
+#btnCotizar:hover {
+    background-color: #0052a3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.alert-sm {
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
 }
 
 @media (max-width: 576px) {
@@ -634,6 +716,7 @@
   inset: 0;
   background: transparent;
   pointer-events: auto;
+  z-index: 9998;
 }
 
 .dropdown-backdrop:not(.show) {

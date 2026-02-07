@@ -192,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ====== ELEMENTOS DEL DOM - MODAL ======
     const modalDatos = document.getElementById('modalDatos');
-    const modalOverlay = document.getElementById('modalOverlay');
     const btnCerrarModal = document.getElementById('btnCerrarModal');
     const formDatos = document.getElementById('formDatos');
     const nombreInput = document.getElementById('nombreInput');
@@ -208,6 +207,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ====== FUNCIONES DROPDOWN GENÉRICAS ======
     function abrirDropdown(menu, trigger, backdrop) {
+        // 🔥 CIERRE EXCLUSIVO: Cerrar todos los otros dropdowns antes de abrir uno
+        if (menu.id !== 'categoriaMenu') {
+            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+        }
+        if (menu.id !== 'tamanioMenu') {
+            cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        }
+
         // Posicionar el dropdown fijo en relación al trigger
         const rect = trigger.getBoundingClientRect();
         menu.style.top = (rect.bottom + 8) + 'px';
@@ -575,29 +582,85 @@ document.addEventListener('DOMContentLoaded', function () {
     // ====== ACTUALIZAR LISTA ======
     function actualizarListaServicios() {
         listaServicios.innerHTML = '';
+        
         serviciosAgregados.forEach((s, idx) => {
             const item = document.createElement('div');
-            item.className = 'mb-2 p-2 border rounded d-flex justify-content-between align-items-center';
+            
             const left = document.createElement('div');
-            left.innerHTML = '<div><strong>' + s.displayName + ' x ' + s.cantidad + '</strong></div><div class="small text-muted">' + formatPrecio(s.precioUnit) + ' c/u • ' + formatPrecio(s.subtotal) + '</div>';
+            left.className = 'flex-grow-1';
+            left.innerHTML = `
+                <strong>${s.displayName}</strong>
+                <div class="small">${formatPrecio(s.precioUnit)}</div>
+            `;
+            
             const right = document.createElement('div');
-            const btnDel = document.createElement('button');
-            btnDel.className = 'btn btn-sm btn-danger';
-            btnDel.type = 'button';
-            btnDel.textContent = '✕';
-            btnDel.addEventListener('click', () => {
+            right.className = 'd-flex gap-2 align-items-center';
+            right.style.flexShrink = '0';
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'btn btn-link text-primary p-0';
+            editBtn.type = 'button';
+            editBtn.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+            editBtn.style.fontSize = '1.1rem';
+            editBtn.title = 'Editar';
+            editBtn.style.cursor = 'pointer';
+            editBtn.onclick = (e) => {
+                e.preventDefault();
+                // Aquí iría la funcionalidad de editar
+            };
+            
+            const delBtn = document.createElement('button');
+            delBtn.className = 'btn btn-link text-danger p-0';
+            delBtn.type = 'button';
+            delBtn.innerHTML = '<i class="bi bi-trash-fill"></i>';
+            delBtn.style.fontSize = '1.1rem';
+            delBtn.title = 'Eliminar';
+            delBtn.style.cursor = 'pointer';
+            delBtn.onclick = (e) => {
+                e.preventDefault();
                 serviciosAgregados.splice(idx, 1);
                 actualizarListaServicios();
-                if (serviciosAgregados.length === 0) serviciosAgregadosDiv.classList.remove('show');
+                if (serviciosAgregados.length === 0) {
+                    serviciosAgregadosDiv.classList.remove('show');
+                }
                 updateServiceBoxState();
-            });
-            right.appendChild(btnDel);
+            };
+            
+            right.appendChild(editBtn);
+            right.appendChild(delBtn);
             item.appendChild(left);
             item.appendChild(right);
             listaServicios.appendChild(item);
         });
+        
         const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
-        if (btnCotizar) btnCotizar.textContent = 'Reservar ahora ' + (total ? formatPrecio(total) : '');
+        
+        // Actualizar precio en el botón
+        if (btnCotizar) {
+            btnCotizar.innerHTML = `<i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end">${total ? formatPrecio(total) : '$0'}</span>`;
+        }
+        
+        // Actualizar precio en elemento adicional si existe
+        const precioBoton = document.getElementById('precioBoton');
+        if (precioBoton) {
+            precioBoton.textContent = total ? formatPrecio(total) : '$0';
+        }
+        
+        // Actualizar tiempo estimado - 30 minutos por servicio
+        const tiempoEstimado = document.getElementById('tiempoEstimado');
+        if (tiempoEstimado) {
+            const minutos = serviciosAgregados.length * 30;
+            const horas = Math.floor(minutos / 60);
+            const mins = minutos % 60;
+            let tiempoTexto = '';
+            if (horas > 0) {
+                tiempoTexto = horas + ' hora' + (horas > 1 ? 's' : '');
+                if (mins > 0) tiempoTexto += ' ' + mins + 'm';
+            } else {
+                tiempoTexto = mins + ' minutos';
+            }
+            tiempoEstimado.textContent = tiempoTexto;
+        }
 
         // Sync botón fijo: ocultarlo si no hay servicios
         if (serviciosAgregados.length === 0) {
@@ -607,24 +670,54 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ====== MODAL Y RESERVA ======
+    let bootstrapModal = null;
+
     function mostrarModal() {
-        modalDatos.classList.add('show');
-        modalDatos.style.display = 'block';
-        modalOverlay.classList.add('show');
-        modalOverlay.style.display = 'block';
-        document.body.classList.add('modal-open');
+        // Actualizar resumen del modal
+        const resumenServicio = document.getElementById('resumenServicio');
+        const resumenTipo = document.getElementById('resumenTipo');
+        const resumenTiempo = document.getElementById('resumenTiempo');
+        const resumenPrecio = document.getElementById('resumenPrecio');
+        
+        if (serviciosAgregados.length > 0) {
+            const primerServicio = serviciosAgregados[0];
+            if (resumenServicio) resumenServicio.textContent = primerServicio.displayName;
+            if (resumenTipo) resumenTipo.textContent = serviciosAgregados.length + (serviciosAgregados.length === 1 ? ' servicio' : ' servicios');
+            
+            // Calcular tiempo total
+            const minutos = serviciosAgregados.length * 30;
+            const horas = Math.floor(minutos / 60);
+            const mins = minutos % 60;
+            let tiempoTexto = '';
+            if (horas > 0) {
+                tiempoTexto = horas + 'h';
+                if (mins > 0) tiempoTexto += ' ' + mins + 'm';
+            } else {
+                tiempoTexto = mins + 'm';
+            }
+            if (resumenTiempo) resumenTiempo.textContent = tiempoTexto;
+            
+            // Calcular precio total
+            const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
+            if (resumenPrecio) resumenPrecio.textContent = formatPrecio(total);
+        }
+        
+        if (!bootstrapModal) {
+            bootstrapModal = new bootstrap.Modal(modalDatos);
+        }
+        bootstrapModal.show();
     }
 
     function ocultarModal() {
-        modalDatos.classList.remove('show');
-        modalDatos.style.display = 'none';
-        modalOverlay.classList.remove('show');
-        modalOverlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
+        if (bootstrapModal) {
+            bootstrapModal.hide();
+        }
     }
 
     if (btnCerrarModal) btnCerrarModal.addEventListener('click', ocultarModal);
-    if (modalOverlay) modalOverlay.addEventListener('click', ocultarModal);
+
+    const btnCancelarModal = document.getElementById('btnCancelarModal');
+    if (btnCancelarModal) btnCancelarModal.addEventListener('click', ocultarModal);
 
     if (btnCotizar) {
         btnCotizar.addEventListener('click', () => {
@@ -687,18 +780,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (formDatos) {
         formDatos.addEventListener('submit', (e) => {
             e.preventDefault();
+            
             const datosFinales = {
                 nombre: nombreInput.value,
                 telefono: telefonoInput.value,
                 direccion: direccionInput.value,
+                fecha: document.getElementById('fechaInput').value,
+                hora: document.getElementById('horaInput').value,
+                casaDepto: document.getElementById('casaDeptoInput').value,
                 servicios: serviciosAgregados,
                 total: serviciosAgregados.reduce((a, b) => a + b.subtotal, 0)
             };
+            
             console.log('Reserva enviada:', datosFinales);
-            alert('¡Reserva confirmada!\n' + JSON.stringify(datosFinales, null, 2));
+            alert('¡Reserva confirmada!\nTe contactaremos pronto para confirmar los detalles.');
+            
+            // Limpiar todo
             serviciosAgregados = [];
             actualizarListaServicios();
-            serviciosAgregadosDiv.style.display = 'none';
+            serviciosAgregadosDiv.classList.remove('show');
+            updateServiceBoxState();
             ocultarModal();
             formDatos.reset();
         });
@@ -744,40 +845,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeSidebar() {
         if (!sidebar) return;
-        sidebar.classList.remove('show-desktop');
-        sidebar.classList.add('hide-desktop');
-        removeBackdrop();
-        document.body.classList.remove('sidebar-open');
-        const onEnd = function (e) {
-            sidebar.classList.add('d-none');
-            sidebar.removeEventListener('transitionend', onEnd);
-        };
-        sidebar.addEventListener('transitionend', onEnd);
+        sidebar.classList.remove('active');
+        const b = document.getElementById('desktopSidebarBackdrop');
+        if (b) {
+            b.classList.remove('show');
+            setTimeout(() => b.remove(), 300);
+        }
     }
 
-    if (menuToggle && sidebar) {
-        menuToggle.removeAttribute('data-bs-toggle');
-        menuToggle.removeAttribute('data-bs-target');
+    function toggleSidebar() {
+        if (!sidebar) return;
+        if (sidebar.classList.contains('active')) {
+            closeSidebar();
+        } else {
+            adjustSidebarTop();
+            sidebar.classList.add('active');
+            createBackdrop();
+        }
+    }
 
-        menuToggle.addEventListener('click', function (e) {
-            if (window.innerWidth >= 768) {
-                e.preventDefault();
-                const isHidden = sidebar.classList.contains('d-none') || sidebar.classList.contains('hide-desktop');
-                if (isHidden) openSidebar(); else closeSidebar();
-                return;
-            }
-            if (typeof bootstrap !== 'undefined') {
-                const offcanvasEl = document.getElementById('sidebarOffcanvas');
-                if (offcanvasEl) {
-                    const off = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
-                    off.toggle();
-                }
-            }
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebar();
         });
-
-        window.addEventListener('resize', function () { adjustSidebarTop(); });
-        adjustSidebarTop();
     }
+
+    // Ajustar posición si cambia el tamaño de la ventana
+    window.addEventListener('resize', adjustSidebarTop);
+
 
     // Reposicionar dropdowns cuando hay resize
     window.addEventListener('resize', () => {
