@@ -127,8 +127,8 @@
             <h3>Servicio de Limpieza a Domicilio</h3>
             <p class="text-muted">¡Agenda Gratis con nosotros y paga luego del servicio!</p>
             <hr>
-            <h2 class="mt-4">¡Cotiza y agenda! 👇</h2>
-            <p class="text-muted">Alfombras, colchones y sillones</p>
+            <h2 class="mt-4">¡Cotiza y agenda con nosotros! 👇</h2>
+            <p class="text-muted">Autos, Alfombras, Colchones y Sillones</p>
         </section>
 
         <section class="cotiza my-5" id="reserva">
@@ -298,57 +298,170 @@
         <section class="trabajos my-5" id="trabajos">
             <div class="text-center mb-5">
                 <h2>Trabajos Realizados</h2>
-                <p class="text-muted">Mira algunos de nuestros trabajos recientes</p>
+                <p class="text-muted">¡Mira algunos de nuestros trabajos recientes!</p>
             </div>
-            <div class="row g-3">
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/a/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 1"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/b/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 2"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/c/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 3"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/d/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 4"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/e/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 5"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/f/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 6"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/g/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 7"></div>
-                <div class="col-md-6 col-lg-3"><img src="https://picsum.photos/seed/h/400/250"
-                        class="img-fluid rounded shadow-sm" alt="Trabajo 8"></div>
+            
+            <!-- Carousel de trabajos -->
+            <div id="trabajosCarousel" class="carousel slide trabajos-carousel" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <div class="trabajos-slide">
+                            <div class="trabajos-grid">
+                                <img src="https://picsum.photos/seed/a/500/350" alt="Trabajo 1" class="trabajos-img-main">
+                                <div class="trabajos-side">
+                                    <img src="https://picsum.photos/seed/b/300/160" alt="Trabajo 2" class="trabajos-img-small">
+                                    <img src="https://picsum.photos/seed/c/300/160" alt="Trabajo 3" class="trabajos-img-small">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <div class="trabajos-slide">
+                            <div class="trabajos-grid">
+                                <img src="https://picsum.photos/seed/d/500/350" alt="Trabajo 4" class="trabajos-img-main">
+                                <div class="trabajos-side">
+                                    <img src="https://picsum.photos/seed/e/300/160" alt="Trabajo 5" class="trabajos-img-small">
+                                    <img src="https://picsum.photos/seed/f/300/160" alt="Trabajo 6" class="trabajos-img-small">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <div class="trabajos-slide">
+                            <div class="trabajos-grid">
+                                <img src="https://picsum.photos/seed/g/500/350" alt="Trabajo 7" class="trabajos-img-main">
+                                <div class="trabajos-side">
+                                    <img src="https://picsum.photos/seed/h/300/160" alt="Trabajo 8" class="trabajos-img-small">
+                                    <img src="https://picsum.photos/seed/i/300/160" alt="Trabajo 9" class="trabajos-img-small">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="carousel-item">
+                        <div class="trabajos-slide">
+                            <div class="trabajos-grid">
+                                <img src="https://picsum.photos/seed/j/500/350" alt="Trabajo 10" class="trabajos-img-main">
+                                <div class="trabajos-side">
+                                    <img src="https://picsum.photos/seed/k/300/160" alt="Trabajo 11" class="trabajos-img-small">
+                                    <img src="https://picsum.photos/seed/l/300/160" alt="Trabajo 12" class="trabajos-img-small">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="carousel-item">
+                        <div class="trabajos-slide">
+                            <div class="trabajos-grid">
+                                <img src="https://picsum.photos/seed/m/500/350" alt="Trabajo 13" class="trabajos-img-main">
+                                <div class="trabajos-side">
+                                    <img src="https://picsum.photos/seed/n/300/160" alt="Trabajo 14" class="trabajos-img-small">
+                                    <img src="https://picsum.photos/seed/o/300/160" alt="Trabajo 15" class="trabajos-img-small">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles anteriores/siguientes -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#trabajosCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#trabajosCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+
+                <!-- Indicadores -->
+                <div class="carousel-indicators trabajos-indicators">
+                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="2"></button>
+                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="3"></button>
+                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="4"></button>
+                </div>
             </div>
         </section>
 
         <!-- Sección de Cobertura -->
         <section class="cobertura my-5" id="cobertura">
-            <div class="text-center mb-5">
-                <h2>Área de Cobertura</h2>
-                <p class="text-muted">Disponible en toda la región metropolitana</p>
+            <div class="text-center mb-4">
+                <h2 class="text-primary fw-bold"><i class="bi bi-geo-alt-fill me-2"></i>Cobertura en Santiago</h2>
             </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="card p-4 border-0 shadow-sm">
-                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Norte</h5>
-                        <p class="text-muted">Providencia, Ñuñoa, Vitacura, Las Condes</p>
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="mb-3 text-dark fw-bold"><i class="bi bi-pin-fill text-success me-2"></i>Santiago (45 comunas)</h5>
+                    
+                    <div class="row g-0">
+                        <!-- Columna 1 -->
+                        <div class="col-6 col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-1"><span class="text-muted">•</span> Cerrillos</li>
+                                <li class="mb-1"><span class="text-muted">•</span> El Bosque</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Independencia</li>
+                                <li class="mb-1"><span class="text-muted">•</span> La Granja</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Las Condes</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Lo Prado</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Ñuñoa</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Providencia</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Quinta Normal</li>
+                                <li class="mb-1"><span class="text-muted">•</span> San Joaquín</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Santiago</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Padre Hurtado</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Pirque</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Talagante</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Cerro Navia</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Estación Central</li>
+                                <li class="mb-1"><span class="text-muted">•</span> La Cisterna</li>
+                                <li class="mb-1"><span class="text-muted">•</span> La Pintana</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Lo Barnechea</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Macul</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Pedro Aguirre Cerda</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Pudahuel</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Recoleta</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Columna 2 -->
+                        <div class="col-6 col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-1"><span class="text-muted">•</span> San Miguel</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Vitacura</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Colina</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Paine</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Puente Alto</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Conchali</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Huechuraba</li>
+                                <li class="mb-1"><span class="text-muted">•</span> La Florida</li>
+                                <li class="mb-1"><span class="text-muted">•</span> La Reina</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Lo Espejo</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Maipú</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Peñalolén</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Quilicura</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Renca</li>
+                                <li class="mb-1"><span class="text-muted">•</span> San Ramón</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Buin</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Lampa</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Peñaflor</li>
+                                <li class="mb-1"><span class="text-muted">•</span> San Bernardo</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Paine</li>
+                                <li class="mb-1"><span class="text-muted">•</span> Puente Alto</li>
+                                <li class="mb-1"><span class="text-muted">•</span> El Trigal</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card p-4 border-0 shadow-sm">
-                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Centro</h5>
-                        <p class="text-muted">Santiago Centro, Estación Central, Independencia</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card p-4 border-0 shadow-sm">
-                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Sur</h5>
-                        <p class="text-muted">Puente Alto, San Bernardo, La Florida</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card p-4 border-0 shadow-sm">
-                        <h5 class="mb-3"><i class="bi bi-geo-alt-fill text-success me-2"></i>Zona Oriente</h5>
-                        <p class="text-muted">Macul, Peñalolén, La Reina</p>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p class="text-dark mb-0"><i class="bi bi-pin-fill text-success me-2"></i><strong>Reservas: Lunes a Domingo de 10:00 a 18:00</strong></p>
                     </div>
                 </div>
             </div>

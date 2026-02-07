@@ -7,6 +7,11 @@ body {
 	color: #222;
 }
 
+:root {
+    --dtp-blue: #0066cc;
+    --dtp-blue-dark: #004b99;
+}
+
 header { position: relative; z-index: 1100; background: #fff }
 header h5 { font-weight:600 }
 
@@ -105,8 +110,8 @@ gmp-place-autocomplete input {
 }
 .sidebar .nav-link:hover,
 .offcanvas .nav-link:hover {
-	color: #0d6efd !important; /* Bootstrap primary blue */
-	background-color: transparent;
+    color: var(--dtp-blue) !important;
+    background-color: transparent;
 }
 
 /* Modal custom styles */
@@ -151,8 +156,8 @@ gmp-place-autocomplete input {
 }
 .form-control:focus,
 .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    border-color: var(--dtp-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.18);
 }
 body.modal-open {
     overflow: hidden;
@@ -198,7 +203,7 @@ body.modal-open {
 }
 
 #placesResults .bi-geo-alt-fill {
-    color: #0d6efd;
+    color: var(--dtp-blue);
 }
 
 /* Seguridad: evita que un backdrop huérfano capture clicks y deje la página "en negro".
@@ -243,6 +248,17 @@ body.sidebar-open {
 @media (max-width: 767px) {
     .site-header #siteLogo { width: 56px }
     .site-header .header-center { position: static; transform: none; margin-left: 8px; }
+}
+
+/* Brand primary button overrides to match logo blue */
+.btn-primary {
+    background-color: var(--dtp-blue) !important;
+    border-color: var(--dtp-blue) !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--dtp-blue-dark) !important;
+    border-color: var(--dtp-blue-dark) !important;
 }
 
 /* Mobile (offcanvas) - aumentar separación y padding para que no queden tan juntos */
@@ -318,3 +334,221 @@ body.sidebar-open {
     min-height: 140px; /* ajusta según la altura de la barra */
     position: relative;
 }
+
+/* Trabajos (Gallery Carousel) Section */
+.trabajos {
+    padding: 20px 0;
+}
+
+.trabajos h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.trabajos-carousel {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    overflow: hidden;
+}
+
+.trabajos-slide {
+    width: 100%;
+}
+
+.trabajos-grid {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+    height: 350px;
+}
+
+.trabajos-img-main {
+    flex: 1.5;
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trabajos-img-main:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.trabajos-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.trabajos-img-small {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trabajos-img-small:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.trabajos-carousel .carousel-control-prev,
+.trabajos-carousel .carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.trabajos-carousel .carousel-control-prev:hover,
+.trabajos-carousel .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.trabajos-indicators {
+    bottom: 15px;
+    gap: 8px;
+    justify-content: center;
+}
+
+.trabajos-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.trabajos-indicators button.active {
+    background-color: var(--dtp-blue);
+    width: 12px;
+    height: 12px;
+}
+
+@media (max-width: 768px) {
+    .trabajos h2 {
+        font-size: 1.5rem;
+    }
+    
+    .trabajos-grid {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .trabajos-img-main {
+        height: 250px;
+    }
+    
+    .trabajos-side {
+        flex-direction: row;
+        height: auto;
+        gap: 12px;
+    }
+    
+    .trabajos-img-small {
+        height: 150px;
+    }
+    
+    .trabajos-carousel {
+        padding: 15px;
+    }
+    
+    .trabajos-carousel .carousel-control-prev,
+    .trabajos-carousel .carousel-control-next {
+        width: 35px;
+        height: 35px;
+    }
+}
+.cobertura {
+    --dtp-blue: #0066cc;
+    --dtp-blue-dark: #004b99;
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+}
+
+.cobertura h2 {
+    font-size: 1.8rem;
+    color: var(--dtp-blue);
+}
+
+.cobertura .card {
+    border-radius: 8px;
+    background-color: white;
+    border: none;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+
+.cobertura .card-body {
+    padding: 2rem !important;
+}
+
+.cobertura h5 {
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* ensure any pin icon inside cobertura (including the p under hr) becomes brand blue */
+.cobertura .bi-pin-fill,
+.cobertura .bi-geo-alt-fill {
+    color: var(--dtp-blue) !important;
+}
+    /* Footer icon color rule */
+    footer .bi {
+        color: var(--dtp-blue) !important;
+    }
+
+.cobertura .row > [class*="col-"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.cobertura ul li {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Make coverage icons and bullets use the brand blue */
+.cobertura h2 .bi-geo-alt-fill,
+.cobertura h5 .bi-pin-fill,
+.cobertura ul li span.text-muted {
+    color: var(--dtp-blue) !important;
+}
+
+.cobertura hr {
+    border-color: #e6eef9;
+}
+
+.cobertura .text-center p {
+    color: #333;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .cobertura h2 {
+        font-size: 1.5rem;
+    }
+    
+    .cobertura .card-body {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .cobertura ul li {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
