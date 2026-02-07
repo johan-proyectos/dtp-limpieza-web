@@ -816,51 +816,25 @@ document.addEventListener('DOMContentLoaded', function () {
         sidebar.style.top = headerHeight + 'px';
     }
 
-    function createBackdrop() {
-        if (document.getElementById('desktopSidebarBackdrop')) return;
-        const b = document.createElement('div');
-        b.id = 'desktopSidebarBackdrop';
-        b.className = 'desktop-sidebar-backdrop';
-        b.addEventListener('click', closeSidebar);
-        document.body.appendChild(b);
-        void b.offsetWidth;
-        b.classList.add('show');
-    }
-
-    function removeBackdrop() {
-        const b = document.getElementById('desktopSidebarBackdrop');
-        if (!b) return;
-        b.classList.remove('show');
-        b.addEventListener('transitionend', function h() { b.remove(); b.removeEventListener('transitionend', h); });
-    }
-
     function openSidebar() {
         if (!sidebar) return;
-        sidebar.classList.remove('d-none', 'hide-desktop');
-        void sidebar.offsetWidth;
+        adjustSidebarTop();
         sidebar.classList.add('show-desktop');
-        createBackdrop();
         document.body.classList.add('sidebar-open');
     }
 
     function closeSidebar() {
         if (!sidebar) return;
-        sidebar.classList.remove('active');
-        const b = document.getElementById('desktopSidebarBackdrop');
-        if (b) {
-            b.classList.remove('show');
-            setTimeout(() => b.remove(), 300);
-        }
+        sidebar.classList.remove('show-desktop');
+        document.body.classList.remove('sidebar-open');
     }
 
     function toggleSidebar() {
         if (!sidebar) return;
-        if (sidebar.classList.contains('active')) {
+        if (sidebar.classList.contains('show-desktop')) {
             closeSidebar();
         } else {
-            adjustSidebarTop();
-            sidebar.classList.add('active');
-            createBackdrop();
+            openSidebar();
         }
     }
 
@@ -871,8 +845,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Cerrar sidebar al hacer clic en un link
+    if (sidebar) {
+        const sidebarLinks = sidebar.querySelectorAll('a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeSidebar();
+            });
+        });
+    }
+
+    // Cerrar sidebar al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (sidebar && menuToggle && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            if (sidebar.classList.contains('show-desktop')) {
+                closeSidebar();
+            }
+        }
+    });
+
     // Ajustar posición si cambia el tamaño de la ventana
     window.addEventListener('resize', adjustSidebarTop);
+    
+    // Ajustar en carga inicial
+    adjustSidebarTop();
 
 
     // Reposicionar dropdowns cuando hay resize

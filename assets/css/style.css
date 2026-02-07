@@ -63,21 +63,14 @@ gmp-place-autocomplete input {
 	border-right: 1px solid #e9ecef;
 	z-index: 1050;
 	overflow-y: auto;
+	transform: translateX(-100%);
+	transition: transform 300ms ease-in-out;
+	pointer-events: none;
 }
 
-/* Desktop enter/exit animations (similar to offcanvas) */
-.sidebar {
-	transform: translateX(-100%);
-	transition: transform 300ms ease-in-out, visibility 300ms linear;
-	visibility: hidden;
-}
 .sidebar.show-desktop {
 	transform: translateX(0);
-	visibility: visible;
-}
-.sidebar.hide-desktop {
-	transform: translateX(-100%);
-	visibility: hidden;
+	pointer-events: auto;
 }
 
 .main-with-sidebar {
@@ -90,13 +83,14 @@ gmp-place-autocomplete input {
 .contact-list li { color: #495057 }
 
 @media (max-width: 767px) {
-	.sidebar { display: none }
-	.main-with-sidebar { margin-left: 0 }
+	.main-with-sidebar { 
+		margin-left: 0 
+	}
 }
 
 /* If header height changes on small screens, ensure sidebar top adjusts */
 @media (max-width: 767px) {
-    .sidebar { top: 0 }
+    .sidebar { top: 56px }
 }
 
 /* Sidebar / Offcanvas link colors: default black, hover blue */
