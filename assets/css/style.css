@@ -47,8 +47,8 @@ body {
     transform: translateY(-6px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.08);
 }
-.service-icon { font-size: 28px }
-.service-title { font-weight:700; margin-bottom:4px; color:#123; }
+.service-icon { font-size: 48px; margin: 8px 0; }
+.service-title { font-weight:700; margin-bottom:8px; color:#123; font-size: 16px; }
 .service-desc { color: #666 }
 
 .confianza .card { border: 1px solid rgba(0,102,204,0.06); border-radius: 10px }
@@ -189,6 +189,7 @@ gmp-place-autocomplete input {
 /* Modal custom styles */
 .modal {
     transition: opacity 0.15s linear;
+    z-index: 22000 !important;
 }
 .modal.show {
     opacity: 1;
@@ -200,6 +201,7 @@ gmp-place-autocomplete input {
 
 .modal-backdrop.show {
     opacity: 0.5;
+    z-index: 21999 !important;
 }
 
 .modal-content {

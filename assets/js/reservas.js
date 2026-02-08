@@ -410,6 +410,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const item = e.target.closest('.service-dropdown-item');
         if (!item) return;
 
+        // Si el item tiene clase 'disabled', prevenir su selección
+        if (item.classList.contains('disabled')) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
 
@@ -427,11 +434,19 @@ document.addEventListener('DOMContentLoaded', function () {
         triggerMain.textContent = texto;
         categoriaTrigger.classList.remove('placeholder');
 
-        // Marcar seleccionado visual
+        // Marcar seleccionado visual y deshabilitar otros items
         document.querySelectorAll('#categoriaMenu .service-dropdown-item')
-            .forEach(it => it.classList.remove('selected'));
+            .forEach(it => {
+                it.classList.remove('selected');
+                it.classList.remove('disabled');
+                it.style.pointerEvents = 'auto';
+                it.style.opacity = '1';
+            });
 
         item.classList.add('selected');
+        item.classList.add('disabled');
+        item.style.pointerEvents = 'none';
+        item.style.opacity = '0.5';
 
         // Reset dependientes
         tamanioMenu.innerHTML = '';
@@ -543,14 +558,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (labelServicios) labelServicios.textContent = datosTabla.labelServicios;
 
-        // Generar tarjetas
+        // Generar tarjetas (informativas, no clickeables)
         serviciosCardsContainer.innerHTML = '';
         datosTabla.servicios.forEach(srv => {
             const card = document.createElement('div');
-            card.className = 'service-card';
+            card.className = 'service-card disabled';
             card.setAttribute('data-id', srv.id);
             card.innerHTML = `
-                <input type="radio" name="servicioSeleccion" id="srv-${srv.id}" value="${srv.id}" class="service-radio">
+                <input type="radio" name="servicioSeleccion" id="srv-${srv.id}" value="${srv.id}" class="service-radio" disabled>
                 <label for="srv-${srv.id}" class="service-card-label">
                     <div class="service-card-icon">${srv.icon}</div>
                     <div class="service-card-content">
@@ -559,15 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </label>
             `;
-            const radio = card.querySelector('.service-radio');
-            radio.addEventListener('change', () => {
-                servicioSeleccionado = srv;
-                document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                updateServiceBoxState();
-                actualizarPrecio();
-            });
-
+            // NO agregar event listeners - solo mostrar información
             serviciosCardsContainer.appendChild(card);
         });
     }
@@ -766,6 +773,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let bootstrapModal = null;
 
     function mostrarModal() {
+        // Cerrar cualquier dropdown abierto para evitar que aparezca sobre el modal
+        cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+        cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        
         // Actualizar resumen del modal
         const resumenServicio = document.getElementById('resumenServicio');
         const resumenTipo = document.getElementById('resumenTipo');
@@ -793,6 +804,21 @@ document.addEventListener('DOMContentLoaded', function () {
             // Calcular precio total
             const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
             if (resumenPrecio) resumenPrecio.textContent = formatPrecio(total);
+        }
+        
+        // Configurar restricciones de fecha
+        const fechaInput = document.getElementById('fechaInput');
+        if (fechaInput) {
+            // Fecha mínima: hoy
+            const hoy = new Date();
+            const fechaMinStr = hoy.toISOString().split('T')[0];
+            fechaInput.min = fechaMinStr;
+            
+            // Fecha máxima: 30 días a partir de hoy
+            const fechaMax = new Date(hoy);
+            fechaMax.setDate(fechaMax.getDate() + 30);
+            const fechaMaxStr = fechaMax.toISOString().split('T')[0];
+            fechaInput.max = fechaMaxStr;
         }
         
         if (!bootstrapModal) {
@@ -892,7 +918,23 @@ document.addEventListener('DOMContentLoaded', function () {
             const direccionCompleta = casaDepto ? `${direccion}, ${casaDepto}` : direccion;
             
             // Construir mensaje
-            const mensaje = `*¡Hola ${nombre}!*\n\n✅ Tu reserva está confirmada\n\n📋 *Servicio:* ${servicio}\n🔖 *Tipo:* ${tipo}\n⏱️ *Duración:* ${tiempo}\n💵 *Precio:* ${precio}\n\n📍 *Dirección:* ${direccionCompleta}\n📅 *Fecha:* ${fecha}\n⏰ *Hora:* ${hora}\n👤 *Teléfono cliente:* +56${telefonoCliente}\n\n¡Gracias por preferirnos! 🙏`;
+            const mensaje = `Hola ${nombre},
+
+Tu reserva está confirmada ✓
+
+Servicio: ${servicio}
+Tipo: ${tipo}
+Duración: ${tiempo}
+Precio: ${precio}
+
+Dirección: ${direccionCompleta}
+Fecha: ${fecha}
+Hora: ${hora}
+Teléfono: +56${telefonoCliente}
+
+El pago se realiza al finalizar el servicio.
+
+¡Gracias por preferirnos!`;
             
             // Número de WhatsApp de la empresa (fijo)
             const numeroEmpresa = '927391320';

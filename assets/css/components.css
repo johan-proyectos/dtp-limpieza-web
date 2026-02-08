@@ -437,12 +437,34 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
     margin-top: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.services-cards-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.services-cards-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.services-cards-grid::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.services-cards-grid::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }
 
 @media (max-width: 576px) {
     .services-cards-grid {
         grid-template-columns: 1fr;
         gap: 10px;
+        max-height: 350px;
     }
 
     .service-card {
@@ -478,9 +500,17 @@
     cursor: pointer;
     transition: all 0.3s ease;
     background-color: #fff;
+    flex-shrink: 0;
 }
 
-.service-card:hover {
+/* Desactivar interactividad en tarjetas informativas */
+.service-card.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.service-card:not(.disabled):hover {
     border-color: #0d6efd;
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
     transform: translateY(-2px);
@@ -499,10 +529,19 @@
     cursor: pointer;
     margin: 0;
     gap: 8px;
+    user-select: none;
+}
+
+.service-card.disabled label {
+    cursor: default;
 }
 
 .service-card input[type="radio"] {
     display: none;
+}
+
+.service-card.disabled input[type="radio"] {
+    pointer-events: none;
 }
 
 .service-card-icon {
