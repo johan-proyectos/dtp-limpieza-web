@@ -42,14 +42,16 @@
     <aside id="sidebar" class="sidebar">
         <div class="px-2">
             <div class="mb-3">
-                <a class="btn btn-success w-100 text-start text-white" href="#"> <i
+                <a class="btn btn-success w-100 text-start text-white" href="#reserva"> <i
                         class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
+            </div>
+            <div class="mb-2">
+                <a class="btn btn-outline-primary w-100 text-start" href="#faq"> <i class="bi bi-question-circle me-2"></i> Preguntas frecuentes</a>
             </div>
             <ul class="nav flex-column mb-3">
                 <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i
                             class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
-                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i
-                            class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
+                <!-- Reserva en Línea reemplazada por el botón superior -->
                 <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i
                             class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
             </ul>
@@ -75,14 +77,16 @@
         </div>
         <div class="offcanvas-body">
             <div class="mb-3">
-                <a class="btn btn-success w-100 text-start text-white" href="#"> <i
+                <a class="btn btn-success w-100 text-start text-white" href="#reserva"> <i
                         class="bi bi-journal-check me-2"></i> Cotizar y Agendar</a>
+            </div>
+            <div class="mb-2">
+                <a class="btn btn-outline-primary w-100 text-start" href="#faq"> <i class="bi bi-question-circle me-2"></i> Preguntas frecuentes</a>
             </div>
             <ul class="nav flex-column mb-3">
                 <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#trabajos"><i
                             class="bi bi-image me-2"></i>Trabajos Realizados</a></li>
-                <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#reserva"><i
-                            class="bi bi-calendar-check me-2"></i>Reserva en Línea</a></li>
+                <!-- Reserva en Línea reemplazada por el botón superior -->
                 <li class="nav-item"><a class="nav-link py-2 nav-scroll" href="#cobertura"><i
                             class="bi bi-geo-alt me-2"></i>Cobertura</a></li>
             </ul>
@@ -130,6 +134,7 @@
             <h2 class="mt-4">¡Cotiza y agenda con nosotros! 👇</h2>
             <p class="text-muted">Autos, Alfombras, Colchones, Sillones y Sillas</p>
         </section>
+
 
         <section class="cotiza my-5" id="reserva">
 
@@ -311,90 +316,31 @@
                 <p class="text-muted">¡Mira algunos de nuestros trabajos recientes!</p>
             </div>
             
-            <!-- Carousel de trabajos -->
-            <div id="trabajosCarousel" class="carousel slide trabajos-carousel" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <!-- Slide 1 -->
-                    <div class="carousel-item active">
-                        <div class="trabajos-slide">
-                            <div class="trabajos-grid">
-                                <img src="https://picsum.photos/seed/a/500/350" alt="Trabajo 1" class="trabajos-img-main">
-                                <div class="trabajos-side">
-                                    <img src="https://picsum.photos/seed/b/300/160" alt="Trabajo 2" class="trabajos-img-small">
-                                    <img src="https://picsum.photos/seed/c/300/160" alt="Trabajo 3" class="trabajos-img-small">
-                                </div>
-                            </div>
-                        </div>
+            <!-- Collage de trabajos -->
+            <div class="trabajos-collage">
+                <!-- Primera fila: Videos -->
+                <div class="trabajos-videos-row">
+                    <div class="video-container">
+                        <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.34.04.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
+                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
-
-                    <!-- Slide 2 -->
-                    <div class="carousel-item">
-                        <div class="trabajos-slide">
-                            <div class="trabajos-grid">
-                                <img src="https://picsum.photos/seed/d/500/350" alt="Trabajo 4" class="trabajos-img-main">
-                                <div class="trabajos-side">
-                                    <img src="https://picsum.photos/seed/e/300/160" alt="Trabajo 5" class="trabajos-img-small">
-                                    <img src="https://picsum.photos/seed/f/300/160" alt="Trabajo 6" class="trabajos-img-small">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="video-container">
+                        <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.34.0344.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
+                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
-
-                    <!-- Slide 3 -->
-                    <div class="carousel-item">
-                        <div class="trabajos-slide">
-                            <div class="trabajos-grid">
-                                <img src="https://picsum.photos/seed/g/500/350" alt="Trabajo 7" class="trabajos-img-main">
-                                <div class="trabajos-side">
-                                    <img src="https://picsum.photos/seed/h/300/160" alt="Trabajo 8" class="trabajos-img-small">
-                                    <img src="https://picsum.photos/seed/i/300/160" alt="Trabajo 9" class="trabajos-img-small">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4 -->
-                    <div class="carousel-item">
-                        <div class="trabajos-slide">
-                            <div class="trabajos-grid">
-                                <img src="https://picsum.photos/seed/j/500/350" alt="Trabajo 10" class="trabajos-img-main">
-                                <div class="trabajos-side">
-                                    <img src="https://picsum.photos/seed/k/300/160" alt="Trabajo 11" class="trabajos-img-small">
-                                    <img src="https://picsum.photos/seed/l/300/160" alt="Trabajo 12" class="trabajos-img-small">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 5 -->
-                    <div class="carousel-item">
-                        <div class="trabajos-slide">
-                            <div class="trabajos-grid">
-                                <img src="https://picsum.photos/seed/m/500/350" alt="Trabajo 13" class="trabajos-img-main">
-                                <div class="trabajos-side">
-                                    <img src="https://picsum.photos/seed/n/300/160" alt="Trabajo 14" class="trabajos-img-small">
-                                    <img src="https://picsum.photos/seed/o/300/160" alt="Trabajo 15" class="trabajos-img-small">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="video-container">
+                        <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.33.34.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
+                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
                 </div>
 
-                <!-- Controles anteriores/siguientes -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#trabajosCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#trabajosCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-
-                <!-- Indicadores -->
-                <div class="carousel-indicators trabajos-indicators">
-                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="2"></button>
-                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="3"></button>
-                    <button type="button" data-bs-target="#trabajosCarousel" data-bs-slide-to="4"></button>
+                <!-- Collage de imágenes -->
+                <div class="trabajos-grid-collage">
+                    <img src="assets/img/trabajos/WhatsApp Image 2026-02-07  at 22.34.06.jpeg" alt="Trabajo 4" class="trabajos-item trabajos-item-1">
+                    <img src="assets/img/trabajos/WhatsApp Image 2026-02-07  at 22.34.07.jpeg" alt="Trabajo 5" class="trabajos-item trabajos-item-2">
+                    <img src="assets/img/trabajos/WhatsApp Image 2026-02-07  at 22.34.08.jpeg" alt="Trabajo 6" class="trabajos-item trabajos-item-3">
+                    <img src="assets/img/trabajos/WhatsApp Image 2026-02-07 at 22.3 4.06.jpeg" alt="Trabajo 7" class="trabajos-item trabajos-item-4">
+                    <img src="assets/img/trabajos/WhatsApp Image 2026-02-07 at  22.34.08.jpeg" alt="Trabajo 8" class="trabajos-item trabajos-item-5">
                 </div>
             </div>
         </section>
@@ -402,7 +348,7 @@
         <!-- Sección de Cobertura -->
         <section class="cobertura my-5" id="cobertura">
             <div class="text-center mb-4">
-                <h2 class="text-primary fw-bold"><i class="bi bi-geo-alt-fill me-2"></i>Cobertura en Santiago</h2>
+                <h2 class="text-primary fw-bold"><i class="bi bi-geo-alt-fill me-2"></i>Cobertura en Todo Santiago</h2>
             </div>
             
             <div class="card border-0 shadow-sm">
@@ -471,7 +417,87 @@
                     <hr class="my-4">
                     
                     <div class="text-center">
-                        <p class="text-dark mb-0"><i class="bi bi-pin-fill text-success me-2"></i><strong>Reservas: Lunes a Domingo de 10:00 a 18:00</strong></p>
+                        <p class="text-dark mb-0"><i class="bi bi-pin-fill text-success me-2"></i><strong>Reservas: Lunes a Domingo de 8:00 a 20:00</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Preguntas Frecuentes -->
+        <section class="faq my-5" id="faq">
+            <div class="text-center mb-4">
+                <h2 class="text-primary fw-bold"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</h2>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <p class="text-muted">Resuelve tus dudas sobre nuestros servicios aquí.</p>
+
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeading1">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                                    ¿Cómo agendo un servicio?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Puedes agendar desde el formulario de "Reserva en Línea", eligiendo fecha y horario, y completando tus datos de contacto.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeading2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="#faqCollapse2">
+                                    ¿Qué métodos de pago aceptan?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Aceptamos pago en efectivo, transferencia bancaria y tarjetas al finalizar el servicio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeading3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="#faqCollapse3">
+                                    ¿Qué productos utilizan?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Utilizamos productos profesionales y seguros para el hogar y la tapicería; si prefieres que usemos productos específicos, indícalo en las notas de la reserva.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeading4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="#faqCollapse4">
+                                    ¿Puedo agendar más de un servicio a la vez?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Sí, puedes seleccionar múltiples servicios en la cotización y reservar en una sola solicitud; si necesitas confirmar disponibilidad, te contactaremos.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeading5">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="#faqCollapse5">
+                                    ¿Qué pasa si no puedo estar en casa el día del servicio?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Podemos coordinar acceso con un tercero autorizado o reprogramar la visita; avisa con antelación para evitar cargos por cancelación.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -523,8 +549,22 @@
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label class="form-label text-muted small">Hora *</label>
-                                    <input type="time" id="horaInput" class="form-control"
-                                        placeholder="Selecciona una hora" required>
+                                    <select id="horaInput" class="form-control" required>
+                                        <option value="">Selecciona una hora</option>
+                                        <option value="08:00">8:00 AM</option>
+                                        <option value="09:00">9:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                        <option value="17:00">5:00 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -599,12 +639,7 @@
                     <h5 class="fw-bold mb-3">Empresa</h5>
                     <ul class="list-unstyled small">
                         <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Sobre Nosotros</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Blog</a></li>
                         <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Trabaja con Nosotros</a>
-                        </li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Términos y Condiciones</a>
-                        </li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Política de Privacidad</a>
                         </li>
                     </ul>
                 </div>
@@ -614,7 +649,7 @@
                         <li class="mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Santiago, Chile</li>
                         <li class="mb-2"><i class="bi bi-telephone-fill me-2"></i>+56 9 4406 8233</li>
                         <li class="mb-2"><i class="bi bi-envelope-fill me-2"></i>contacto@DTPLIMPIEZA.cl</li>
-                        <li class="mb-2"><i class="bi bi-clock-fill me-2"></i>Lun - Sáb: 9:00 - 18:00</li>
+                        <li class="mb-2"><i class="bi bi-clock-fill me-2"></i>Lun - Dom: 8:00 - 20:00</li>
                     </ul>
                 </div>
             </div>
@@ -633,6 +668,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/reservas.js"></script>
     <script>
+        // Manejar botones de muteo de videos
+        document.querySelectorAll('.video-container').forEach((container) => {
+            const video = container.querySelector('.trabajos-video');
+            const muteBtn = container.querySelector('.video-mute-btn');
+            
+            // Inicializar estado del botón mute
+            updateMuteBtn();
+            
+            // Mute button
+            muteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                video.muted = !video.muted;
+                updateMuteBtn();
+            });
+            
+            function updateMuteBtn() {
+                if (video.muted) {
+                    muteBtn.textContent = '🔇';
+                    muteBtn.classList.add('muted');
+                } else {
+                    muteBtn.textContent = '🔊';
+                    muteBtn.classList.remove('muted');
+                }
+            }
+        });
+
         // Force open at top of page and ignore incoming hash (e.g. #trabajos)
         (function(){
             try {

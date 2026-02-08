@@ -4,33 +4,38 @@ document.addEventListener('DOMContentLoaded', function () {
     // ====== ESTRUCTURA DE DATOS: CATEGORÍA -> TIPO/TAMAÑO -> SERVICIOS ======
     const serviciosData = {
         'Auto': {
-            labelTamanio: 'Selecciona el tamaño del auto',
+            labelTamanio: 'Selecciona el tipo de vehículo',
             tamanios: {
-                'Pequeño (Hatchback, Sedán)': {
-                    precioBase: 35000,
-                    labelServicios: '¿Qué quieres limpiar?',
-                    servicios: [
-                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
-                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
-                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
-                    ]
-                },
-                'Mediano (SUV, Van)': {
+                'Sedán': {
                     precioBase: 45000,
-                    labelServicios: '¿Qué quieres limpiar?',
+                    labelServicios: '¿Qué incluye?',
                     servicios: [
-                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
-                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
-                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
+                        { id: 'sedan-tapiz', icon: '🛋️', nombre: 'Lavado de tapicería completa', desc: 'Limpieza profunda de asientos', precioDelta: 0 },
+                        { id: 'sedan-desinfeccion', icon: '🧼', nombre: 'Desinfección y desodorización', desc: 'Elimina bacterias y olores', precioDelta: 0 },
+                        { id: 'sedan-manchas', icon: '✨', nombre: 'Quita manchas', desc: 'Limpieza de manchas difíciles', precioDelta: 0 },
+                        { id: 'sedan-consola', icon: '🧹', nombre: 'Limpieza de consola y elementos internos', desc: 'Detalles interiores', precioDelta: 0 }
                     ]
                 },
-                'Grande (Camioneta, Pickup)': {
+                'SUV': {
                     precioBase: 50000,
-                    labelServicios: '¿Qué quieres limpiar?',
+                    labelServicios: '¿Qué incluye?',
                     servicios: [
-                        { id: 'auto-interior-exterior', icon: '🚗', nombre: 'Interior + Exterior', desc: 'Limpieza completa del vehículo', precioDelta: 0 },
-                        { id: 'auto-tapiz', icon: '🛋️', nombre: 'Lavado Tapiz', desc: 'Solo tapiz y asientos', precioDelta: -5000 },
-                        { id: 'auto-full', icon: '✨', nombre: 'Auto Full', desc: 'Servicio integral premium', precioDelta: 8000 }
+                        { id: 'suv-profunda', icon: '🚗', nombre: 'Limpieza profunda de asientos, suelo, puertas y maletero', desc: 'Limpieza total del interior', precioDelta: 0 },
+                        { id: 'suv-tapiz', icon: '🛋️', nombre: 'Lavado de tapicería completa', desc: 'Limpieza profunda de asientos', precioDelta: 0 },
+                        { id: 'suv-desinfeccion', icon: '🧼', nombre: 'Desinfección y desodorización', desc: 'Elimina bacterias y olores', precioDelta: 0 },
+                        { id: 'suv-manchas', icon: '✨', nombre: 'Quita manchas', desc: 'Limpieza de manchas difíciles', precioDelta: 0 },
+                        { id: 'suv-consola', icon: '🧹', nombre: 'Limpieza de consola y elementos internos', desc: 'Detalles interiores', precioDelta: 0 }
+                    ]
+                },
+                'Camioneta': {
+                    precioBase: 56000,
+                    labelServicios: '¿Qué incluye?',
+                    servicios: [
+                        { id: 'camio-profunda', icon: '🚗', nombre: 'Limpieza profunda de asientos, suelo, puertas y maletero', desc: 'Limpieza total del interior', precioDelta: 0 },
+                        { id: 'camio-tapiz', icon: '🛋️', nombre: 'Lavado de tapicería completa', desc: 'Limpieza profunda de asientos', precioDelta: 0 },
+                        { id: 'camio-desinfeccion', icon: '🧼', nombre: 'Desinfección y desodorización', desc: 'Elimina bacterias y olores', precioDelta: 0 },
+                        { id: 'camio-manchas', icon: '✨', nombre: 'Quita manchas', desc: 'Limpieza de manchas difíciles', precioDelta: 0 },
+                        { id: 'camio-consola', icon: '🧹', nombre: 'Limpieza de consola y elementos internos', desc: 'Detalles interiores', precioDelta: 0 }
                     ]
                 }
             }
@@ -89,37 +94,42 @@ document.addEventListener('DOMContentLoaded', function () {
             labelTamanio: 'Selecciona el tamaño del colchón',
             tamanios: {
                 '1 plaza': {
-                    precioBase: 22000,
+                    precioBase: 15000,
                     labelServicios: null,
                     servicios: []
                 },
                 '1.5 plaza': {
-                    precioBase: 25000,
+                    precioBase: 17000,
                     labelServicios: null,
                     servicios: []
                 },
                 '2 plazas': {
-                    precioBase: 32000,
+                    precioBase: 28000,
                     labelServicios: null,
                     servicios: []
                 },
                 'Queen': {
-                    precioBase: 34000,
+                    precioBase: 33000,
                     labelServicios: null,
                     servicios: []
                 },
                 'King': {
-                    precioBase: 36000,
+                    precioBase: 32000,
                     labelServicios: null,
                     servicios: []
                 },
                 'Super King': {
-                    precioBase: 40000,
+                    precioBase: 35000,
                     labelServicios: null,
                     servicios: []
                 },
-                'Colchón + base / respaldo': {
-                    precioBase: 45000,
+                'Respaldos': {
+                    precioBase: 15000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Cuna': {
+                    precioBase: 10000,
                     labelServicios: null,
                     servicios: []
                 }
@@ -128,13 +138,28 @@ document.addEventListener('DOMContentLoaded', function () {
         'Alfombras': {
             labelTamanio: 'Selecciona el tipo de alfombra',
             tamanios: {
-                'Muro a Muro': {
-                    precioBase: 40000,
+                'Decorativa (2x3 mtrs²)': {
+                    precioBase: 25000,
                     labelServicios: null,
                     servicios: []
                 },
-                'Decorativa': {
-                    precioBase: 25000,
+                'Decorativa (3x5 mtrs²)': {
+                    precioBase: 30000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Habitación alfombrada muro a muro': {
+                    precioBase: 29000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Muro a muro (valor x metro²)': {
+                    precioBase: 2200,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Escaleras alfombradas': {
+                    precioBase: 20000,
                     labelServicios: null,
                     servicios: []
                 }

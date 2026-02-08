@@ -15,6 +15,13 @@ body {
 header { position: relative; z-index: 1100; background: #fff }
 header h5 { font-weight:600 }
 
+#siteLogo {
+	border-radius: 100%;
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+}
+
 /* Ensure the mobile menu button is visible and has a comfortable hit area */
 .btn-light.p-2 { padding: .5rem; min-width: 44px; min-height: 36px }
 .btn-light.p-2 { display:inline-flex; align-items:center; justify-content:center }
@@ -33,6 +40,21 @@ header h5 { font-weight:600 }
     border: 2px solid var(--dtp-blue);
     border-radius: 48px;
     overflow: hidden;
+}
+
+#heroCarousel .carousel-control-prev,
+#heroCarousel .carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#heroCarousel .carousel-control-prev:hover,
+#heroCarousel .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .pac-container {
@@ -277,6 +299,32 @@ body.sidebar-open {
     .offcanvas hr { margin: 1.25rem 0; }
 }
 
+/* FAQ Section */
+.faq .faq-icon {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--dtp-blue);
+    color: var(--dtp-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.faq .accordion-button {
+    color: #222;
+}
+
+.faq .accordion-button:not(.collapsed) {
+    color: var(--dtp-blue);
+}
+
+@media (max-width: 767px) {
+    .faq .faq-icon { width: 56px; height: 56px; font-size: 20px; }
+}
+
 /* Mejor separación en el sidebar: espacios entre botones, links y contacto */
 .sidebar .btn-success { margin-bottom: 1.5rem; padding: 1rem 1rem; border-radius: .6rem; }
 .sidebar .nav.flex-column { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -446,6 +494,154 @@ body.sidebar-open {
     height: 12px;
 }
 
+/* Estilos para Collage de Trabajos */
+.trabajos-collage {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.trabajos-videos-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+.trabajos-video {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    border: 2px solid var(--dtp-blue);
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #000;
+    display: block;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--dtp-blue);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.video-mute-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.video-mute-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.video-mute-btn.muted {
+    opacity: 0.7;
+}
+
+.trabajos-video:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.trabajos-grid-collage {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 200px);
+    gap: 8px;
+    width: 100%;
+}
+
+.trabajos-carousel-fotos {
+    background: #f8f9fa;
+    border-radius: 48px;
+    border: 2px solid var(--dtp-blue);
+    padding: 20px;
+    overflow: visible;
+}
+
+.trabajos-carousel-fotos .carousel-inner {
+    border-radius: 36px;
+    overflow: hidden;
+}
+
+.trabajos-carousel-fotos .carousel-control-prev,
+.trabajos-carousel-fotos .carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.trabajos-carousel-fotos .carousel-control-prev:hover,
+.trabajos-carousel-fotos .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.trabajos-item {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.trabajos-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Disposición del collage */
+.trabajos-item-1 {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.trabajos-item-2 {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.trabajos-item-3 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.trabajos-item-4 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.trabajos-item-5 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
 @media (max-width: 768px) {
     .trabajos h2 {
         font-size: 1.5rem;
@@ -476,6 +672,62 @@ body.sidebar-open {
     
     .trabajos-carousel .carousel-control-prev,
     .trabajos-carousel .carousel-control-next {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Responsive para Collage */
+    .trabajos-videos-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        width: 100%;
+    }
+
+    .trabajos-video {
+        height: 160px;
+    }
+
+    .video-container {
+        height: 160px;
+    }
+
+    .trabajos-grid-collage {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        gap: 8px;
+    }
+
+    .trabajos-item {
+        height: 150px;
+    }
+
+    .trabajos-item-1 {
+        grid-column: span 2;
+    }
+
+    .trabajos-item-2 {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .trabajos-item-3 {
+        grid-column: span 1;
+    }
+
+    .trabajos-item-4 {
+        grid-column: span 1;
+    }
+
+    .trabajos-item-5 {
+        grid-column: span 2;
+    }
+
+    .trabajos-carousel-fotos {
+        padding: 12px;
+    }
+
+    .trabajos-carousel-fotos .carousel-control-prev,
+    .trabajos-carousel-fotos .carousel-control-next {
         width: 35px;
         height: 35px;
     }
