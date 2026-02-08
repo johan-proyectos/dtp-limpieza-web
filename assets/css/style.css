@@ -12,6 +12,50 @@ body {
     --dtp-blue-dark: #004b99;
 }
 
+/* Visual enhancements and accents */
+.h2-accent {
+    color: var(--dtp-blue);
+    text-decoration: none;
+}
+
+.site-title {
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    font-weight: 800;
+    color: #0b365f;
+    text-transform: uppercase;
+}
+
+.cta-primary {
+    background: linear-gradient(180deg, var(--dtp-blue) 0%, var(--dtp-blue-dark) 100%);
+    border: 0;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(0,102,204,0.18);
+}
+.cta-primary:hover, .cta-primary:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0,102,204,0.22);
+}
+
+.service-card {
+    border: 1px solid rgba(0,102,204,0.12);
+    border-radius: 12px;
+    background: #fff;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+.service-icon { font-size: 28px }
+.service-title { font-weight:700; margin-bottom:4px; color:#123; }
+.service-desc { color: #666 }
+
+.confianza .card { border: 1px solid rgba(0,102,204,0.06); border-radius: 10px }
+
+.cta-before-footer { background: linear-gradient(90deg, rgba(0,102,204,0.04), rgba(0,102,204,0.02)); }
+.cta-before-footer .btn { margin-top: 6px }
+
 header { position: relative; z-index: 1100; background: #fff }
 header h5 { font-weight:600 }
 
@@ -605,6 +649,7 @@ body.sidebar-open {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -699,6 +744,7 @@ body.sidebar-open {
 
     .trabajos-item {
         height: 150px;
+        object-position: top;
     }
 
     .trabajos-item-1 {
