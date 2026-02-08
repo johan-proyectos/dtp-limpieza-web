@@ -39,58 +39,49 @@ document.addEventListener('DOMContentLoaded', function () {
             labelTamanio: 'Selecciona el tipo de sillón',
             tamanios: {
                 '1 cuerpo': {
-                    precioBase: 12500,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                    precioBase: 11000,
+                    labelServicios: null,
+                    servicios: []
                 },
                 '2 cuerpos': {
-                    precioBase: 15000,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                    precioBase: 27000,
+                    labelServicios: null,
+                    servicios: []
                 },
                 '3 cuerpos': {
-                    precioBase: 18000,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                    precioBase: 32000,
+                    labelServicios: null,
+                    servicios: []
                 },
-                'Seccional / Modular': {
-                    precioBase: 22000,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                '4 cuerpos': {
+                    precioBase: 38000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                '5 cuerpos': {
+                    precioBase: 45000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                '6 cuerpos': {
+                    precioBase: 52000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                '7 cuerpos': {
+                    precioBase: 60000,
+                    labelServicios: null,
+                    servicios: []
                 },
                 'Bergara / Reclinable': {
-                    precioBase: 18000,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                    precioBase: 20000,
+                    labelServicios: null,
+                    servicios: []
                 },
-                'Otros': {
-                    precioBase: 12500,
-                    labelServicios: 'Selecciona el servicio',
-                    servicios: [
-                        { id: 'sillon-estandar', icon: '✨', nombre: 'Limpieza estándar', desc: 'Limpieza profunda y cuidadosa', precioDelta: 0 },
-                        { id: 'sillon-profunda', icon: '🧼', nombre: 'Limpieza profunda', desc: 'Eliminación de suciedad incrustada', precioDelta: 3000 },
-                        { id: 'sillon-manchas', icon: '🎯', nombre: 'Eliminación manchas y olores', desc: 'Tratamiento especializado', precioDelta: 5000 }
-                    ]
+                'Otros (especificar)': {
+                    precioBase: 15000,
+                    labelServicios: null,
+                    servicios: []
                 }
             }
         },
@@ -144,6 +135,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 'Decorativa': {
                     precioBase: 25000,
+                    labelServicios: null,
+                    servicios: []
+                }
+            }
+        },
+        'Sillas': {
+            labelTamanio: 'Selecciona el tipo de silla',
+            tamanios: {
+                'Base y respaldo': {
+                    precioBase: 4000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Silla tapizada completa': {
+                    precioBase: 6000,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Silla de oficina': {
+                    precioBase: 8600,
+                    labelServicios: null,
+                    servicios: []
+                },
+                'Banqueta / Piso bar': {
+                    precioBase: 5000,
                     labelServicios: null,
                     servicios: []
                 }

@@ -29,6 +29,12 @@ header h5 { font-weight:600 }
 
 .carousel-inner img { height: 350px; object-fit: cover }
 
+#heroCarousel {
+    border: 2px solid var(--dtp-blue);
+    border-radius: 48px;
+    overflow: hidden;
+}
+
 .pac-container {
     z-index: 2000 !important;
     border-radius: 0 0 8px 8px;
@@ -349,7 +355,8 @@ body.sidebar-open {
 
 .trabajos-carousel {
     background: #f8f9fa;
-    border-radius: 12px;
+    border-radius: 48px;
+    border: 2px solid var(--dtp-blue);
     padding: 25px;
     overflow: hidden;
 }
