@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ====== FUNCIONES DROPDOWN GENÉRICAS ======
     function abrirDropdown(menu, trigger, backdrop) {
-        // 🔥 CIERRE EXCLUSIVO: Cerrar todos los otros dropdowns antes de abrir uno
+        // Cerrar el otro dropdown abierto para evitar solapamientos
         if (menu.id !== 'categoriaMenu') {
             cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
         }
@@ -256,10 +256,12 @@ document.addEventListener('DOMContentLoaded', function () {
             cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
         }
 
-        // Posicionar el dropdown fijo en relación al trigger
+        // Posicionar el dropdown fijo en relación al trigger (usar posición fixed para evitar stacking/overflow)
         const rect = trigger.getBoundingClientRect();
+        menu.style.position = 'fixed';
         menu.style.top = (rect.bottom + 8) + 'px';
         menu.style.left = Math.max(8, rect.left) + 'px';
+        menu.style.width = rect.width + 'px';
         menu.style.right = 'auto';
 
         // Ajustar si se sale del viewport
@@ -269,18 +271,80 @@ document.addEventListener('DOMContentLoaded', function () {
             menu.style.right = Math.max(8, window.innerWidth - rect.right) + 'px';
         }
 
+        // Mover el menú y backdrop al body para evitar stacking contexts de los padres
+        try {
+            if (!menu.dataset.appendedToBody) {
+                menu._origParent = menu.parentNode;
+                menu._origNext = menu.nextSibling;
+                document.body.appendChild(menu);
+                menu.dataset.appendedToBody = 'true';
+            }
+            if (backdrop && !backdrop.dataset.appendedToBody) {
+                backdrop._origParent = backdrop.parentNode;
+                backdrop._origNext = backdrop.nextSibling;
+                document.body.appendChild(backdrop);
+                backdrop.dataset.appendedToBody = 'true';
+            }
+        } catch (e) {
+            // si falla, no bloqueamos la apertura
+        }
+
+        // Forzar orden de apilamiento: que el menú de categoría esté por encima del de tamaños
+        if (menu.id === 'categoriaMenu') {
+            menu.style.zIndex = '21000';
+            if (backdrop) {
+                backdrop.style.zIndex = '20990';
+                backdrop.style.setProperty('pointer-events', 'auto', 'important');
+            }
+        } else if (menu.id === 'tamanioMenu') {
+            menu.style.zIndex = '20000';
+            if (backdrop) {
+                backdrop.style.zIndex = '19990';
+                backdrop.style.setProperty('pointer-events', 'auto', 'important');
+            }
+        } else {
+            menu.style.zIndex = '20000';
+        }
+
         menu.classList.add('show');
         trigger.classList.add('active');
-        backdrop.classList.add('show');
+        if (backdrop) backdrop.classList.add('show');
     }
 
     function cerrarDropdown(menu, trigger, backdrop) {
         menu.classList.remove('show');
         trigger.classList.remove('active');
-        backdrop.classList.remove('show');
+        if (backdrop) backdrop.classList.remove('show');
         menu.style.top = '';
         menu.style.left = '';
         menu.style.right = '';
+        menu.style.width = '';
+        menu.style.position = '';
+        menu.style.zIndex = '';
+        if (backdrop) {
+            backdrop.style.zIndex = '';
+            try { backdrop.style.removeProperty('pointer-events'); } catch (e) {}
+        }
+
+        // Restaurar lugar original en DOM si lo movimos
+        try {
+            if (menu.dataset.appendedToBody && menu._origParent) {
+                if (menu._origNext) menu._origParent.insertBefore(menu, menu._origNext);
+                else menu._origParent.appendChild(menu);
+                delete menu._origParent;
+                delete menu._origNext;
+                delete menu.dataset.appendedToBody;
+            }
+            if (backdrop && backdrop.dataset.appendedToBody && backdrop._origParent) {
+                if (backdrop._origNext) backdrop._origParent.insertBefore(backdrop, backdrop._origNext);
+                else backdrop._origParent.appendChild(backdrop);
+                delete backdrop._origParent;
+                delete backdrop._origNext;
+                delete backdrop.dataset.appendedToBody;
+            }
+        } catch (e) {
+            // no bloquear si falla
+        }
     }
 
     // ====== CERRAR DROPDOWNS AL HACER SCROLL (CRÍTICO) ======
@@ -572,7 +636,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 cantidad: cantidad,
                 precioUnit: precio,
                 subtotal: subtotal,
-                displayName: `${categoriaSeleccionada} - ${tamanioSeleccionado} (${nombreServicio})`
+                displayName: servicioSeleccionado
+                    ? `${categoriaSeleccionada} - ${tamanioSeleccionado} (${nombreServicio})`
+                    : `${categoriaSeleccionada} - ${tamanioSeleccionado}`
             });
 
             actualizarListaServicios();
@@ -638,18 +704,6 @@ document.addEventListener('DOMContentLoaded', function () {
             right.className = 'd-flex gap-2 align-items-center';
             right.style.flexShrink = '0';
             
-            const editBtn = document.createElement('button');
-            editBtn.className = 'btn btn-link text-primary p-0';
-            editBtn.type = 'button';
-            editBtn.innerHTML = '<i class="bi bi-pencil-fill"></i>';
-            editBtn.style.fontSize = '1.1rem';
-            editBtn.title = 'Editar';
-            editBtn.style.cursor = 'pointer';
-            editBtn.onclick = (e) => {
-                e.preventDefault();
-                // Aquí iría la funcionalidad de editar
-            };
-            
             const delBtn = document.createElement('button');
             delBtn.className = 'btn btn-link text-danger p-0';
             delBtn.type = 'button';
@@ -666,8 +720,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 updateServiceBoxState();
             };
-            
-            right.appendChild(editBtn);
             right.appendChild(delBtn);
             item.appendChild(left);
             item.appendChild(right);
@@ -817,32 +869,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Submit formulario reserva
+    // Submit formulario reserva → Enviar a WhatsApp
     if (formDatos) {
         formDatos.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const datosFinales = {
-                nombre: nombreInput.value,
-                telefono: telefonoInput.value,
-                direccion: direccionInput.value,
-                fecha: document.getElementById('fechaInput').value,
-                hora: document.getElementById('horaInput').value,
-                casaDepto: document.getElementById('casaDeptoInput').value,
-                servicios: serviciosAgregados,
-                total: serviciosAgregados.reduce((a, b) => a + b.subtotal, 0)
-            };
+            // Capturar datos del formulario
+            const nombre = nombreInput.value;
+            const direccion = direccionInput.value;
+            const casaDepto = document.getElementById('casaDeptoInput').value;
+            const fecha = document.getElementById('fechaInput').value;
+            const hora = document.getElementById('horaInput').value;
+            const telefonoCliente = telefonoInput.value;
             
-            console.log('Reserva enviada:', datosFinales);
-            alert('¡Reserva confirmada!\nTe contactaremos pronto para confirmar los detalles.');
+            // Capturar datos del servicio (resumen)
+            const servicio = document.getElementById('resumenServicio').textContent;
+            const tipo = document.getElementById('resumenTipo').textContent;
+            const tiempo = document.getElementById('resumenTiempo').textContent;
+            const precio = document.getElementById('resumenPrecio').textContent;
             
-            // Limpiar todo
-            serviciosAgregados = [];
-            actualizarListaServicios();
-            serviciosAgregadosDiv.classList.remove('show');
-            updateServiceBoxState();
-            ocultarModal();
-            formDatos.reset();
+            // Formatear dirección
+            const direccionCompleta = casaDepto ? `${direccion}, ${casaDepto}` : direccion;
+            
+            // Construir mensaje
+            const mensaje = `*¡Hola ${nombre}!*\n\n✅ Tu reserva está confirmada\n\n📋 *Servicio:* ${servicio}\n🔖 *Tipo:* ${tipo}\n⏱️ *Duración:* ${tiempo}\n💵 *Precio:* ${precio}\n\n📍 *Dirección:* ${direccionCompleta}\n📅 *Fecha:* ${fecha}\n⏰ *Hora:* ${hora}\n👤 *Teléfono cliente:* +56${telefonoCliente}\n\n¡Gracias por preferirnos! 🙏`;
+            
+            // Número de WhatsApp de la empresa (fijo)
+            const numeroEmpresa = '927391320';
+            
+            // Construir URL de WhatsApp
+            const urlWhatsapp = `https://wa.me/56${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
+            
+            // Abrir en nueva pestaña
+            window.open(urlWhatsapp, '_blank');
+            
+            // Cerrar modal después de 500ms
+            setTimeout(function() {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalDatos'));
+                if (modal) modal.hide();
+                
+                // Limpiar todo
+                serviciosAgregados = [];
+                actualizarListaServicios();
+                serviciosAgregadosDiv.classList.remove('show');
+                updateServiceBoxState();
+                formDatos.reset();
+            }, 500);
         });
     }
 

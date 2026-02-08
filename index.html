@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="header-center text-center">
-                    <h1 class="m-0 site-title">DTP LAVADOS</h1>
+                    <h1 class="m-0 site-title">DTP LIMPIEZA</h1>
                 </div>
 
                 <div class="header-right d-flex align-items-center">
@@ -131,7 +131,7 @@
             <h3>Servicio de Limpieza a Domicilio</h3>
             <p class="text-muted">¡Agenda Gratis con nosotros y paga luego del servicio!</p>
             <hr>
-            <h2 class="mt-4">¡Cotiza y agenda con nosotros! 👇</h2>
+            <h2 class="mt-4">¡Cotiza y agenda ahora con nosotros! 👇</h2>
             <p class="text-muted">Autos, Alfombras, Colchones, Sillones y Sillas</p>
         </section>
 
@@ -322,15 +322,12 @@
                 <div class="trabajos-videos-row">
                     <div class="video-container">
                         <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.34.04.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
-                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
                     <div class="video-container">
                         <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.34.0344.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
-                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
                     <div class="video-container">
                         <video src="assets/img/trabajos/WhatsApp Video 2026-02-07 at 22.33.34.mp4" class="trabajos-video" autoplay loop muted playsinline></video>
-                        <button class="video-mute-btn" title="Silenciar">🔊</button>
                     </div>
                 </div>
 
@@ -668,31 +665,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/reservas.js"></script>
     <script>
-        // Manejar botones de muteo de videos
-        document.querySelectorAll('.video-container').forEach((container) => {
-            const video = container.querySelector('.trabajos-video');
-            const muteBtn = container.querySelector('.video-mute-btn');
-            
-            // Inicializar estado del botón mute
-            updateMuteBtn();
-            
-            // Mute button
-            muteBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                video.muted = !video.muted;
-                updateMuteBtn();
-            });
-            
-            function updateMuteBtn() {
-                if (video.muted) {
-                    muteBtn.textContent = '🔇';
-                    muteBtn.classList.add('muted');
-                } else {
-                    muteBtn.textContent = '🔊';
-                    muteBtn.classList.remove('muted');
-                }
-            }
-        });
+        // Videos en mute permanente
 
         // Force open at top of page and ignore incoming hash (e.g. #trabajos)
         (function(){
