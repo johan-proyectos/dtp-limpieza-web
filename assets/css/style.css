@@ -389,6 +389,10 @@ body.sidebar-open {
     padding: 0.9rem 0.25rem;
     margin-bottom: 1.4rem;
     font-size: 1rem;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .sidebar .contact-list li .bi,
@@ -399,16 +403,36 @@ body.sidebar-open {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar .contact-list li a,
+.offcanvas .contact-list li a {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Slightly larger gap on small screens to match visual spacing */
 @media (max-width: 767px) {
     .sidebar .contact-list li,
     .offcanvas .contact-list li {
-        gap: 1rem;
-        padding: 1rem 0.5rem;
-        margin-bottom: 1.6rem;
-        font-size: 1rem;
+        gap: 0.5rem;
+        padding: 0.6rem 0.25rem;
+        margin-bottom: 0.9rem;
+        font-size: 0.85rem;
+        align-items: center;
+    }
+    
+    .sidebar .contact-list li .bi,
+    .offcanvas .contact-list li .bi {
+        margin-top: 0;
+        min-width: 22px;
+    }
+    
+    .sidebar .contact-list li a,
+    .offcanvas .contact-list li a {
+        font-size: 0.85rem;
     }
 }
 
@@ -689,6 +713,11 @@ body.sidebar-open {
     grid-row: span 1;
 }
 
+.trabajos-item-6 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
 @media (max-width: 768px) {
     .trabajos h2 {
         font-size: 1.5rem;
@@ -746,11 +775,11 @@ body.sidebar-open {
 
     .trabajos-item {
         height: 150px;
-        object-position: top;
+        object-position: center;
     }
 
     .trabajos-item-1 {
-        grid-column: span 2;
+        grid-column: span 1;
     }
 
     .trabajos-item-2 {
@@ -767,7 +796,11 @@ body.sidebar-open {
     }
 
     .trabajos-item-5 {
-        grid-column: span 2;
+        grid-column: span 1;
+    }
+
+    .trabajos-item-6 {
+        grid-column: span 1;
     }
 
     .trabajos-carousel-fotos {
