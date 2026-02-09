@@ -129,7 +129,7 @@ gmp-place-autocomplete input {
 
 /* Sidebar styles */
 .sidebar {
-	width: 260px;
+	width: 320px;
 	position: fixed;
 	left: 0;
 	/* place below header to avoid being covered */
@@ -143,11 +143,25 @@ gmp-place-autocomplete input {
 	transform: translateX(-100%);
 	transition: transform 300ms ease-in-out;
 	pointer-events: none;
+	display: none; /* Hide on mobile, only show on desktop */
 }
 
 .sidebar.show-desktop {
 	transform: translateX(0);
 	pointer-events: auto;
+}
+
+/* Show sidebar on desktop (md and up) */
+@media (min-width: 768px) {
+	.sidebar {
+		display: block;
+	}
+}
+
+/* Offcanvas width limit for mobile */
+.offcanvas-start {
+	max-width: 85vw;
+	width: 85vw !important;
 }
 
 .main-with-sidebar {

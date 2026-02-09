@@ -241,13 +241,81 @@ document.addEventListener('DOMContentLoaded', function () {
     const direccionInput = document.getElementById('direccionInput');
     const placesResults = document.getElementById('placesResults');
 
+    // ====== ELEMENTOS DEL DOM - SIDEBAR ======
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOffcanvas = document.getElementById('sidebarOffcanvas');
+
     let controller;
 
     function formatPrecio(valor) {
         return '$' + (valor).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    // ====== FUNCIONES DROPDOWN GENÉRICAS ======
+    // ====== SIDEBAR FUNCTIONS ======
+    function closeSidebar() {
+        if (sidebar) {
+            sidebar.classList.remove('show-desktop');
+        }
+    }
+
+    function openSidebar() {
+        if (sidebar) {
+            sidebar.classList.add('show-desktop');
+        }
+    }
+
+    function adjustSidebarTop() {
+        // Ajustar la posición del sidebar según el tamaño del header
+        if (sidebar) {
+            const header = document.querySelector('header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                sidebar.style.top = headerHeight + 'px';
+                sidebar.style.height = 'calc(100vh - ' + headerHeight + 'px)';
+            }
+        }
+    }
+
+    // ====== SIDEBAR EVENT LISTENERS ======
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+            // Verificar si estamos en desktop (md+) para manejar el sidebar
+            const isDesktop = window.innerWidth >= 768;
+            
+            if (isDesktop) {
+                // En desktop, manejar el sidebar personalizado
+                e.preventDefault();
+                e.stopPropagation();
+                if (sidebar && sidebar.classList.contains('show-desktop')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            }
+            // En mobile, dejar que Bootstrap maneje el offcanvas automáticamente
+        });
+    }
+
+    // ====== MOBILE OFFCANVAS ======
+    // Cerrar offcanvas cuando se hace clic en un enlace interno
+    if (sidebarOffcanvas) {
+        const offcanvasInstance = new bootstrap.Offcanvas(sidebarOffcanvas);
+        sidebarOffcanvas.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', () => {
+                offcanvasInstance.hide();
+            });
+        });
+    }
+
+    // ====== DESKTOP SIDEBAR - Cerrar al hacer clic en un enlace ======
+    if (sidebar) {
+        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', () => {
+                closeSidebar();
+            });
+        });
+    }
     function abrirDropdown(menu, trigger, backdrop) {
         // Cerrar el otro dropdown abierto para evitar solapamientos
         if (menu.id !== 'categoriaMenu') {
