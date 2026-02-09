@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     servicios: []
                 },
                 'Otros (especificar)': {
-                    precioBase: 15000,
+                    precioBase: 0,
+                    precioAConfirmar: true,
                     labelServicios: null,
                     servicios: []
                 }
@@ -588,6 +589,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const datos = serviciosData[categoriaSeleccionada];
         const datosTabla = datos.tamanios[tamanioSeleccionado];
+        // Si el tamaño requiere confirmar precio, mostrar indicación y no calcular
+        if (datosTabla && datosTabla.precioAConfirmar) {
+            if (precioDisplay) precioDisplay.textContent = 'A confirmar';
+            precioDisplay.dataset.unitPrice = '';
+            return;
+        }
+
         let precio = datosTabla.precioBase;
 
         if (servicioSeleccionado && servicioSeleccionado.precioDelta !== undefined) {
@@ -634,15 +642,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const cantidad = parseInt(cantidadInput.value, 10) || 1;
-            const subtotal = precio * cantidad;
+            // Si el tamaño requiere precio a confirmar, no asignar subtotal ni precio unitario
+            const esAConfirmar = !!(datosTabla && datosTabla.precioAConfirmar);
+            const precioUnit = esAConfirmar ? null : precio;
+            const subtotal = esAConfirmar ? 0 : (precioUnit * cantidad);
 
             serviciosAgregados.push({
                 categoría: categoriaSeleccionada,
                 tamanio: tamanioSeleccionado,
                 servicio: nombreServicio,
                 cantidad: cantidad,
-                precioUnit: precio,
+                precioUnit: precioUnit,
                 subtotal: subtotal,
+                precioAConfirmar: esAConfirmar,
                 displayName: servicioSeleccionado
                     ? `${categoriaSeleccionada} - ${tamanioSeleccionado} (${nombreServicio})`
                     : `${categoriaSeleccionada} - ${tamanioSeleccionado}`
@@ -704,7 +716,7 @@ document.addEventListener('DOMContentLoaded', function () {
             left.className = 'flex-grow-1';
             left.innerHTML = `
                 <strong>${s.displayName}</strong>
-                <div class="small">${formatPrecio(s.precioUnit)}</div>
+                <div class="small">${s.precioAConfirmar ? 'A confirmar' : formatPrecio(s.precioUnit)}</div>
             `;
             
             const right = document.createElement('div');
@@ -734,16 +746,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         
         const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
-        
+        const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+
+        // Construir texto combinado: si hay items A confirmar y también hay total numérico,
+        // mostrar "$X + A confirmar"; si solo A confirmar -> "A confirmar"; si solo numérico -> "$X"
+        let totalText = '';
+        if (tieneAConfirmar) {
+            if (total > 0) totalText = `${formatPrecio(total)} + A confirmar`;
+            else totalText = 'A confirmar';
+        } else {
+            totalText = total ? formatPrecio(total) : '$0';
+        }
+
         // Actualizar precio en el botón
         if (btnCotizar) {
-            btnCotizar.innerHTML = `<i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end">${total ? formatPrecio(total) : '$0'}</span>`;
+            btnCotizar.innerHTML = `<i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end">${totalText}</span>`;
         }
-        
+
         // Actualizar precio en elemento adicional si existe
         const precioBoton = document.getElementById('precioBoton');
         if (precioBoton) {
-            precioBoton.textContent = total ? formatPrecio(total) : '$0';
+            precioBoton.textContent = totalText;
         }
         
         // Actualizar tiempo estimado - 30 minutos por servicio
@@ -787,7 +810,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const primerServicio = serviciosAgregados[0];
             if (resumenServicio) resumenServicio.textContent = primerServicio.displayName;
             if (resumenTipo) resumenTipo.textContent = serviciosAgregados.length + (serviciosAgregados.length === 1 ? ' servicio' : ' servicios');
-            
+
             // Calcular tiempo total
             const minutos = serviciosAgregados.length * 30;
             const horas = Math.floor(minutos / 60);
@@ -800,10 +823,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 tiempoTexto = mins + 'm';
             }
             if (resumenTiempo) resumenTiempo.textContent = tiempoTexto;
-            
-            // Calcular precio total
+
+            // Calcular precio total y mostrar combinaciones si corresponde
             const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
-            if (resumenPrecio) resumenPrecio.textContent = formatPrecio(total);
+            const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+            if (resumenPrecio) {
+                if (tieneAConfirmar) {
+                    resumenPrecio.textContent = total > 0 ? `${formatPrecio(total)} + A confirmar` : 'A confirmar';
+                } else {
+                    resumenPrecio.textContent = formatPrecio(total);
+                }
+            }
         }
         
         // Configurar restricciones de fecha
@@ -895,61 +925,79 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // VALIDACIONES: telefono solo numeros (sanitizar mientras escribe)
+    if (telefonoInput) {
+        telefonoInput.addEventListener('input', function () {
+            const cleaned = telefonoInput.value.replace(/\D+/g, '');
+            if (telefonoInput.value !== cleaned) telefonoInput.value = cleaned;
+        });
+    }
+
     // Submit formulario reserva → Enviar a WhatsApp
     if (formDatos) {
         formDatos.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Capturar datos del formulario
-            const nombre = nombreInput.value;
+
+            // VALIDACIONES: nombre y teléfono
+            const nombre = nombreInput.value ? nombreInput.value.trim() : '';
+            // Requerir al menos 5 caracteres y que incluya un espacio (nombre y apellido)
+            if (!nombre || nombre.length < 5 || nombre.indexOf(' ') === -1) {
+                alert('Por favor ingresa tu nombre y apellidos (mínimo 5 caracteres).');
+                nombreInput.focus();
+                return;
+            }
+
+            // Teléfono: solo dígitos, mínimo 8 caracteres
+            const telefonoCliente = telefonoInput.value ? telefonoInput.value.replace(/\D+/g, '') : '';
+            if (!telefonoCliente || telefonoCliente.length < 8) {
+                alert('Por favor ingresa un teléfono válido (solo números, mínimo 8 dígitos).');
+                telefonoInput.focus();
+                return;
+            }
+
+            // Capturar resto de datos del formulario
             const direccion = direccionInput.value;
             const casaDepto = document.getElementById('casaDeptoInput').value;
             const fecha = document.getElementById('fechaInput').value;
             const hora = document.getElementById('horaInput').value;
-            const telefonoCliente = telefonoInput.value;
-            
+
             // Capturar datos del servicio (resumen)
             const servicio = document.getElementById('resumenServicio').textContent;
             const tipo = document.getElementById('resumenTipo').textContent;
             const tiempo = document.getElementById('resumenTiempo').textContent;
             const precio = document.getElementById('resumenPrecio').textContent;
-            
+            const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+
             // Formatear dirección
             const direccionCompleta = casaDepto ? `${direccion}, ${casaDepto}` : direccion;
-            
-            // Construir mensaje
-            const mensaje = `Hola ${nombre},
 
-Tu reserva está confirmada ✓
+            // Construir mensaje (si hay items A confirmar, omitimos línea de precio e indicamos que el cliente lo escriba)
+            const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
+            let mensaje = '';
+            if (tieneAConfirmar) {
+                if (total > 0) {
+                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio calculado: ${formatPrecio(total)} + algunos precios a confirmar.\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                } else {
+                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\n\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                }
+            } else {
+                mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio: ${precio}\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+            }
 
-Servicio: ${servicio}
-Tipo: ${tipo}
-Duración: ${tiempo}
-Precio: ${precio}
-
-Dirección: ${direccionCompleta}
-Fecha: ${fecha}
-Hora: ${hora}
-Teléfono: +56${telefonoCliente}
-
-El pago se realiza al finalizar el servicio.
-
-¡Gracias por preferirnos!`;
-            
             // Número de WhatsApp de la empresa (fijo)
             const numeroEmpresa = '927391320';
-            
+
             // Construir URL de WhatsApp
             const urlWhatsapp = `https://wa.me/56${numeroEmpresa}?text=${encodeURIComponent(mensaje)}`;
-            
+
             // Abrir en nueva pestaña
             window.open(urlWhatsapp, '_blank');
-            
+
             // Cerrar modal después de 500ms
             setTimeout(function() {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalDatos'));
                 if (modal) modal.hide();
-                
+
                 // Limpiar todo
                 serviciosAgregados = [];
                 actualizarListaServicios();
@@ -957,56 +1005,6 @@ El pago se realiza al finalizar el servicio.
                 updateServiceBoxState();
                 formDatos.reset();
             }, 500);
-        });
-    }
-
-    // ====== SIDEBAR ======
-    const sidebar = document.getElementById('sidebar');
-    const headerEl = document.querySelector('header.site-header') || document.querySelector('header');
-    const menuToggle = document.getElementById('menuToggle');
-
-    function adjustSidebarTop() {
-        if (!sidebar) return;
-        const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 56;
-        sidebar.style.top = headerHeight + 'px';
-    }
-
-    function openSidebar() {
-        if (!sidebar) return;
-        adjustSidebarTop();
-        sidebar.classList.add('show-desktop');
-        document.body.classList.add('sidebar-open');
-    }
-
-    function closeSidebar() {
-        if (!sidebar) return;
-        sidebar.classList.remove('show-desktop');
-        document.body.classList.remove('sidebar-open');
-    }
-
-    function toggleSidebar() {
-        if (!sidebar) return;
-        if (sidebar.classList.contains('show-desktop')) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    }
-
-    if (menuToggle) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleSidebar();
-        });
-    }
-
-    // Cerrar sidebar al hacer clic en un link
-    if (sidebar) {
-        const sidebarLinks = sidebar.querySelectorAll('a');
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                closeSidebar();
-            });
         });
     }
 
