@@ -1,5 +1,7 @@
+/* Prevenir scroll jump: reservar espacio para el scrollbar */
 html {
 	scroll-behavior: smooth;
+	scrollbar-gutter: stable;
 }
 
 body {
@@ -294,10 +296,10 @@ body.modal-open {
     color: var(--dtp-blue);
 }
 
-/* Seguridad: evita que un backdrop huérfano capture clicks y deje la página "en negro".
-   Nota: si prefieres que el backdrop siga cerrando al ser clickeado, omite esta regla. */
+/* Permitir que el backdrop cierre el offcanvas */
 .offcanvas-backdrop {
-    pointer-events: none;
+    pointer-events: auto;
+    background: transparent;
 }
 
 .desktop-sidebar-backdrop {
@@ -313,11 +315,8 @@ body.modal-open {
     opacity: 1;
 }
 
-/* Cuando el sidebar esté abierto, evitar que la página principal haga scroll */
-body.sidebar-open {
-    overflow: hidden;
-    height: 100vh;
-}
+/* Cuando el sidebar esté abierto en móvil, permitir scroll limitado */
+
 
 /* Header layout: logo left, title centered, menu on right */
 .site-header .header-inner { display: flex; align-items: center; }
@@ -904,5 +903,10 @@ body.sidebar-open {
         font-size: 0.95rem;
         margin-bottom: 0.5rem !important;
     }
+}
+
+/* Permitir scroll cuando el offcanvas está abierto */
+body {
+    overflow-y: scroll !important;
 }
 

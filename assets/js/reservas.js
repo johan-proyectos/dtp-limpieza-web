@@ -298,12 +298,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ====== MOBILE OFFCANVAS ======
-    // Cerrar offcanvas cuando se hace clic en un enlace interno
+    // Cerrar offcanvas cuando se abre para cerrar los dropdowns
     if (sidebarOffcanvas) {
-        const offcanvasInstance = new bootstrap.Offcanvas(sidebarOffcanvas);
+        sidebarOffcanvas.addEventListener('show.bs.offcanvas', () => {
+            cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+            cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
+        });
+        
+        // Cerrar dropdowns cuando se hace clic en un enlace
         sidebarOffcanvas.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', () => {
-                offcanvasInstance.hide();
+            link.addEventListener('click', (e) => {
+                cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+                cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
             });
         });
     }
@@ -312,6 +318,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (sidebar) {
         sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', () => {
+                // Cerrar los dropdowns si estaban abiertos
+                cerrarDropdown(categoriaMenu, categoriaTrigger, categoriaBackdrop);
+                cerrarDropdown(tamanioMenu, tamanioTrigger, tamanioBackdrop);
                 closeSidebar();
             });
         });
@@ -392,7 +401,10 @@ document.addEventListener('DOMContentLoaded', function () {
         menu.style.zIndex = '';
         if (backdrop) {
             backdrop.style.zIndex = '';
-            try { backdrop.style.removeProperty('pointer-events'); } catch (e) {}
+            // Asegurarse de que el backdrop siempre tiene pointer-events: none cuando está cerrado
+            backdrop.style.setProperty('pointer-events', 'none', 'important');
+                    // Asegurar que el backdrop está completamente oculto
+                    backdrop.style.display = 'none';
         }
 
         // Restaurar lugar original en DOM si lo movimos
