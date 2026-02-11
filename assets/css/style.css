@@ -44,6 +44,11 @@ body {
     border-radius: 12px;
     background: #fff;
     transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
 }
 .service-card:hover {
     transform: translateY(-6px);
