@@ -229,6 +229,13 @@
 
                     <!-- FORMULARIO -->
                     <form id="cotizaForm" class="service-box collapsed">
+                        <!-- NOTIFICACIÓN -->
+                        <div id="notificacionAlert" class="alert alert-warning alert-dismissible fade" role="alert" style="display: none;">
+                            <i class="bi bi-exclamation-circle me-2"></i>
+                            <span id="notificacionTexto"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
                         <!-- NIVEL 1: CATEGORÍA -->
                         <div class="mb-4">
                             <label class="service-dropdown-label">Selecciona el tipo de servicio:</label>
@@ -636,7 +643,7 @@
                                 <div>
                                     <strong id="resumenServicio">Sillones</strong> <span class="text-muted small ms-2"
                                         id="resumenTipo">Individual</span>
-                                    <div class="text-muted small mt-1"><span id="resumenTiempo">30m</span> • <span
+                                    <div class="text-muted small mt-1"><span id="resumenOpcion"></span><span
                                             class="text-primary fw-bold" id="resumenPrecio">$12.500</span></div>
                                 </div>
                             </div>

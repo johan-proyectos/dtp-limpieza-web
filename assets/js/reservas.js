@@ -141,13 +141,19 @@ document.addEventListener('DOMContentLoaded', function () {
             tamanios: {
                 'Decorativa (2x3 mtrs²)': {
                     precioBase: 25000,
-                    labelServicios: null,
-                    servicios: []
+                    labelServicios: '¿Cómo deseas entregarla?',
+                    servicios: [
+                        { id: 'alfa-deco-2x3-hogar', icon: '🏠', nombre: 'Lavado en tu hogar', desc: 'Limpieza en el lugar', precioDelta: 0 },
+                        { id: 'alfa-deco-2x3-taller', icon: '🏭', nombre: 'Lavado en Taller (Entrega en 48h)', desc: 'Lavado profundo + Desinfección. Maquinaria especializada con productos certificados. Elimina ácaros, bacterias y manchas difíciles sin dañar las fibras. Secado controlado. +3.000 CLP', precioDelta: 3000 }
+                    ]
                 },
                 'Decorativa (3x5 mtrs²)': {
                     precioBase: 30000,
-                    labelServicios: null,
-                    servicios: []
+                    labelServicios: '¿Cómo deseas entregarla?',
+                    servicios: [
+                        { id: 'alfa-deco-3x5-hogar', icon: '🏠', nombre: 'Lavado en tu hogar', desc: 'Limpieza en el lugar', precioDelta: 0 },
+                        { id: 'alfa-deco-3x5-taller', icon: '🏭', nombre: 'Lavado en Taller (Entrega en 48h)', desc: 'Lavado profundo + Desinfección. Maquinaria especializada con productos certificados. Elimina ácaros, bacterias y manchas difíciles sin dañar las fibras. Secado controlado. +3.000 CLP', precioDelta: 3000 }
+                    ]
                 },
                 'Habitación alfombrada muro a muro': {
                     precioBase: 29000,
@@ -217,6 +223,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const serviciosWrapper = document.getElementById('serviciosWrapper');
     const labelServicios = document.getElementById('labelServicios');
     const serviciosCardsContainer = document.getElementById('serviciosCardsContainer');
+    const notificacionAlert = document.getElementById('notificacionAlert');
+    const notificacionTexto = document.getElementById('notificacionTexto');
 
     // ====== ELEMENTOS DEL DOM - PRECIO Y CANTIDAD ======
     const precioWrapper = document.getElementById('precioWrapper');
@@ -250,6 +258,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function formatPrecio(valor) {
         return '$' + (valor).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // ====== FUNCIÓN DE NOTIFICACIÓN ======
+    function mostrarNotificacion(mensaje, tipo = 'warning') {
+        if (!notificacionAlert || !notificacionTexto) return;
+        
+        notificacionTexto.textContent = mensaje;
+        notificacionAlert.className = `alert alert-${tipo} alert-dismissible fade show`;
+        notificacionAlert.style.display = 'block';
+        
+        // Auto-ocultar después de 5 segundos
+        setTimeout(() => {
+            notificacionAlert.classList.remove('show');
+            notificacionAlert.style.display = 'none';
+        }, 5000);
     }
 
     // ====== SIDEBAR FUNCTIONS ======
@@ -491,13 +514,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const item = e.target.closest('.service-dropdown-item');
         if (!item) return;
 
-        // Si el item tiene clase 'disabled', prevenir su selección
-        if (item.classList.contains('disabled')) {
-            e.preventDefault();
-            e.stopPropagation();
-            return;
-        }
-
         e.preventDefault();
         e.stopPropagation();
 
@@ -515,19 +531,13 @@ document.addEventListener('DOMContentLoaded', function () {
         triggerMain.textContent = texto;
         categoriaTrigger.classList.remove('placeholder');
 
-        // Marcar seleccionado visual y deshabilitar otros items
+        // Marcar seleccionado visual (sin deshabilitar - permite reseleccionar)
         document.querySelectorAll('#categoriaMenu .service-dropdown-item')
             .forEach(it => {
                 it.classList.remove('selected');
-                it.classList.remove('disabled');
-                it.style.pointerEvents = 'auto';
-                it.style.opacity = '1';
             });
 
         item.classList.add('selected');
-        item.classList.add('disabled');
-        item.style.pointerEvents = 'none';
-        item.style.opacity = '0.5';
 
         // Reset dependientes
         tamanioMenu.innerHTML = '';
@@ -625,6 +635,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ====== ACTUALIZAR SERVICIOS/TARJETAS ======
     function actualizarServicios() {
+        // Siempre limpiar las tarjetas anteriores
+        serviciosCardsContainer.innerHTML = '';
+        
         if (!categoriaSeleccionada || !tamanioSeleccionado) {
             return;
         }
@@ -639,14 +652,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (labelServicios) labelServicios.textContent = datosTabla.labelServicios;
 
-        // Generar tarjetas (informativas, no clickeables)
+        // Detectar si hay al menos un servicio con costo adicional
+        const tieneServicioConCosto = datosTabla.servicios.some(srv => 
+            srv.precioDelta !== undefined && srv.precioDelta !== null && srv.precioDelta > 0
+        );
+
+        // Generar tarjetas
         serviciosCardsContainer.innerHTML = '';
         datosTabla.servicios.forEach(srv => {
             const card = document.createElement('div');
-            card.className = 'service-card disabled';
+            // Si hay un servicio con costo, TODOS son clicleables
+            // Si NO hay ninguno con costo, NINGUNO es cliceable
+            const esCliqueable = tieneServicioConCosto;
+            card.className = esCliqueable ? 'service-card' : 'service-card disabled';
             card.setAttribute('data-id', srv.id);
             card.innerHTML = `
-                <input type="radio" name="servicioSeleccion" id="srv-${srv.id}" value="${srv.id}" class="service-radio" disabled>
+                <input type="radio" name="servicioSeleccion" id="srv-${srv.id}" value="${srv.id}" class="service-radio"${esCliqueable ? '' : ' disabled'}>
                 <label for="srv-${srv.id}" class="service-card-label">
                     <div class="service-card-icon">${srv.icon}</div>
                     <div class="service-card-content">
@@ -655,7 +676,41 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </label>
             `;
-            // NO agregar event listeners - solo mostrar información
+            
+            // Agregar event listeners solo si es cliqueable
+            if (esCliqueable) {
+                card.addEventListener('click', (e) => {
+                    if (card.classList.contains('disabled')) return;
+                    
+                    // Remover selección anterior
+                    document.querySelectorAll('#serviciosCardsContainer .service-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    
+                    // Marcar como seleccionado
+                    card.classList.add('selected');
+                    
+                    // Actualizar la variable global
+                    servicioSeleccionado = srv;
+                    
+                    // Actualizar precio
+                    actualizarPrecio();
+                });
+                
+                // También permitir selección por radio
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.addEventListener('change', () => {
+                        servicioSeleccionado = srv;
+                        actualizarPrecio();
+                        document.querySelectorAll('#serviciosCardsContainer .service-card').forEach(c => {
+                            c.classList.remove('selected');
+                        });
+                        card.classList.add('selected');
+                    });
+                }
+            }
+            
             serviciosCardsContainer.appendChild(card);
         });
     }
@@ -708,12 +763,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnAgregar) {
         btnAgregar.addEventListener('click', () => {
             if (!categoriaSeleccionada || !tamanioSeleccionado) {
-                alert('Por favor selecciona una categoría y tamaño');
+                mostrarNotificacion('Por favor selecciona una categoría y tamaño', 'warning');
                 return;
             }
 
             const datos = serviciosData[categoriaSeleccionada];
             const datosTabla = datos.tamanios[tamanioSeleccionado];
+            
+            // Validar que si hay servicios con costo disponibles, se debe seleccionar uno
+            const tieneServicioConCosto = datosTabla && datosTabla.servicios && datosTabla.servicios.some(srv => 
+                srv.precioDelta !== undefined && srv.precioDelta !== null && srv.precioDelta > 0
+            );
+            
+            if (tieneServicioConCosto) {
+                if (!servicioSeleccionado) {
+                    mostrarNotificacion('Por favor selecciona una opción de las tarjetas disponibles', 'warning');
+                    return;
+                }
+            }
+
             let precio = datosTabla.precioBase;
             let nombreServicio = servicioSeleccionado ? servicioSeleccionado.nombre : 'Servicio estándar';
 
@@ -892,26 +960,29 @@ document.addEventListener('DOMContentLoaded', function () {
         // Actualizar resumen del modal
         const resumenServicio = document.getElementById('resumenServicio');
         const resumenTipo = document.getElementById('resumenTipo');
+        const resumenOpcion = document.getElementById('resumenOpcion');
         const resumenTiempo = document.getElementById('resumenTiempo');
         const resumenPrecio = document.getElementById('resumenPrecio');
         
         if (serviciosAgregados.length > 0) {
-            const primerServicio = serviciosAgregados[0];
-            if (resumenServicio) resumenServicio.textContent = primerServicio.displayName;
-            if (resumenTipo) resumenTipo.textContent = serviciosAgregados.length + (serviciosAgregados.length === 1 ? ' servicio' : ' servicios');
-
-            // Calcular tiempo total
-            const minutos = serviciosAgregados.length * 30;
-            const horas = Math.floor(minutos / 60);
-            const mins = minutos % 60;
-            let tiempoTexto = '';
-            if (horas > 0) {
-                tiempoTexto = horas + 'h';
-                if (mins > 0) tiempoTexto += ' ' + mins + 'm';
-            } else {
-                tiempoTexto = mins + 'm';
+            // Mostrar todos los servicios agregados
+            if (resumenServicio) {
+                const serviciosTexto = serviciosAgregados.map(s => s.displayName).join('<br>');
+                resumenServicio.innerHTML = serviciosTexto;
             }
-            if (resumenTiempo) resumenTiempo.textContent = tiempoTexto;
+            if (resumenTipo) resumenTipo.textContent = serviciosAgregados.length + (serviciosAgregados.length === 1 ? ' servicio' : ' servicios');
+            
+            // Mostrar las opciones/servicios seleccionados (si existen)
+            if (resumenOpcion) {
+                const opciones = serviciosAgregados
+                    .filter(s => s.servicio && s.servicio !== 'Servicio estándar')
+                    .map(s => '(' + s.servicio + ')')
+                    .join(' • ');
+                resumenOpcion.textContent = opciones ? opciones + ' • ' : '';
+            }
+
+            // No mostrar tiempo estimado en el detalle
+            if (resumenTiempo) resumenTiempo.textContent = '';
 
             // Calcular precio total y mostrar combinaciones si corresponde
             const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
@@ -1075,9 +1146,14 @@ document.addEventListener('DOMContentLoaded', function () {
             // Capturar datos del servicio (resumen)
             const servicio = document.getElementById('resumenServicio').textContent;
             const tipo = document.getElementById('resumenTipo').textContent;
-            const tiempo = document.getElementById('resumenTiempo').textContent;
             const precio = document.getElementById('resumenPrecio').textContent;
             const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+            
+            // Construir lista de servicios para el mensaje
+            let listaServicios = '';
+            serviciosAgregados.forEach(s => {
+                listaServicios += `• ${s.displayName}\n`;
+            });
             
             // Calcular si hay descuento para incluirlo en el mensaje
             const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
@@ -1092,13 +1168,13 @@ document.addEventListener('DOMContentLoaded', function () {
             if (tieneAConfirmar) {
                 if (total > 0) {
                     const lineasDescuento = tieneDescuentoMsg ? `\n✓ Descuento: -${formatPrecio(descuentoMontoMsg)} (13% por 2+ servicios)` : '';
-                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio calculado: ${formatPrecio(total)} + algunos precios a confirmar.${lineasDescuento}\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicios:\n${listaServicios}${tipo}\nPrecio calculado: ${formatPrecio(total)} + algunos precios a confirmar.${lineasDescuento}\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
                 } else {
-                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\n\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicios:\n${listaServicios}${tipo}\n\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
                 }
             } else {
                 const lineasDescuento = tieneDescuentoMsg ? `\n✓ Descuento: -${formatPrecio(descuentoMontoMsg)} (13% por 2+ servicios)` : '';
-                mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio: ${precio}${lineasDescuento}\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicios:\n${listaServicios}${tipo}\nPrecio: ${precio}${lineasDescuento}\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
             }
 
             // Número de WhatsApp de la empresa (fijo)
