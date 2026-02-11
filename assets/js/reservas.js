@@ -827,20 +827,29 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
         const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+        
+        // Aplicar descuento del 13% si hay 2 o más servicios
+        const tieneDescuento = serviciosAgregados.length >= 2;
+        const descuentoMonto = tieneDescuento ? total * 0.13 : 0;
+        const totalConDescuento = tieneDescuento ? total * 0.87 : total;
 
         // Construir texto combinado: si hay items A confirmar y también hay total numérico,
         // mostrar "$X + A confirmar"; si solo A confirmar -> "A confirmar"; si solo numérico -> "$X"
         let totalText = '';
         if (tieneAConfirmar) {
-            if (total > 0) totalText = `${formatPrecio(total)} + A confirmar`;
+            if (totalConDescuento > 0) totalText = `${formatPrecio(totalConDescuento)} + A confirmar`;
             else totalText = 'A confirmar';
         } else {
-            totalText = total ? formatPrecio(total) : '$0';
+            totalText = totalConDescuento ? formatPrecio(totalConDescuento) : '$0';
         }
 
         // Actualizar precio en el botón
         if (btnCotizar) {
-            btnCotizar.innerHTML = `<i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end">${totalText}</span>`;
+            let bottonHTML = `<i class="bi bi-calendar-check me-2"></i>Reservar ahora <span class="float-end">${totalText}</span>`;
+            if (tieneDescuento) {
+                bottonHTML = `${bottonHTML}<div style="font-size: 0.75rem; text-align: right; margin-top: 2px;">-${formatPrecio(descuentoMonto)} (13% descuento por 2 servicios o más)</div>`;
+            }
+            btnCotizar.innerHTML = bottonHTML;
         }
 
         // Actualizar precio en elemento adicional si existe
@@ -907,11 +916,33 @@ document.addEventListener('DOMContentLoaded', function () {
             // Calcular precio total y mostrar combinaciones si corresponde
             const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
             const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+            
+            // Aplicar descuento del 13% si hay 2 o más servicios
+            const tieneDescuentoModal = serviciosAgregados.length >= 2;
+            const descuentoMontoModal = tieneDescuentoModal ? total * 0.13 : 0;
+            const totalConDescuentoModal = tieneDescuentoModal ? total * 0.87 : total;
+            
             if (resumenPrecio) {
                 if (tieneAConfirmar) {
-                    resumenPrecio.textContent = total > 0 ? `${formatPrecio(total)} + A confirmar` : 'A confirmar';
+                    resumenPrecio.textContent = totalConDescuentoModal > 0 ? `${formatPrecio(totalConDescuentoModal)} + A confirmar` : 'A confirmar';
                 } else {
-                    resumenPrecio.textContent = formatPrecio(total);
+                    resumenPrecio.textContent = formatPrecio(totalConDescuentoModal);
+                }
+                
+                // Mostrar el descuento si aplica
+                if (tieneDescuentoModal) {
+                    const descuentoDiv = document.createElement('div');
+                    descuentoDiv.style.fontSize = '0.875rem';
+                    descuentoDiv.style.color = '#28a745';
+                    descuentoDiv.style.marginTop = '4px';
+                    descuentoDiv.innerHTML = `<strong>-${formatPrecio(descuentoMontoModal)} (13% descuento por 2 servicios o más)</strong>`;
+                    
+                    // Limpiar descuentos anteriores si existen
+                    const descuentoAnterior = resumenPrecio.parentElement.querySelector('.descuento-info');
+                    if (descuentoAnterior) descuentoAnterior.remove();
+                    
+                    descuentoDiv.className = 'descuento-info';
+                    resumenPrecio.parentElement.appendChild(descuentoDiv);
                 }
             }
         }
@@ -1047,21 +1078,27 @@ document.addEventListener('DOMContentLoaded', function () {
             const tiempo = document.getElementById('resumenTiempo').textContent;
             const precio = document.getElementById('resumenPrecio').textContent;
             const tieneAConfirmar = serviciosAgregados.some(s => s.precioAConfirmar);
+            
+            // Calcular si hay descuento para incluirlo en el mensaje
+            const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
+            const tieneDescuentoMsg = serviciosAgregados.length >= 2;
+            const descuentoMontoMsg = tieneDescuentoMsg ? total * 0.13 : 0;
 
             // Formatear dirección
             const direccionCompleta = casaDepto ? `${direccion}, ${casaDepto}` : direccion;
 
             // Construir mensaje (si hay items A confirmar, omitimos línea de precio e indicamos que el cliente lo escriba)
-            const total = serviciosAgregados.reduce((a, b) => a + (b.subtotal || 0), 0);
             let mensaje = '';
             if (tieneAConfirmar) {
                 if (total > 0) {
-                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio calculado: ${formatPrecio(total)} + algunos precios a confirmar.\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                    const lineasDescuento = tieneDescuentoMsg ? `\n✓ Descuento: -${formatPrecio(descuentoMontoMsg)} (13% por 2+ servicios)` : '';
+                    mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio calculado: ${formatPrecio(total)} + algunos precios a confirmar.${lineasDescuento}\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
                 } else {
                     mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\n\nPor favor indica el precio para el/los servicio(s) "Otros (especificar)" en este mismo mensaje.\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
                 }
             } else {
-                mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio: ${precio}\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
+                const lineasDescuento = tieneDescuentoMsg ? `\n✓ Descuento: -${formatPrecio(descuentoMontoMsg)} (13% por 2+ servicios)` : '';
+                mensaje = `Hola ${nombre},\n\nTu reserva está confirmada ✓\n\nServicio: ${servicio}\nTipo: ${tipo}\nDuración: ${tiempo}\nPrecio: ${precio}${lineasDescuento}\n\nDirección: ${direccionCompleta}\nFecha: ${fecha}\nHora: ${hora}\nTeléfono: +56${telefonoCliente}\n\nEl pago se realiza al finalizar el servicio.\n\n¡Gracias por preferirnos!`;
             }
 
             // Número de WhatsApp de la empresa (fijo)
